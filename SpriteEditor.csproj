@@ -87,8 +87,7 @@
     <Compile Include="frmSprite.Designer.cs">
       <DependentUpon>frmSprite.cs</DependentUpon>
     </Compile>
-    <Compile Include="Object Copier.cs" />
-    <Compile Include="Path.cs" />
+    <Compile Include="ObjectCopier.cs" />
     <Compile Include="Pose.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

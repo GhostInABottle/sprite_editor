@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace SpriteEditor
 {
@@ -26,6 +27,19 @@ namespace SpriteEditor
             Y = y;
             Width = w;
             Height = h;
+        }
+
+        public XElement ToXml(string name) {
+            return new XElement(name,
+                new XAttribute("X", X),
+                new XAttribute("Y", Y),
+                new XAttribute("Width", Width),
+                new XAttribute("Height", Height));
+        }
+
+        public bool equals(int x, int y, int w, int h)
+        {
+            return X == x && Y == y && Width == w && Height == h;
         }
 
         public static explicit operator Rectangle(Rect r)

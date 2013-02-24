@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace SpriteEditor
 {
@@ -14,25 +15,47 @@ namespace SpriteEditor
     public class SpriteData
     {
         /// <summary>
-        /// Maximum number of poses in a sprite.
-        /// </summary>
-        public static readonly int MAX_SPRITE_POSES = 3;
-        /// <summary>
         /// Name of the sprite image. 
         /// </summary>
         public String Image { get; set; }
         /// </summary>
+        /// Transparent color as hex string
+        /// </summary>
+        [XmlElement(ElementName = "Transparent-Color")]
+        public string TransparentColor { get; set; }
+        /// </summary>
+        /// Transparent color as hex string
+        /// </summary>
+        [XmlElement(ElementName = "Base-Dir")]
+        public string BaseDirectory { get; set; }
+        /// <summary>
         /// List of poses. 
         /// </summary>
         [XmlElement(ElementName = "Pose")]
         public List<Pose> Poses { get; set; }
-
-        [XmlElement(ElementName = "Transparent-Color")]
-        public string TransparentColor { get; set; } 
-
         public SpriteData()
         {
-            Poses = new List<Pose>(MAX_SPRITE_POSES);
+            BaseDirectory = ".";
+            Poses = new List<Pose>();
+        }
+
+        public XElement ToXml()
+        {
+            var children = new List<object>();
+            children.Add(new XAttribute("Version", 2.0f));
+            if (!String.IsNullOrEmpty(Image))
+                children.Add(new XAttribute("Image", Image));
+            if (!String.IsNullOrEmpty(TransparentColor))
+                children.Add(new XAttribute("Transparent-Color", TransparentColor));
+            if (BaseDirectory != ".")
+                children.Add(new XAttribute("Image-Dir", BaseDirectory));
+
+            foreach (var pose in Poses)
+            {
+                children.Add(pose.ToXml());
+            }
+
+            return new XElement("Sprite", children);
         }
     }
 }

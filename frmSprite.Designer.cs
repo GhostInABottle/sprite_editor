@@ -32,6 +32,9 @@
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.tbcSprite = new System.Windows.Forms.TabControl();
             this.tabSprite = new System.Windows.Forms.TabPage();
+            this.lblBaseFolder = new System.Windows.Forms.Label();
+            this.btnBrowseFolder = new System.Windows.Forms.Button();
+            this.txtBase = new System.Windows.Forms.TextBox();
             this.btnTransColor = new System.Windows.Forms.Button();
             this.lblColor = new System.Windows.Forms.Label();
             this.btnBrowseImage = new System.Windows.Forms.Button();
@@ -94,8 +97,9 @@
             this.stlMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.ofdSprite = new System.Windows.Forms.OpenFileDialog();
             this.sfdSprite = new System.Windows.Forms.SaveFileDialog();
-            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
+            this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
+            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -121,12 +125,15 @@
             this.tbcSprite.Multiline = true;
             this.tbcSprite.Name = "tbcSprite";
             this.tbcSprite.SelectedIndex = 0;
-            this.tbcSprite.Size = new System.Drawing.Size(190, 320);
+            this.tbcSprite.Size = new System.Drawing.Size(190, 377);
             this.tbcSprite.TabIndex = 1;
             // 
             // tabSprite
             // 
             this.tabSprite.BackColor = System.Drawing.Color.Transparent;
+            this.tabSprite.Controls.Add(this.lblBaseFolder);
+            this.tabSprite.Controls.Add(this.btnBrowseFolder);
+            this.tabSprite.Controls.Add(this.txtBase);
             this.tabSprite.Controls.Add(this.btnTransColor);
             this.tabSprite.Controls.Add(this.lblColor);
             this.tabSprite.Controls.Add(this.btnBrowseImage);
@@ -137,13 +144,40 @@
             this.tabSprite.Location = new System.Drawing.Point(4, 22);
             this.tabSprite.Name = "tabSprite";
             this.tabSprite.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSprite.Size = new System.Drawing.Size(182, 294);
+            this.tabSprite.Size = new System.Drawing.Size(182, 351);
             this.tabSprite.TabIndex = 0;
             this.tabSprite.Text = "Sprite";
             // 
+            // lblBaseFolder
+            // 
+            this.lblBaseFolder.AutoSize = true;
+            this.lblBaseFolder.Location = new System.Drawing.Point(6, 6);
+            this.lblBaseFolder.Name = "lblBaseFolder";
+            this.lblBaseFolder.Size = new System.Drawing.Size(63, 13);
+            this.lblBaseFolder.TabIndex = 16;
+            this.lblBaseFolder.Text = "Base Folder";
+            // 
+            // btnBrowseFolder
+            // 
+            this.btnBrowseFolder.Location = new System.Drawing.Point(145, 22);
+            this.btnBrowseFolder.Name = "btnBrowseFolder";
+            this.btnBrowseFolder.Size = new System.Drawing.Size(31, 20);
+            this.btnBrowseFolder.TabIndex = 15;
+            this.btnBrowseFolder.Text = "...";
+            this.btnBrowseFolder.UseVisualStyleBackColor = true;
+            this.btnBrowseFolder.Click += new System.EventHandler(this.btnBrowseFolder_Click);
+            // 
+            // txtBase
+            // 
+            this.txtBase.Enabled = false;
+            this.txtBase.Location = new System.Drawing.Point(9, 22);
+            this.txtBase.Name = "txtBase";
+            this.txtBase.Size = new System.Drawing.Size(130, 20);
+            this.txtBase.TabIndex = 14;
+            // 
             // btnTransColor
             // 
-            this.btnTransColor.Location = new System.Drawing.Point(103, 46);
+            this.btnTransColor.Location = new System.Drawing.Point(103, 87);
             this.btnTransColor.Name = "btnTransColor";
             this.btnTransColor.Size = new System.Drawing.Size(19, 18);
             this.btnTransColor.TabIndex = 13;
@@ -153,7 +187,7 @@
             // lblColor
             // 
             this.lblColor.AutoSize = true;
-            this.lblColor.Location = new System.Drawing.Point(6, 51);
+            this.lblColor.Location = new System.Drawing.Point(6, 92);
             this.lblColor.Name = "lblColor";
             this.lblColor.Size = new System.Drawing.Size(91, 13);
             this.lblColor.TabIndex = 12;
@@ -161,7 +195,7 @@
             // 
             // btnBrowseImage
             // 
-            this.btnBrowseImage.Location = new System.Drawing.Point(145, 19);
+            this.btnBrowseImage.Location = new System.Drawing.Point(145, 60);
             this.btnBrowseImage.Name = "btnBrowseImage";
             this.btnBrowseImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseImage.TabIndex = 11;
@@ -173,7 +207,7 @@
             // 
             this.lstPoses.ContextMenuStrip = this.mnuPose;
             this.lstPoses.FormattingEnabled = true;
-            this.lstPoses.Location = new System.Drawing.Point(9, 84);
+            this.lstPoses.Location = new System.Drawing.Point(9, 146);
             this.lstPoses.Name = "lstPoses";
             this.lstPoses.Size = new System.Drawing.Size(167, 199);
             this.lstPoses.TabIndex = 5;
@@ -223,7 +257,7 @@
             // lblPoses
             // 
             this.lblPoses.AutoSize = true;
-            this.lblPoses.Location = new System.Drawing.Point(6, 81);
+            this.lblPoses.Location = new System.Drawing.Point(6, 130);
             this.lblPoses.Name = "lblPoses";
             this.lblPoses.Size = new System.Drawing.Size(36, 13);
             this.lblPoses.TabIndex = 4;
@@ -232,7 +266,7 @@
             // lblImage
             // 
             this.lblImage.AutoSize = true;
-            this.lblImage.Location = new System.Drawing.Point(6, 3);
+            this.lblImage.Location = new System.Drawing.Point(6, 45);
             this.lblImage.Name = "lblImage";
             this.lblImage.Size = new System.Drawing.Size(36, 13);
             this.lblImage.TabIndex = 1;
@@ -241,7 +275,7 @@
             // txtImage
             // 
             this.txtImage.Enabled = false;
-            this.txtImage.Location = new System.Drawing.Point(9, 19);
+            this.txtImage.Location = new System.Drawing.Point(9, 61);
             this.txtImage.Name = "txtImage";
             this.txtImage.Size = new System.Drawing.Size(130, 20);
             this.txtImage.TabIndex = 0;
@@ -262,7 +296,7 @@
             this.tabPose.Location = new System.Drawing.Point(4, 22);
             this.tabPose.Name = "tabPose";
             this.tabPose.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPose.Size = new System.Drawing.Size(182, 294);
+            this.tabPose.Size = new System.Drawing.Size(182, 351);
             this.tabPose.TabIndex = 1;
             this.tabPose.Text = "Pose";
             // 
@@ -273,7 +307,7 @@
             this.lstFrames.FormattingEnabled = true;
             this.lstFrames.Location = new System.Drawing.Point(9, 175);
             this.lstFrames.Name = "lstFrames";
-            this.lstFrames.Size = new System.Drawing.Size(167, 108);
+            this.lstFrames.Size = new System.Drawing.Size(167, 160);
             this.lstFrames.TabIndex = 12;
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
@@ -416,7 +450,7 @@
             this.tabFrame.Controls.Add(this.lblFrameDuration);
             this.tabFrame.Location = new System.Drawing.Point(4, 22);
             this.tabFrame.Name = "tabFrame";
-            this.tabFrame.Size = new System.Drawing.Size(182, 294);
+            this.tabFrame.Size = new System.Drawing.Size(182, 351);
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
@@ -432,7 +466,7 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(6, 258);
+            this.btnPrevFrame.Location = new System.Drawing.Point(9, 258);
             this.btnPrevFrame.Name = "btnPrevFrame";
             this.btnPrevFrame.Size = new System.Drawing.Size(82, 23);
             this.btnPrevFrame.TabIndex = 15;
@@ -548,7 +582,7 @@
             this.viewToolStripMenuItem});
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(696, 24);
+            this.mnuMain.Size = new System.Drawing.Size(698, 24);
             this.mnuMain.TabIndex = 7;
             this.mnuMain.Text = "menuStrip1";
             // 
@@ -678,9 +712,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stlMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 358);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 407);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(696, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(698, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "stsMain";
@@ -714,7 +748,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(696, 380);
+            this.ClientSize = new System.Drawing.Size(698, 429);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mnuMain);
             this.Controls.Add(this.pnlSprite);
@@ -813,6 +847,10 @@
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Button btnTransColor;
         private System.Windows.Forms.ColorDialog cdTransparentColor;
+        private System.Windows.Forms.Label lblBaseFolder;
+        private System.Windows.Forms.Button btnBrowseFolder;
+        private System.Windows.Forms.TextBox txtBase;
+        private System.Windows.Forms.FolderBrowserDialog fbdBase;
     }
 }
 

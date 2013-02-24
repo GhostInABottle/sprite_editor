@@ -252,7 +252,6 @@ namespace SpriteEditor
             if (selectedFrame != null)
             {
                 selectedFrame.IsTweenFrame = chkTween.Checked;
-                selectedFrame.IsTweenFrameSpecified = selectedFrame.IsTweenFrame;
                 spriteLogic.Reset(System.Environment.TickCount);
             }
         }
@@ -301,12 +300,31 @@ namespace SpriteEditor
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
             var fullFilename = ofdImage.FileName;
-            var filename = System.IO.Path.GetFileName(fullFilename);
-            var bmp = openBitmap(fullFilename);
+            setImage(fullFilename);
+        }
+
+        private void setImage(string path)
+        {
+            string baseDir = spriteLogic.SpriteData.BaseDirectory; 
+            if (baseDir != "." && !Path.IsPathRooted(path))
+            {
+                try
+                {
+                    if (openedFileName != null && !Path.IsPathRooted(baseDir))
+                        baseDir = Utilities.ResolveRelativePath(
+                            Path.GetDirectoryName(openedFileName), baseDir);
+                    path = Utilities.ResolveRelativePath(baseDir, path);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            var filename = System.IO.Path.GetFileName(path);
+            var bmp = openBitmap(path);
             if (bmp != null)
             {
                 txtImage.Text = filename;
-                spriteLogic.SpriteData.Image = fullFilename;
+                spriteLogic.SpriteData.Image = path;
                 stlMessage.Text = "";
             }
             else
@@ -331,7 +349,6 @@ namespace SpriteEditor
             if (Int32.TryParse(txtDuration.Text, out duration))
             {
                 selectedPose.DefaultDuration = duration;
-                selectedPose.DefaultDurationSpecified = duration != 100;
             }
         }
 
@@ -345,7 +362,6 @@ namespace SpriteEditor
                 if (spriteLogic.CurrentPose != null)
                     spriteLogic.Reset(System.Environment.TickCount);
                 selectedPose.Repeats = repeats;
-                selectedPose.RepeatsSpecified = repeats > -1;
             }
         }
 
@@ -357,7 +373,6 @@ namespace SpriteEditor
             if (Int32.TryParse(txtFrameDuration.Text, out duration))
             {
                 selectedFrame.Duration = duration;
-                selectedFrame.DurationSpecified = duration != -1;
 
             }
         }
@@ -370,7 +385,6 @@ namespace SpriteEditor
             if (Single.TryParse(txtXMagnification.Text, out mag))
             {
                 selectedFrame.XMagnification = mag;
-                selectedFrame.XMagnificationSpecified = Math.Abs(mag - 1.0f) >= 0.01;
             }
         }
 
@@ -382,7 +396,6 @@ namespace SpriteEditor
             if (Single.TryParse(txtYMagnification.Text, out mag))
             {
                 selectedFrame.YMagnification = mag;
-                selectedFrame.YMagnificationSpecified = Math.Abs(mag - 1.0f) >= 0.01;
             }
         }
 
@@ -394,7 +407,6 @@ namespace SpriteEditor
             if (Int32.TryParse(txtAngle.Text, out angle))
             {
                 selectedFrame.Angle = angle;
-                selectedFrame.AngleSpecified = angle != 0;
             }
         }
 
@@ -503,7 +515,6 @@ namespace SpriteEditor
             if (rect != null)
             {
                 selectedPose.BoundingBox = rect;
-                selectedPose.BoundingBoxSpecified = rect.ToString() != "(-1, -1, -1, -1)";
             }
         }
 
@@ -619,6 +630,7 @@ namespace SpriteEditor
 
         private void miSaveAs_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(spriteLogic.SpriteData.ToXml().ToString());
             var result = sfdSprite.ShowDialog();
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
@@ -712,6 +724,22 @@ namespace SpriteEditor
             string hex = cdTransparentColor.Color.ToHex();
             spriteLogic.SpriteData.TransparentColor = hex;
             btnTransColor.BackColor = cdTransparentColor.Color;
+        }
+
+        private void btnBrowseFolder_Click(object sender, EventArgs e)
+        {
+            if (openedFileName != null)
+                fbdBase.SelectedPath = Path.GetDirectoryName(openedFileName);
+            fbdBase.ShowDialog();
+            var selectedPath = fbdBase.SelectedPath;
+            if (String.IsNullOrEmpty(selectedPath))
+                return;
+            if (openedFileName != null)
+                selectedPath = Utilities.MakeRelativePath(openedFileName, selectedPath);
+            spriteLogic.SpriteData.BaseDirectory = selectedPath;
+            txtBase.Text = selectedPath;
+            if (!String.IsNullOrEmpty(txtImage.Text))
+                setImage(txtImage.Text);
         }
     }
 }

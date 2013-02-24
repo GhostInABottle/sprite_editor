@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.IO;
 
 
 namespace SpriteEditor
@@ -57,6 +58,40 @@ namespace SpriteEditor
 
             return int.Parse(component,
                 System.Globalization.NumberStyles.HexNumber);
+        }
+
+        public static bool CheckClose(float a, float b, float epsilon)
+        {
+            float absA = Math.Abs(a);
+            float absB = Math.Abs(b);
+            float diff = Math.Abs(a - b);
+
+            if (a * b == 0) { // a or b or both are zero
+                // relative error is not meaningful here
+                return diff < (epsilon * epsilon);
+            } else { // use relative error
+                return diff / (absA + absB) < epsilon;
+            }
+        }
+
+        public static string ResolveRelativePath(string referencePath, string relativePath)
+        {
+            Uri uri = new Uri(Path.Combine(referencePath, relativePath));
+            return Path.GetFullPath(uri.AbsolutePath);
+        }
+
+        public static string MakeRelativePath(string fromPath, string toPath)
+        {
+            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            var fromUri = new Uri(fromPath);
+            var toUri = new Uri(toPath);
+
+            var relativeUri = fromUri.MakeRelativeUri(toUri);
+            var relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            return relativePath.Replace('/', Path.DirectorySeparatorChar);
         }
     }
 }
