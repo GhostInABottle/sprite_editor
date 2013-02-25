@@ -119,18 +119,42 @@ namespace SpriteEditor
 
         private Bitmap openBitmap(string filename)
         {
+            filename = resolvePath(filename);
             Bitmap bmp = null;
-            if (filename != "")
+            try
+            {
+                bmp = new Bitmap(filename);
+            }
+            catch (Exception)
+            {
+            }
+            return bmp;
+        }
+
+        private string resolveBaseDir()
+        {
+            string baseDir = spriteLogic.SpriteData.BaseDirectory;
+            if (openedFileName != null && !Path.IsPathRooted(baseDir))
+                baseDir = Utilities.ResolveRelativePath(
+                    Path.GetDirectoryName(openedFileName), baseDir);
+            return baseDir;
+        }
+
+        private string resolvePath(string filename)
+        {
+            string baseDir = spriteLogic.SpriteData.BaseDirectory;
+            if (baseDir != "." && !Path.IsPathRooted(filename))
             {
                 try
                 {
-                    bmp = new Bitmap(filename);
+                    baseDir = resolveBaseDir();
+                    filename = Utilities.ResolveRelativePath(baseDir, filename);
                 }
                 catch (Exception)
                 {
                 }
             }
-            return bmp;
+            return filename;
         }
 
         private bool validateFrames(List<Frame> frames)
@@ -305,26 +329,16 @@ namespace SpriteEditor
 
         private void setImage(string path)
         {
-            string baseDir = spriteLogic.SpriteData.BaseDirectory; 
-            if (baseDir != "." && !Path.IsPathRooted(path))
-            {
-                try
-                {
-                    if (openedFileName != null && !Path.IsPathRooted(baseDir))
-                        baseDir = Utilities.ResolveRelativePath(
-                            Path.GetDirectoryName(openedFileName), baseDir);
-                    path = Utilities.ResolveRelativePath(baseDir, path);
-                }
-                catch (Exception)
-                {
-                }
-            }
             var filename = System.IO.Path.GetFileName(path);
             var bmp = openBitmap(path);
             if (bmp != null)
             {
                 txtImage.Text = filename;
-                spriteLogic.SpriteData.Image = path;
+                var baseDir = resolveBaseDir();
+                var image = path;
+                if (baseDir != "." && Path.IsPathRooted(path))
+                    image = Utilities.MakeRelativePath(baseDir, path);
+                spriteLogic.SpriteData.Image = image;
                 stlMessage.Text = "";
             }
             else
@@ -566,6 +580,7 @@ namespace SpriteEditor
 
         private bool openSprite(string path)
         {
+            SpriteData.Load(path);
             FileStream stream = null;
             stlMessage.Text = "";
             try
@@ -609,28 +624,21 @@ namespace SpriteEditor
 
         private bool saveSprite(string filename)
         {
-            FileStream stream = null;
             stlMessage.Text = "";
             try
             {
-                stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Write);
+                SpriteData.Save(spriteLogic.SpriteData, filename);
             }
             catch (Exception ex)
             {
-                if (stream != null)
-                    stream.Close();
                 stlMessage.Text = "Error: Couldn't save file " + filename + ": " + ex.Message;
                 return false;
             }
-            XmlSerializer xmlserializer = new XmlSerializer(typeof(SpriteData));
-            xmlserializer.Serialize(stream, spriteLogic.SpriteData);
-            stream.Close();
             return true;
         }
 
         private void miSaveAs_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(spriteLogic.SpriteData.ToXml().ToString());
             var result = sfdSprite.ShowDialog();
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
@@ -738,8 +746,8 @@ namespace SpriteEditor
                 selectedPath = Utilities.MakeRelativePath(openedFileName, selectedPath);
             spriteLogic.SpriteData.BaseDirectory = selectedPath;
             txtBase.Text = selectedPath;
-            if (!String.IsNullOrEmpty(txtImage.Text))
-                setImage(txtImage.Text);
+            if (!String.IsNullOrEmpty(spriteLogic.SpriteData.Image))
+                setImage(spriteLogic.SpriteData.Image);
         }
     }
 }

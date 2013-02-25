@@ -39,16 +39,38 @@ namespace SpriteEditor
             Poses = new List<Pose>();
         }
 
+        public static void Save(SpriteData sprite, string filename)
+        {
+            var doc = new XDocument(
+                new XDeclaration("2.0", "us-ascii", null),
+                sprite.ToXml()
+            );
+            doc.Save(filename);
+        }
+
+        public static void Load(string filename)
+        {
+            var xml = XDocument.Load(filename);
+            var spriteData = 
+                (from sprite in xml.Descendants("Sprite")
+                select new SpriteData()
+                {
+                    Image = (string)sprite.Attribute("Image"),
+                    TransparentColor = (string)sprite.Attribute("Transparent-Color"),
+                    BaseDirectory = (string)sprite.Attribute("Base-Dir")
+                }).FirstOrDefault();
+                            
+        }
+
         public XElement ToXml()
         {
             var children = new List<object>();
-            children.Add(new XAttribute("Version", 2.0f));
             if (!String.IsNullOrEmpty(Image))
                 children.Add(new XAttribute("Image", Image));
             if (!String.IsNullOrEmpty(TransparentColor))
                 children.Add(new XAttribute("Transparent-Color", TransparentColor));
             if (BaseDirectory != ".")
-                children.Add(new XAttribute("Image-Dir", BaseDirectory));
+                children.Add(new XAttribute("Base-Dir", BaseDirectory));
 
             foreach (var pose in Poses)
             {
