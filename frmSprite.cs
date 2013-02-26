@@ -192,7 +192,7 @@ namespace SpriteEditor
                 transColor = Utilities.FromHex(spriteData.TransparentColor);
             cdTransparentColor.Color = transColor;
             btnTransColor.BackColor = transColor;
-            var poseNames = spriteData.Poses.Select(x => x.Name);
+            var poseNames = spriteData.Poses.Select(x => x.NameWithTags());
             lstPoses.Items.Clear();
             lstPoses.Items.AddRange(poseNames.ToArray());
         }
@@ -365,7 +365,8 @@ namespace SpriteEditor
             if (selectedPose == null || selectedPose.Name == txtPoseName.Text)
                 return;
             selectedPose.Name = txtPoseName.Text;
-            populateSprite(spriteLogic.SpriteData);
+            if (tbcSprite.SelectedTab == tabPose)
+                populateSprite(spriteLogic.SpriteData);
         }
 
         private void txtDuration_TextChanged(object sender, EventArgs e)
@@ -785,6 +786,8 @@ namespace SpriteEditor
             {
                 selectedPose.Tags["Direction"] = selected;
             }
+            if (tbcSprite.SelectedTab == tabPose)
+                populateSprite(spriteLogic.SpriteData);
         }
 
         private void changeState(string newState)
@@ -797,6 +800,8 @@ namespace SpriteEditor
             {
                 selectedPose.Tags["State"] = newState;
             }
+            if (tbcSprite.SelectedTab == tabPose)
+                populateSprite(spriteLogic.SpriteData);
         }
 
         private void cbState_SelectedIndexChanged(object sender, EventArgs e)

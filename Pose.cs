@@ -48,6 +48,16 @@ namespace SpriteEditor
 		    Frames = new List<Frame>();
 	    }
 
+        public string NameWithTags()
+        {
+            string name = Name;
+            if (Tags.ContainsKey("Direction"))
+                name += " [" + Tags["Direction"] + "]";
+            if (Tags.ContainsKey("State"))
+                name += " [" + Tags["State"] + "]";
+            return name;
+        }
+
         public XElement ToXml()
         {
             var children = new List<object>();
