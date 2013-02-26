@@ -48,6 +48,8 @@
             this.lblImage = new System.Windows.Forms.Label();
             this.txtImage = new System.Windows.Forms.TextBox();
             this.tabPose = new System.Windows.Forms.TabPage();
+            this.cbDirection = new System.Windows.Forms.ComboBox();
+            this.lblDirection = new System.Windows.Forms.Label();
             this.lstFrames = new System.Windows.Forms.ListBox();
             this.mnuFrame = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddFrame = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,6 +101,8 @@
             this.sfdSprite = new System.Windows.Forms.SaveFileDialog();
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
+            this.lblState = new System.Windows.Forms.Label();
+            this.cbState = new System.Windows.Forms.ComboBox();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
@@ -121,11 +125,11 @@
             this.tbcSprite.Controls.Add(this.tabSprite);
             this.tbcSprite.Controls.Add(this.tabPose);
             this.tbcSprite.Controls.Add(this.tabFrame);
-            this.tbcSprite.Location = new System.Drawing.Point(498, 27);
+            this.tbcSprite.Location = new System.Drawing.Point(492, 27);
             this.tbcSprite.Multiline = true;
             this.tbcSprite.Name = "tbcSprite";
             this.tbcSprite.SelectedIndex = 0;
-            this.tbcSprite.Size = new System.Drawing.Size(190, 377);
+            this.tbcSprite.Size = new System.Drawing.Size(202, 450);
             this.tbcSprite.TabIndex = 1;
             // 
             // tabSprite
@@ -144,7 +148,7 @@
             this.tabSprite.Location = new System.Drawing.Point(4, 22);
             this.tabSprite.Name = "tabSprite";
             this.tabSprite.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSprite.Size = new System.Drawing.Size(182, 351);
+            this.tabSprite.Size = new System.Drawing.Size(194, 424);
             this.tabSprite.TabIndex = 0;
             this.tabSprite.Text = "Sprite";
             // 
@@ -159,7 +163,7 @@
             // 
             // btnBrowseFolder
             // 
-            this.btnBrowseFolder.Location = new System.Drawing.Point(145, 22);
+            this.btnBrowseFolder.Location = new System.Drawing.Point(155, 22);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
             this.btnBrowseFolder.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseFolder.TabIndex = 15;
@@ -172,7 +176,7 @@
             this.txtBase.Enabled = false;
             this.txtBase.Location = new System.Drawing.Point(9, 22);
             this.txtBase.Name = "txtBase";
-            this.txtBase.Size = new System.Drawing.Size(130, 20);
+            this.txtBase.Size = new System.Drawing.Size(140, 20);
             this.txtBase.TabIndex = 14;
             // 
             // btnTransColor
@@ -195,7 +199,7 @@
             // 
             // btnBrowseImage
             // 
-            this.btnBrowseImage.Location = new System.Drawing.Point(145, 60);
+            this.btnBrowseImage.Location = new System.Drawing.Point(155, 60);
             this.btnBrowseImage.Name = "btnBrowseImage";
             this.btnBrowseImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseImage.TabIndex = 11;
@@ -207,9 +211,9 @@
             // 
             this.lstPoses.ContextMenuStrip = this.mnuPose;
             this.lstPoses.FormattingEnabled = true;
-            this.lstPoses.Location = new System.Drawing.Point(9, 146);
+            this.lstPoses.Location = new System.Drawing.Point(9, 133);
             this.lstPoses.Name = "lstPoses";
-            this.lstPoses.Size = new System.Drawing.Size(167, 199);
+            this.lstPoses.Size = new System.Drawing.Size(177, 277);
             this.lstPoses.TabIndex = 5;
             this.lstPoses.SelectedIndexChanged += new System.EventHandler(this.lstPoses_SelectedIndexChanged);
             // 
@@ -257,7 +261,7 @@
             // lblPoses
             // 
             this.lblPoses.AutoSize = true;
-            this.lblPoses.Location = new System.Drawing.Point(6, 130);
+            this.lblPoses.Location = new System.Drawing.Point(6, 115);
             this.lblPoses.Name = "lblPoses";
             this.lblPoses.Size = new System.Drawing.Size(36, 13);
             this.lblPoses.TabIndex = 4;
@@ -277,12 +281,16 @@
             this.txtImage.Enabled = false;
             this.txtImage.Location = new System.Drawing.Point(9, 61);
             this.txtImage.Name = "txtImage";
-            this.txtImage.Size = new System.Drawing.Size(130, 20);
+            this.txtImage.Size = new System.Drawing.Size(140, 20);
             this.txtImage.TabIndex = 0;
             // 
             // tabPose
             // 
             this.tabPose.BackColor = System.Drawing.Color.Transparent;
+            this.tabPose.Controls.Add(this.cbState);
+            this.tabPose.Controls.Add(this.lblState);
+            this.tabPose.Controls.Add(this.cbDirection);
+            this.tabPose.Controls.Add(this.lblDirection);
             this.tabPose.Controls.Add(this.lstFrames);
             this.tabPose.Controls.Add(this.lblFrames);
             this.tabPose.Controls.Add(this.txtBoundingBox);
@@ -296,18 +304,43 @@
             this.tabPose.Location = new System.Drawing.Point(4, 22);
             this.tabPose.Name = "tabPose";
             this.tabPose.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPose.Size = new System.Drawing.Size(182, 351);
+            this.tabPose.Size = new System.Drawing.Size(194, 424);
             this.tabPose.TabIndex = 1;
             this.tabPose.Text = "Pose";
+            // 
+            // cbDirection
+            // 
+            this.cbDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDirection.FormattingEnabled = true;
+            this.cbDirection.Items.AddRange(new object[] {
+            "None",
+            "Up",
+            "Right",
+            "Down",
+            "Left"});
+            this.cbDirection.Location = new System.Drawing.Point(9, 176);
+            this.cbDirection.Name = "cbDirection";
+            this.cbDirection.Size = new System.Drawing.Size(177, 21);
+            this.cbDirection.TabIndex = 14;
+            this.cbDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
+            // 
+            // lblDirection
+            // 
+            this.lblDirection.AutoSize = true;
+            this.lblDirection.Location = new System.Drawing.Point(6, 159);
+            this.lblDirection.Name = "lblDirection";
+            this.lblDirection.Size = new System.Drawing.Size(49, 13);
+            this.lblDirection.TabIndex = 13;
+            this.lblDirection.Text = "Direction";
             // 
             // lstFrames
             // 
             this.lstFrames.AllowDrop = true;
             this.lstFrames.ContextMenuStrip = this.mnuFrame;
             this.lstFrames.FormattingEnabled = true;
-            this.lstFrames.Location = new System.Drawing.Point(9, 175);
+            this.lstFrames.Location = new System.Drawing.Point(9, 258);
             this.lstFrames.Name = "lstFrames";
-            this.lstFrames.Size = new System.Drawing.Size(167, 160);
+            this.lstFrames.Size = new System.Drawing.Size(177, 160);
             this.lstFrames.TabIndex = 12;
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
@@ -358,7 +391,7 @@
             // lblFrames
             // 
             this.lblFrames.AutoSize = true;
-            this.lblFrames.Location = new System.Drawing.Point(6, 159);
+            this.lblFrames.Location = new System.Drawing.Point(6, 242);
             this.lblFrames.Name = "lblFrames";
             this.lblFrames.Size = new System.Drawing.Size(41, 13);
             this.lblFrames.TabIndex = 11;
@@ -368,7 +401,7 @@
             // 
             this.txtBoundingBox.Location = new System.Drawing.Point(9, 136);
             this.txtBoundingBox.Name = "txtBoundingBox";
-            this.txtBoundingBox.Size = new System.Drawing.Size(167, 20);
+            this.txtBoundingBox.Size = new System.Drawing.Size(177, 20);
             this.txtBoundingBox.TabIndex = 9;
             this.txtBoundingBox.TextChanged += new System.EventHandler(this.txtBoundingBox_TextChanged);
             // 
@@ -385,7 +418,7 @@
             // 
             this.txtRepeats.Location = new System.Drawing.Point(9, 97);
             this.txtRepeats.Name = "txtRepeats";
-            this.txtRepeats.Size = new System.Drawing.Size(167, 20);
+            this.txtRepeats.Size = new System.Drawing.Size(177, 20);
             this.txtRepeats.TabIndex = 7;
             this.txtRepeats.TextChanged += new System.EventHandler(this.txtRepeats_TextChanged);
             // 
@@ -402,7 +435,7 @@
             // 
             this.txtDuration.Location = new System.Drawing.Point(9, 58);
             this.txtDuration.Name = "txtDuration";
-            this.txtDuration.Size = new System.Drawing.Size(167, 20);
+            this.txtDuration.Size = new System.Drawing.Size(177, 20);
             this.txtDuration.TabIndex = 5;
             this.txtDuration.TextChanged += new System.EventHandler(this.txtDuration_TextChanged);
             // 
@@ -419,7 +452,7 @@
             // 
             this.txtPoseName.Location = new System.Drawing.Point(9, 19);
             this.txtPoseName.Name = "txtPoseName";
-            this.txtPoseName.Size = new System.Drawing.Size(167, 20);
+            this.txtPoseName.Size = new System.Drawing.Size(177, 20);
             this.txtPoseName.TabIndex = 3;
             this.txtPoseName.TextChanged += new System.EventHandler(this.txtPoseName_TextChanged);
             // 
@@ -450,15 +483,15 @@
             this.tabFrame.Controls.Add(this.lblFrameDuration);
             this.tabFrame.Location = new System.Drawing.Point(4, 22);
             this.tabFrame.Name = "tabFrame";
-            this.tabFrame.Size = new System.Drawing.Size(182, 351);
+            this.tabFrame.Size = new System.Drawing.Size(194, 424);
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
             // btnNextFrame
             // 
-            this.btnNextFrame.Location = new System.Drawing.Point(94, 258);
+            this.btnNextFrame.Location = new System.Drawing.Point(98, 306);
             this.btnNextFrame.Name = "btnNextFrame";
-            this.btnNextFrame.Size = new System.Drawing.Size(82, 23);
+            this.btnNextFrame.Size = new System.Drawing.Size(88, 23);
             this.btnNextFrame.TabIndex = 16;
             this.btnNextFrame.Text = "Next Frame";
             this.btnNextFrame.UseVisualStyleBackColor = true;
@@ -466,9 +499,9 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(9, 258);
+            this.btnPrevFrame.Location = new System.Drawing.Point(9, 306);
             this.btnPrevFrame.Name = "btnPrevFrame";
-            this.btnPrevFrame.Size = new System.Drawing.Size(82, 23);
+            this.btnPrevFrame.Size = new System.Drawing.Size(88, 23);
             this.btnPrevFrame.TabIndex = 15;
             this.btnPrevFrame.Text = "Prev. Frame";
             this.btnPrevFrame.UseVisualStyleBackColor = true;
@@ -489,7 +522,7 @@
             // 
             this.txtRectangle.Location = new System.Drawing.Point(9, 198);
             this.txtRectangle.Name = "txtRectangle";
-            this.txtRectangle.Size = new System.Drawing.Size(167, 20);
+            this.txtRectangle.Size = new System.Drawing.Size(177, 20);
             this.txtRectangle.TabIndex = 12;
             this.txtRectangle.TextChanged += new System.EventHandler(this.txtRectangle_TextChanged);
             // 
@@ -506,7 +539,7 @@
             // 
             this.txtAngle.Location = new System.Drawing.Point(9, 159);
             this.txtAngle.Name = "txtAngle";
-            this.txtAngle.Size = new System.Drawing.Size(167, 20);
+            this.txtAngle.Size = new System.Drawing.Size(177, 20);
             this.txtAngle.TabIndex = 10;
             this.txtAngle.TextChanged += new System.EventHandler(this.txtAngle_TextChanged);
             // 
@@ -523,7 +556,7 @@
             // 
             this.txtYMagnification.Location = new System.Drawing.Point(9, 120);
             this.txtYMagnification.Name = "txtYMagnification";
-            this.txtYMagnification.Size = new System.Drawing.Size(167, 20);
+            this.txtYMagnification.Size = new System.Drawing.Size(177, 20);
             this.txtYMagnification.TabIndex = 8;
             this.txtYMagnification.TextChanged += new System.EventHandler(this.txtYMagnification_TextChanged);
             // 
@@ -540,7 +573,7 @@
             // 
             this.txtXMagnification.Location = new System.Drawing.Point(9, 81);
             this.txtXMagnification.Name = "txtXMagnification";
-            this.txtXMagnification.Size = new System.Drawing.Size(167, 20);
+            this.txtXMagnification.Size = new System.Drawing.Size(177, 20);
             this.txtXMagnification.TabIndex = 6;
             this.txtXMagnification.TextChanged += new System.EventHandler(this.txtXMagnification_TextChanged);
             // 
@@ -557,7 +590,7 @@
             // 
             this.txtFrameDuration.Location = new System.Drawing.Point(9, 42);
             this.txtFrameDuration.Name = "txtFrameDuration";
-            this.txtFrameDuration.Size = new System.Drawing.Size(167, 20);
+            this.txtFrameDuration.Size = new System.Drawing.Size(177, 20);
             this.txtFrameDuration.TabIndex = 4;
             this.txtFrameDuration.TextChanged += new System.EventHandler(this.txtFrameDuration_TextChanged);
             // 
@@ -582,7 +615,7 @@
             this.viewToolStripMenuItem});
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(698, 24);
+            this.mnuMain.Size = new System.Drawing.Size(694, 24);
             this.mnuMain.TabIndex = 7;
             this.mnuMain.Text = "menuStrip1";
             // 
@@ -712,9 +745,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stlMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 407);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 480);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(698, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(694, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "stsMain";
@@ -735,12 +768,32 @@
             this.sfdSprite.Filter = "Sprite XML Files|*.spr";
             this.sfdSprite.Title = "Save sprite file as...";
             // 
+            // lblState
+            // 
+            this.lblState.AutoSize = true;
+            this.lblState.Location = new System.Drawing.Point(6, 200);
+            this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(32, 13);
+            this.lblState.TabIndex = 15;
+            this.lblState.Text = "State";
+            // 
+            // cbState
+            // 
+            this.cbState.FormattingEnabled = true;
+            this.cbState.Location = new System.Drawing.Point(9, 217);
+            this.cbState.Name = "cbState";
+            this.cbState.Size = new System.Drawing.Size(177, 21);
+            this.cbState.TabIndex = 16;
+            this.cbState.DropDown += new System.EventHandler(this.cbState_DropDown);
+            this.cbState.SelectedIndexChanged += new System.EventHandler(this.cbState_SelectedIndexChanged);
+            this.cbState.TextChanged += new System.EventHandler(this.cbState_TextChanged);
+            // 
             // pnlSprite
             // 
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlSprite.Location = new System.Drawing.Point(12, 27);
+            this.pnlSprite.Location = new System.Drawing.Point(0, 27);
             this.pnlSprite.Name = "pnlSprite";
-            this.pnlSprite.Size = new System.Drawing.Size(480, 320);
+            this.pnlSprite.Size = new System.Drawing.Size(490, 450);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
@@ -748,7 +801,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 429);
+            this.ClientSize = new System.Drawing.Size(694, 502);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mnuMain);
             this.Controls.Add(this.pnlSprite);
@@ -851,6 +904,10 @@
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.TextBox txtBase;
         private System.Windows.Forms.FolderBrowserDialog fbdBase;
+        private System.Windows.Forms.Label lblDirection;
+        private System.Windows.Forms.ComboBox cbDirection;
+        private System.Windows.Forms.ComboBox cbState;
+        private System.Windows.Forms.Label lblState;
     }
 }
 

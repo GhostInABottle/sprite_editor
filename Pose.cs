@@ -28,6 +28,10 @@ namespace SpriteEditor
         /// Number of times pose is repeated (-1 = forever). 
         /// </summary>
         public int Repeats { get; set; }
+        /// <summary>
+        /// Tags associated with pose
+        /// </summary>
+        public Dictionary<string, string> Tags { get; set; }
 	    /// <summary>
         /// List of frames. 
         /// </summary>
@@ -40,6 +44,7 @@ namespace SpriteEditor
 		    BoundingBox = new Rect(-1, -1, -1, -1);
 		    DefaultDuration = 100;
             Repeats = -1;
+            Tags = new Dictionary<string, string>();
 		    Frames = new List<Frame>();
 	    }
 
@@ -53,6 +58,14 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Duration", DefaultDuration));
             if (Repeats != -1)
                 children.Add(new XAttribute("Repeats", Repeats));
+
+            foreach (var pair in Tags)
+            {
+                var tagElement = new XElement("Tag", 
+                    new XAttribute("Key", pair.Key), 
+                    new XAttribute("Value", pair.Value));
+                children.Add(tagElement);
+            }
 
             foreach (var frame in Frames)
             {

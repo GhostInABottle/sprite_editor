@@ -33,6 +33,7 @@ namespace SpriteEditor
             miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
             miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
             miShowGrid.Checked = Settings.Default.ShowGrid;
+            cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
             bool opened = false;
             if (args.Length > 1 && File.Exists(args[1]))
@@ -207,6 +208,19 @@ namespace SpriteEditor
             txtDuration.Text = pose.DefaultDuration.ToString(); ;
             txtRepeats.Text = pose.Repeats.ToString();
             txtBoundingBox.Text = pose.BoundingBox.ToString();
+            if (pose.Tags.ContainsKey("Direction"))
+            {
+                int index = cbDirection.Items.IndexOf(pose.Tags["Direction"]);
+                cbDirection.SelectedIndex = index;
+            }
+            else
+                cbDirection.SelectedIndex = 0;
+            if (pose.Tags.ContainsKey("State"))
+            {
+                cbState.Text = pose.Tags["State"];
+            }
+            else
+                cbState.Text = "";
             var frameIndices = pose.Frames.Select((x, i) => (i + 1).ToString());
             lstFrames.Items.Clear();
             lstFrames.Items.AddRange(frameIndices.ToArray());
@@ -745,5 +759,58 @@ namespace SpriteEditor
             if (!String.IsNullOrEmpty(spriteLogic.SpriteData.Image))
                 setImage(spriteLogic.SpriteData.Image);
         }
+
+        private void cbState_DropDown(object sender, EventArgs e)
+        {
+            cbState.Items.Clear();
+            foreach (var pose in spriteLogic.SpriteData.Poses)
+            {
+                if (pose.Tags.ContainsKey("State"))
+                {
+                    cbState.Items.Add(pose.Tags["State"]);
+                }
+            }
+        }
+
+        private void cbDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            var selected = (string)cbDirection.SelectedItem;
+            if (selected == "None")
+            {
+                selectedPose.Tags.Remove("Direction");
+            }
+            else
+            {
+                selectedPose.Tags["Direction"] = selected;
+            }
+        }
+
+        private void changeState(string newState)
+        {
+            if (newState == "")
+            {
+                selectedPose.Tags.Remove("State");
+            }
+            else
+            {
+                selectedPose.Tags["State"] = newState;
+            }
+        }
+
+        private void cbState_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            changeState((string)cbState.SelectedItem);
+            
+        }
+
+        private void cbState_TextChanged(object sender, EventArgs e)
+        {
+            changeState((string)cbState.Text);
+        }
+
     }
 }
