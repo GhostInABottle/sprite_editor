@@ -84,6 +84,7 @@ namespace SpriteEditor
         {
             if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
             if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
             if (Directory.Exists(fromPath) && !fromPath.EndsWith("\\")) fromPath += "\\";
             if (Directory.Exists(toPath) && !toPath.EndsWith("\\")) toPath += "\\";
 

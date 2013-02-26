@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Xml.Serialization;
 using SpriteEditor.Properties;
 
 namespace SpriteEditor
@@ -580,17 +579,16 @@ namespace SpriteEditor
 
         private bool openSprite(string path)
         {
-            SpriteData.Load(path);
-            FileStream stream = null;
+            
             stlMessage.Text = "";
             try
             {
-                stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 openedFileName = path;
-                this.Text = "Sprite Editor - " + System.IO.Path.GetFileName(openedFileName);
-                XmlSerializer xmlserializer = new XmlSerializer(typeof(SpriteData));
-                var spriteData = (SpriteData)xmlserializer.Deserialize(stream);
-                stream.Close();
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(path));
+                this.Text = "Sprite Editor - " + Path.GetFileName(openedFileName);
+                var spriteData = SpriteData.Load(path);
+                if (spriteData == null)
+                    throw new IOException("Error loading sprite data.");
                 spriteLogic = new SpriteLogic(spriteData);
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
@@ -607,8 +605,6 @@ namespace SpriteEditor
             }
             catch (Exception ex)
             {
-                if (stream != null)
-                    stream.Close();
                 stlMessage.Text = "Error: Couldn't open file " + path + ": " + ex.Message;
                 return false;
             }

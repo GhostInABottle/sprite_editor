@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 
 namespace SpriteEditor
@@ -20,12 +19,10 @@ namespace SpriteEditor
 	    /// <summary>
         /// Collision bounding box. 
         /// </summary>
-        [XmlElement(ElementName = "Bounding-Box")]
         public Rect BoundingBox { get; set; }
 	    /// <summary>
         /// Total duration of one pose cycle in milliseconds. 
         /// </summary>
-        [XmlElement(ElementName = "Duration")]
         public int DefaultDuration { get; set; }
 	    /// <summary>
         /// Number of times pose is repeated (-1 = forever). 
@@ -34,7 +31,6 @@ namespace SpriteEditor
 	    /// <summary>
         /// List of frames. 
         /// </summary>
-        [XmlElement(ElementName = "Frame")]
         public List<Frame> Frames { get; set; }
 
 	    /// <summary>

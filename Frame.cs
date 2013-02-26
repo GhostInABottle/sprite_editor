@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 
 namespace SpriteEditor
@@ -25,12 +24,10 @@ namespace SpriteEditor
         /// <summary>
         /// Horizontal magnification. 
         /// </summary>
-        [XmlElement(ElementName = "X-Magnification")]
         public float XMagnification { get; set; }
         /// <summary>
         /// Vertical magnification. 
         /// </summary>
-        [XmlElement(ElementName = "Y-Magnification")]
         public float YMagnification { get; set; }
         /// <summary>
         /// Rotation angle. 
@@ -39,7 +36,6 @@ namespace SpriteEditor
         /// <summary>
         /// Is it a tween frame? 
         /// </summary>
-        [XmlElement(ElementName = "Tween-Frame")]
         public bool IsTweenFrame { get; set; }
 
         public Frame()

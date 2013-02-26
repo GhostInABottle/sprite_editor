@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 
 namespace SpriteEditor
@@ -21,18 +20,16 @@ namespace SpriteEditor
         /// </summary>
         /// Transparent color as hex string
         /// </summary>
-        [XmlElement(ElementName = "Transparent-Color")]
         public string TransparentColor { get; set; }
         /// </summary>
         /// Transparent color as hex string
         /// </summary>
-        [XmlElement(ElementName = "Base-Dir")]
         public string BaseDirectory { get; set; }
         /// <summary>
         /// List of poses. 
         /// </summary>
-        [XmlElement(ElementName = "Pose")]
         public List<Pose> Poses { get; set; }
+
         public SpriteData()
         {
             BaseDirectory = ".";
@@ -48,7 +45,7 @@ namespace SpriteEditor
             doc.Save(filename);
         }
 
-        public static void Load(string filename)
+        public static SpriteData Load(string filename)
         {
             var xml = XDocument.Load(filename);
             var spriteData = 
@@ -57,9 +54,43 @@ namespace SpriteEditor
                 {
                     Image = (string)sprite.Attribute("Image"),
                     TransparentColor = (string)sprite.Attribute("Transparent-Color"),
-                    BaseDirectory = (string)sprite.Attribute("Base-Dir")
+                    BaseDirectory = (string)sprite.Attribute("Base-Dir") ?? ".",
+                    Poses = 
+                        (from pose in sprite.Descendants("Pose")
+                        select new Pose()
+                        {
+                            Name = (string)pose.Attribute("Name"),
+                            DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
+                            Repeats = (int?)pose.Attribute("Repeats") ?? -1,
+                            BoundingBox = 
+                                    (from box in pose.Descendants("Bounding-Box")
+                                    select new Rect(
+                                        (int)box.Attribute("X"), 
+                                        (int)box.Attribute("Y"),
+                                        (int)box.Attribute("Width"),
+                                        (int)box.Attribute("Height"))
+                                    ).DefaultIfEmpty(new Rect()).First(),
+                            Frames =
+                                (from frame in pose.Descendants("Frame")
+                                 select new Frame()
+                                 {
+                                     Duration = (int?)frame.Attribute("Duration") ?? -1,
+                                     XMagnification = (float?)frame.Attribute("X-Mag") ?? 1.0f,
+                                     YMagnification = (float?)frame.Attribute("Y-Mag") ?? 1.0f,
+                                     Angle = (int?)frame.Attribute("Angle") ?? 0,
+                                     IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
+                                     Rectangle = 
+                                         (from rect in frame.Descendants("Rectangle")
+                                          select new Rect(
+                                              (int)rect.Attribute("X"),
+                                              (int)rect.Attribute("Y"),
+                                              (int)rect.Attribute("Width"),
+                                              (int)rect.Attribute("Height"))
+                                        ).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
+                                 }).ToList<Frame>()
+                        }).ToList<Pose>()
                 }).FirstOrDefault();
-                            
+            return spriteData;
         }
 
         public XElement ToXml()
