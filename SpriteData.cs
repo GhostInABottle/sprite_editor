@@ -39,7 +39,7 @@ namespace SpriteEditor
         public static void Save(SpriteData sprite, string filename)
         {
             var doc = new XDocument(
-                new XDeclaration("2.0", "us-ascii", null),
+                new XDeclaration("1.0", "us-ascii", null),
                 sprite.ToXml()
             );
             doc.Save(filename);
