@@ -76,10 +76,10 @@ namespace SpriteEditor
 	    public void SetPose(String poseName, int currentTime) {
 		    var poses = SpriteData.Poses;
 		    if (CurrentPose == null || 
-                !poseName.Equals(CurrentPose.Name, StringComparison.InvariantCultureIgnoreCase)) {
+                !poseName.Equals(CurrentPose.NameWithTags(), StringComparison.InvariantCultureIgnoreCase)) {
 			    int poseCount = poses.Count;
-                var pose = 
-                    poses.FirstOrDefault(p => p.Name.Equals(poseName,
+                var pose =
+                    poses.FirstOrDefault(p => p.NameWithTags().Equals(poseName,
                         StringComparison.InvariantCultureIgnoreCase));
                 if (pose != null)
                     CurrentPose = pose;

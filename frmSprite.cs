@@ -204,7 +204,10 @@ namespace SpriteEditor
                 clearPose();
                 return;
             }
-            txtPoseName.Text = pose.Name;
+            if (pose.Tags.ContainsKey("Name"))
+                txtPoseName.Text = pose.Tags["Name"];
+            else
+                txtPoseName.Text = "";
             txtDuration.Text = pose.DefaultDuration.ToString(); ;
             txtRepeats.Text = pose.Repeats.ToString();
             txtBoundingBox.Text = pose.BoundingBox.ToString();
@@ -216,9 +219,7 @@ namespace SpriteEditor
             else
                 cbDirection.SelectedIndex = 0;
             if (pose.Tags.ContainsKey("State"))
-            {
                 cbState.Text = pose.Tags["State"];
-            }
             else
                 cbState.Text = "";
             var frameIndices = pose.Frames.Select((x, i) => (i + 1).ToString());
@@ -267,7 +268,7 @@ namespace SpriteEditor
             var poses = spriteLogic.SpriteData.Poses;
             selectedPose = poses[lstPoses.SelectedIndex];
             populatePose(selectedPose);
-            spriteLogic.SetPose(selectedPose.Name, System.Environment.TickCount);
+            spriteLogic.SetPose(selectedPose.NameWithTags(), System.Environment.TickCount);
             if (lstFrames.Items.Count > 0)
             {
                 lstFrames.SelectedIndex = 0;
@@ -362,9 +363,17 @@ namespace SpriteEditor
 
         private void txtPoseName_TextChanged(object sender, EventArgs e)
         {
-            if (selectedPose == null || selectedPose.Name == txtPoseName.Text)
+            if (selectedPose == null || selectedPose.getName() == txtPoseName.Text)
                 return;
-            selectedPose.Name = txtPoseName.Text;
+            var newName = txtPoseName.Text;
+            if (newName == "")
+            {
+                selectedPose.Tags.Remove("Name");
+            }
+            else
+            {
+                selectedPose.Tags["Name"] = newName;
+            }
             if (tbcSprite.SelectedTab == tabPose)
                 populateSprite(spriteLogic.SpriteData);
         }
@@ -443,7 +452,9 @@ namespace SpriteEditor
             if (spriteLogic == null)
                 return;
             var poses = spriteLogic.SpriteData.Poses;
-            poses.Add(new Pose() { Name = "Unnamed Pose " + lstPoses.Items.Count });
+            var pose = new Pose();
+            pose.Tags["Name"] = "Unnamed Pose " + lstPoses.Items.Count;
+            poses.Add(pose);
             populateSprite(spriteLogic.SpriteData);
             populateFrame(null);
             lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
@@ -608,7 +619,7 @@ namespace SpriteEditor
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
                 {
-                    spriteLogic.SetPose(spriteData.Poses[0].Name, System.Environment.TickCount);
+                    spriteLogic.SetPose(spriteData.Poses[0].NameWithTags(), System.Environment.TickCount);
                     lstPoses.SelectedIndex = 0;
                 }
                 if (lstFrames.Items.Count > 0)
@@ -730,7 +741,8 @@ namespace SpriteEditor
                 return;
             var poses = spriteLogic.SpriteData.Poses;
             var poseClone = ObjectCopier.Clone(copiedPose);
-            poseClone.Name += " Copy";
+            if (poseClone.Tags.ContainsKey("Name") && poseClone.Tags["Name"] != "")
+                poseClone.Tags["Name"] += " Copy";
             poses.Add(poseClone);
             populateSprite(spriteLogic.SpriteData);
             populateFrame(null);
@@ -766,7 +778,8 @@ namespace SpriteEditor
             cbState.Items.Clear();
             foreach (var pose in spriteLogic.SpriteData.Poses)
             {
-                if (pose.Tags.ContainsKey("State"))
+                if (pose.Tags.ContainsKey("State") &&
+                        !cbState.Items.Contains(pose.Tags["State"]))
                 {
                     cbState.Items.Add(pose.Tags["State"]);
                 }

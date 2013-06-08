@@ -59,7 +59,6 @@ namespace SpriteEditor
                          (from pose in sprite.Descendants("Pose")
                           select new Pose()
                           {
-                              Name = (string)pose.Attribute("Name"),
                               DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                               Repeats = (int?)pose.Attribute("Repeats") ?? -1,
                               BoundingBox =

@@ -13,10 +13,6 @@ namespace SpriteEditor
     [Serializable()]
     public class Pose {
 	    /// <summary>
-        /// Name of the pose (e.g. 'attacking). 
-        /// </summary>
-        public String Name { get; set; }
-	    /// <summary>
         /// Collision bounding box. 
         /// </summary>
         public Rect BoundingBox { get; set; }
@@ -48,9 +44,14 @@ namespace SpriteEditor
 		    Frames = new List<Frame>();
 	    }
 
+        public string getName()
+        {
+            return Tags.ContainsKey("Name") ? Tags["Name"] : "";
+        }
+
         public string NameWithTags()
         {
-            string name = Name;
+            string name = getName();
             if (Tags.ContainsKey("Direction"))
                 name += " [" + Tags["Direction"] + "]";
             if (Tags.ContainsKey("State"))
@@ -61,7 +62,6 @@ namespace SpriteEditor
         public XElement ToXml()
         {
             var children = new List<object>();
-            children.Add(new XAttribute("Name", Name));
             if (!BoundingBox.equals(-1, -1, -1, -1))
                 children.Add(BoundingBox.ToXml("Bounding-Box"));
             if (DefaultDuration != 100)
