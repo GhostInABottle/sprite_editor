@@ -164,6 +164,15 @@ namespace SpriteEditor
             }
 	    }
 
+        /// <summary>
+        /// Set current frame
+        /// </summary>
+        /// <param name="index">Frame index</param>
+        public void SetFrame(int index)
+        {
+            frameIndex = index;
+        }
+
 	    /// <summary>
         /// Stop updating the pose.
         /// </summary>

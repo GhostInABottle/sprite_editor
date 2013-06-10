@@ -45,8 +45,12 @@ namespace SpriteEditor
         private void pnlSprite_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(pnlSprite.BackColor);
-            var bmp = openBitmap(spriteLogic.SpriteData.Image);
-            if (spriteLogic.CurrentPose == null || spriteLogic.CurrentFrame == null || bmp == null)
+            if (spriteLogic.CurrentPose == null || spriteLogic.CurrentFrame == null)
+                return;
+            var currentFrame = spriteLogic.CurrentFrame;
+            var image = currentFrame.Image ?? spriteLogic.SpriteData.Image;
+            var bmp = openBitmap(image);
+            if (bmp == null)
                 return;
             // Default values (for full sprite view)
             var midX = pnlSprite.Width / 2 - bmp.Width / 2;
@@ -57,7 +61,7 @@ namespace SpriteEditor
             // Transformed values (for animated and non-animated views)
             if (miPreview.Checked || miAnimated.Checked)
             {
-                var currentFrame = spriteLogic.CurrentFrame;
+                
                 if (miPreview.Checked && selectedFrame != null)
                     currentFrame = selectedFrame;
                 source = (Rectangle)currentFrame.Rectangle;
@@ -178,7 +182,12 @@ namespace SpriteEditor
                 spriteLogic.CurrentFrame == null ||
                 !validateFrames(spriteLogic.CurrentPose.Frames))
                 return;
-            spriteLogic.Update(System.Environment.TickCount);
+            if (miAnimated.Checked)
+                spriteLogic.Update(System.Environment.TickCount);
+            else if (lstFrames.SelectedIndex != -1)
+                spriteLogic.SetFrame(lstFrames.SelectedIndex);
+            else
+                return;
             pnlSprite.Invalidate();
         }
 
@@ -249,6 +258,12 @@ namespace SpriteEditor
             txtAngle.Text = frame.Angle.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
+            txtFrameImage.Text = frame.Image;
+            var transColor = cdTransparentColor.Color;
+            if (!string.IsNullOrEmpty(frame.TransparentColor))
+                transColor = Utilities.FromHex(frame.TransparentColor);
+            cdTransparentColor.Color = transColor;
+            btnFrameTransColor.BackColor = transColor;
         }
 
         private void clearFrame()
@@ -338,21 +353,29 @@ namespace SpriteEditor
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename);
+            setImage(fullFilename, false);
         }
 
-        private void setImage(string path)
+        private void setImage(string path, bool forFrame)
         {
             var filename = System.IO.Path.GetFileName(path);
             var bmp = openBitmap(path);
             if (bmp != null)
             {
-                txtImage.Text = filename;
                 var baseDir = resolveBaseDir();
                 var image = path;
                 if (baseDir != "." && Path.IsPathRooted(path))
                     image = Utilities.MakeRelativePath(baseDir, path);
-                spriteLogic.SpriteData.Image = image;
+                if (forFrame)
+                {
+                    txtFrameImage.Text = filename;
+                    selectedFrame.Image = image;
+                }
+                else
+                {
+                    txtImage.Text = filename;
+                    spriteLogic.SpriteData.Image = image;
+                }
                 stlMessage.Text = "";
             }
             else
@@ -533,6 +556,27 @@ namespace SpriteEditor
             else
                 clearFrame();
             spriteLogic.Reset(System.Environment.TickCount);
+        }
+
+        private void btnBrowseFrameImage_Click(object sender, EventArgs e)
+        {
+            if (selectedFrame == null)
+                return;
+            var result = ofdImage.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK)
+                return;
+            var fullFilename = ofdImage.FileName;
+            setImage(fullFilename, true);
+        }
+
+        private void btnFrameTransColor_Click(object sender, EventArgs e)
+        {
+            if (selectedFrame == null)
+                return;
+            cdTransparentColor.ShowDialog();
+            string hex = cdTransparentColor.Color.ToHex();
+            selectedFrame.TransparentColor = hex;
+            btnFrameTransColor.BackColor = cdTransparentColor.Color;
         }
 
         private void txtRectangle_TextChanged(object sender, EventArgs e)
@@ -725,6 +769,7 @@ namespace SpriteEditor
             selectedPose.Frames.Add(ObjectCopier.Clone(copiedFrame));
             populatePose(selectedPose);
             changeSelectedFrame(lstFrames.Items.Count - 1);
+            spriteLogic.Reset(System.Environment.TickCount);
         }
 
         private void miCopy_Click(object sender, EventArgs e)
@@ -770,7 +815,7 @@ namespace SpriteEditor
             spriteLogic.SpriteData.BaseDirectory = selectedPath;
             txtBase.Text = selectedPath;
             if (!String.IsNullOrEmpty(spriteLogic.SpriteData.Image))
-                setImage(spriteLogic.SpriteData.Image);
+                setImage(spriteLogic.SpriteData.Image, false);
         }
 
         private void cbState_DropDown(object sender, EventArgs e)

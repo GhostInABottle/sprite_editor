@@ -37,6 +37,14 @@ namespace SpriteEditor
         /// Is it a tween frame? 
         /// </summary>
         public bool IsTweenFrame { get; set; }
+        /// <summary>
+        /// Name of the frame's image. 
+        /// </summary>
+        public String Image { get; set; }
+        /// </summary>
+        /// Transparent color as hex string
+        /// </summary>
+        public string TransparentColor { get; set; }
 
         public Frame()
         {
@@ -61,6 +69,10 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Angle", Angle));
             if (IsTweenFrame)
                 children.Add(new XAttribute("Tween", IsTweenFrame));
+            if (!String.IsNullOrEmpty(Image))
+                children.Add(new XAttribute("Image", Image));
+            if (!String.IsNullOrEmpty(TransparentColor))
+                children.Add(new XAttribute("Transparent-Color", Image));
             return new XElement("Frame", children.ToArray());
         }
     }

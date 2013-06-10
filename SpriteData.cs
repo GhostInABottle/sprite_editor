@@ -94,6 +94,8 @@ namespace SpriteEditor
                                                 (int)rect.Attribute("Width"),
                                                 (int)rect.Attribute("Height"))
                                        ).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
+                                       Image = (string)frame.Attribute("Image"),
+                                       TransparentColor = (string)frame.Attribute("Transparent-Color"),
                                    }).ToList<Frame>()
                           }).ToList<Pose>()
                  }).FirstOrDefault();

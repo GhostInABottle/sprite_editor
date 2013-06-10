@@ -77,7 +77,7 @@ namespace SpriteEditor
         public static string ResolveRelativePath(string referencePath, string relativePath)
         {
             Uri uri = new Uri(Path.Combine(referencePath, relativePath));
-            return Path.GetFullPath(uri.AbsolutePath);
+            return Uri.UnescapeDataString(Path.GetFullPath(uri.AbsolutePath));
         }
 
         public static string MakeRelativePath(string fromPath, string toPath)
