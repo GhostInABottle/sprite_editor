@@ -25,6 +25,14 @@ namespace SpriteEditor
         /// </summary>
         public int Repeats { get; set; }
         /// <summary>
+        /// X origin
+        /// </summary>
+        public float XOrigin { get; set; }
+        /// <summary>
+        /// Y origin
+        /// </summary>
+        public float YOrigin { get; set; }
+        /// <summary>
         /// Tags associated with pose
         /// </summary>
         public Dictionary<string, string> Tags { get; set; }
@@ -40,6 +48,7 @@ namespace SpriteEditor
 		    BoundingBox = new Rect(-1, -1, -1, -1);
 		    DefaultDuration = 100;
             Repeats = -1;
+            XOrigin = YOrigin = 0.0f;
             Tags = new Dictionary<string, string>();
 		    Frames = new List<Frame>();
 	    }
@@ -68,6 +77,10 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Duration", DefaultDuration));
             if (Repeats != -1)
                 children.Add(new XAttribute("Repeats", Repeats));
+            if (XOrigin != 0.0f)
+                children.Add(new XAttribute("X-Origin", XOrigin));
+            if (YOrigin != 0.0f)
+                children.Add(new XAttribute("Y-Origin", YOrigin));
 
             foreach (var pair in Tags)
             {

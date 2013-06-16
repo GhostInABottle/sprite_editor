@@ -61,6 +61,8 @@ namespace SpriteEditor
                           {
                               DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                               Repeats = (int?)pose.Attribute("Repeats") ?? -1,
+                              XOrigin = (float?)pose.Attribute("X-Origin") ?? 0.0f,
+                              YOrigin = (float?)pose.Attribute("Y-Origin") ?? 0.0f,
                               BoundingBox =
                                   (from box in pose.Descendants("Bounding-Box")
                                    select new Rect(
