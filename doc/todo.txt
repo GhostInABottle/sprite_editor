@@ -1,0 +1,1 @@
+- Allow specifying pose origin (X-Origin, Y-Origin).

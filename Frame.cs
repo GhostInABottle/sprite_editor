@@ -72,7 +72,7 @@ namespace SpriteEditor
             if (!String.IsNullOrEmpty(Image))
                 children.Add(new XAttribute("Image", Image));
             if (!String.IsNullOrEmpty(TransparentColor))
-                children.Add(new XAttribute("Transparent-Color", Image));
+                children.Add(new XAttribute("Transparent-Color", TransparentColor));
             return new XElement("Frame", children.ToArray());
         }
     }
