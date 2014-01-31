@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Drawing;
 
 namespace SpriteEditor
 {
@@ -45,7 +46,7 @@ namespace SpriteEditor
             doc.Save(filename);
         }
 
-        public static SpriteData Load(string filename)
+        private static SpriteData LoadSprite(string filename)
         {
             var xml = XDocument.Load(filename);
             var spriteData =
@@ -102,6 +103,47 @@ namespace SpriteEditor
                           }).ToList<Pose>()
                  }).FirstOrDefault();
             return spriteData;
+        }
+
+        private static SpriteData LoadImage(string filename)
+        {
+            Bitmap bmp = new Bitmap(filename);
+            var spriteData = new SpriteData()
+            {
+                Image = filename,
+                TransparentColor = bmp.GetPixel(0, 0).ToHex(),
+                Poses = new List<Pose>()
+                {
+                    new Pose()
+                    {
+                        BoundingBox = new Rect(0, 0, bmp.Width, bmp.Height),
+                        Tags = new Dictionary<string, string>()
+                        {
+                            {"Name", "Main"}
+                        },
+                        Frames = new List<Frame>()
+                        {
+                            new Frame()
+                            {
+                                Rectangle = new Rect(0, 0, bmp.Width, bmp.Height)
+                            }
+                        }
+                    }
+                }
+
+            };
+            return spriteData;
+        }
+
+        public static SpriteData Load(string filename)
+        {
+            var extension = System.IO.Path.GetExtension(filename);
+            if (extension == ".spr")
+                return LoadSprite(filename);
+            else if (extension == ".png")
+                return LoadImage(filename);
+            else
+                throw new ArgumentException("Trying to load a wrong file format");
         }
 
         public XElement ToXml()

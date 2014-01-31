@@ -68,6 +68,11 @@
             this.txtPoseName = new System.Windows.Forms.TextBox();
             this.lblPoseName = new System.Windows.Forms.Label();
             this.tabFrame = new System.Windows.Forms.TabPage();
+            this.btnFrameTransColor = new System.Windows.Forms.Button();
+            this.lblFrameColor = new System.Windows.Forms.Label();
+            this.btnBrowseFrameImage = new System.Windows.Forms.Button();
+            this.lblFrameImage = new System.Windows.Forms.Label();
+            this.txtFrameImage = new System.Windows.Forms.TextBox();
             this.btnNextFrame = new System.Windows.Forms.Button();
             this.btnPrevFrame = new System.Windows.Forms.Button();
             this.chkTween = new System.Windows.Forms.CheckBox();
@@ -104,11 +109,6 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
-            this.btnFrameTransColor = new System.Windows.Forms.Button();
-            this.lblFrameColor = new System.Windows.Forms.Label();
-            this.btnBrowseFrameImage = new System.Windows.Forms.Button();
-            this.lblFrameImage = new System.Windows.Forms.Label();
-            this.txtFrameImage = new System.Windows.Forms.TextBox();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -517,6 +517,51 @@
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
+            // btnFrameTransColor
+            // 
+            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 263);
+            this.btnFrameTransColor.Name = "btnFrameTransColor";
+            this.btnFrameTransColor.Size = new System.Drawing.Size(19, 18);
+            this.btnFrameTransColor.TabIndex = 21;
+            this.btnFrameTransColor.UseVisualStyleBackColor = false;
+            this.btnFrameTransColor.Click += new System.EventHandler(this.btnFrameTransColor_Click);
+            // 
+            // lblFrameColor
+            // 
+            this.lblFrameColor.AutoSize = true;
+            this.lblFrameColor.Location = new System.Drawing.Point(6, 268);
+            this.lblFrameColor.Name = "lblFrameColor";
+            this.lblFrameColor.Size = new System.Drawing.Size(91, 13);
+            this.lblFrameColor.TabIndex = 20;
+            this.lblFrameColor.Text = "Transparent Color";
+            // 
+            // btnBrowseFrameImage
+            // 
+            this.btnBrowseFrameImage.Location = new System.Drawing.Point(155, 236);
+            this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
+            this.btnBrowseFrameImage.Size = new System.Drawing.Size(31, 20);
+            this.btnBrowseFrameImage.TabIndex = 19;
+            this.btnBrowseFrameImage.Text = "...";
+            this.btnBrowseFrameImage.UseVisualStyleBackColor = true;
+            this.btnBrowseFrameImage.Click += new System.EventHandler(this.btnBrowseFrameImage_Click);
+            // 
+            // lblFrameImage
+            // 
+            this.lblFrameImage.AutoSize = true;
+            this.lblFrameImage.Location = new System.Drawing.Point(6, 221);
+            this.lblFrameImage.Name = "lblFrameImage";
+            this.lblFrameImage.Size = new System.Drawing.Size(36, 13);
+            this.lblFrameImage.TabIndex = 18;
+            this.lblFrameImage.Text = "Image";
+            // 
+            // txtFrameImage
+            // 
+            this.txtFrameImage.Enabled = false;
+            this.txtFrameImage.Location = new System.Drawing.Point(9, 237);
+            this.txtFrameImage.Name = "txtFrameImage";
+            this.txtFrameImage.Size = new System.Drawing.Size(140, 20);
+            this.txtFrameImage.TabIndex = 17;
+            // 
             // btnNextFrame
             // 
             this.btnNextFrame.Location = new System.Drawing.Point(98, 306);
@@ -789,7 +834,7 @@
             // 
             // ofdSprite
             // 
-            this.ofdSprite.Filter = "Sprite XML Files|*.spr";
+            this.ofdSprite.Filter = "Sprite XML Files|*.spr|Image Files|*.png";
             this.ofdSprite.Title = "Select sprite file";
             // 
             // sfdSprite
@@ -806,51 +851,6 @@
             this.pnlSprite.Size = new System.Drawing.Size(574, 520);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
-            // 
-            // btnFrameTransColor
-            // 
-            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 263);
-            this.btnFrameTransColor.Name = "btnFrameTransColor";
-            this.btnFrameTransColor.Size = new System.Drawing.Size(19, 18);
-            this.btnFrameTransColor.TabIndex = 21;
-            this.btnFrameTransColor.UseVisualStyleBackColor = false;
-            this.btnFrameTransColor.Click += new System.EventHandler(this.btnFrameTransColor_Click);
-            // 
-            // lblFrameColor
-            // 
-            this.lblFrameColor.AutoSize = true;
-            this.lblFrameColor.Location = new System.Drawing.Point(6, 268);
-            this.lblFrameColor.Name = "lblFrameColor";
-            this.lblFrameColor.Size = new System.Drawing.Size(91, 13);
-            this.lblFrameColor.TabIndex = 20;
-            this.lblFrameColor.Text = "Transparent Color";
-            // 
-            // btnBrowseFrameImage
-            // 
-            this.btnBrowseFrameImage.Location = new System.Drawing.Point(155, 236);
-            this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
-            this.btnBrowseFrameImage.Size = new System.Drawing.Size(31, 20);
-            this.btnBrowseFrameImage.TabIndex = 19;
-            this.btnBrowseFrameImage.Text = "...";
-            this.btnBrowseFrameImage.UseVisualStyleBackColor = true;
-            this.btnBrowseFrameImage.Click += new System.EventHandler(this.btnBrowseFrameImage_Click);
-            // 
-            // lblFrameImage
-            // 
-            this.lblFrameImage.AutoSize = true;
-            this.lblFrameImage.Location = new System.Drawing.Point(6, 221);
-            this.lblFrameImage.Name = "lblFrameImage";
-            this.lblFrameImage.Size = new System.Drawing.Size(36, 13);
-            this.lblFrameImage.TabIndex = 18;
-            this.lblFrameImage.Text = "Image";
-            // 
-            // txtFrameImage
-            // 
-            this.txtFrameImage.Enabled = false;
-            this.txtFrameImage.Location = new System.Drawing.Point(9, 237);
-            this.txtFrameImage.Name = "txtFrameImage";
-            this.txtFrameImage.Size = new System.Drawing.Size(140, 20);
-            this.txtFrameImage.TabIndex = 17;
             // 
             // frmSprite
             // 
