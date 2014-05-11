@@ -109,6 +109,7 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
+            this.miAddMultiple = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -378,15 +379,16 @@
             this.miAddFrame,
             this.miCopyFrame,
             this.miPasteFrame,
-            this.miRemoveFrame});
+            this.miRemoveFrame,
+            this.miAddMultiple});
             this.mnuFrame.Name = "mnuPose";
-            this.mnuFrame.Size = new System.Drawing.Size(118, 92);
+            this.mnuFrame.Size = new System.Drawing.Size(153, 136);
             this.mnuFrame.Opening += new System.ComponentModel.CancelEventHandler(this.mnuFrame_Opening);
             // 
             // miAddFrame
             // 
             this.miAddFrame.Name = "miAddFrame";
-            this.miAddFrame.Size = new System.Drawing.Size(117, 22);
+            this.miAddFrame.Size = new System.Drawing.Size(152, 22);
             this.miAddFrame.Text = "Add";
             this.miAddFrame.Click += new System.EventHandler(this.miAddFrame_Click);
             // 
@@ -394,7 +396,7 @@
             // 
             this.miCopyFrame.Enabled = false;
             this.miCopyFrame.Name = "miCopyFrame";
-            this.miCopyFrame.Size = new System.Drawing.Size(117, 22);
+            this.miCopyFrame.Size = new System.Drawing.Size(152, 22);
             this.miCopyFrame.Text = "Copy";
             this.miCopyFrame.Click += new System.EventHandler(this.miCopyFrame_Click);
             // 
@@ -402,14 +404,14 @@
             // 
             this.miPasteFrame.Enabled = false;
             this.miPasteFrame.Name = "miPasteFrame";
-            this.miPasteFrame.Size = new System.Drawing.Size(117, 22);
+            this.miPasteFrame.Size = new System.Drawing.Size(152, 22);
             this.miPasteFrame.Text = "Paste";
             this.miPasteFrame.Click += new System.EventHandler(this.miPasteFrame_Click);
             // 
             // miRemoveFrame
             // 
             this.miRemoveFrame.Name = "miRemoveFrame";
-            this.miRemoveFrame.Size = new System.Drawing.Size(117, 22);
+            this.miRemoveFrame.Size = new System.Drawing.Size(152, 22);
             this.miRemoveFrame.Text = "Remove";
             this.miRemoveFrame.Click += new System.EventHandler(this.miRemoveFrame_Click);
             // 
@@ -852,6 +854,13 @@
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
+            // miAddMultiple
+            // 
+            this.miAddMultiple.Name = "miAddMultiple";
+            this.miAddMultiple.Size = new System.Drawing.Size(152, 22);
+            this.miAddMultiple.Text = "Add Multiple";
+            this.miAddMultiple.Click += new System.EventHandler(this.miAddMultiple_Click);
+            // 
             // frmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -968,6 +977,7 @@
         private System.Windows.Forms.Button btnBrowseFrameImage;
         private System.Windows.Forms.Label lblFrameImage;
         private System.Windows.Forms.TextBox txtFrameImage;
+        private System.Windows.Forms.ToolStripMenuItem miAddMultiple;
     }
 }
 

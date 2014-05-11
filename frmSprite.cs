@@ -21,10 +21,40 @@ namespace SpriteEditor
         private Pose copiedPose;
         private Frame copiedFrame;
         private frmGridSize gridSizeForm = new frmGridSize();
+        private frmAddFrames addFramesForm;
 
         public frmSprite()
         {
+            addFramesForm = new frmAddFrames(this);
             InitializeComponent();
+        }
+
+        public void AddFrames(int startX, int startY,
+            int frameWidth, int frameHeight,
+            int frameCount, bool isVertical)
+        {
+            int maxX = startX + (isVertical ? frameWidth : frameWidth * frameCount);
+            int maxY = startY + (isVertical ? frameHeight * frameCount : frameHeight);
+            int incX = isVertical ? 0 : frameWidth;
+            int incY = isVertical ? frameHeight : 0;
+            var bmp = openBitmap(spriteLogic.SpriteData.Image);
+            if (bmp == null)
+                stlMessage.Text = "Error: Couldn't load bitmap";
+            var newFrames = new List<Frame>();
+            for (int x = startX, y = startY; x < maxX && y < maxY; x += incX, y += incY)
+            {
+                if (x < 0 || y < 0 || x + frameWidth > bmp.Width || y + frameHeight > bmp.Height)
+                {
+                    stlMessage.Text = "Error: Invalid frame positions " + x + ", " + y;
+                    return;
+                }
+                Rect rect = new Rect(x, y, frameWidth, frameHeight);
+                newFrames.Add(new Frame() { Rectangle = rect });
+            }
+            selectedPose.Frames.AddRange(newFrames);
+            populatePose(selectedPose);
+            changeSelectedFrame(selectedPose.Frames.Count - 1);
+            spriteLogic.Reset(System.Environment.TickCount);
         }
 
         private void frmSprite_Load(object sender, EventArgs e)
@@ -732,7 +762,7 @@ namespace SpriteEditor
 
         private void miGridSettings_Click(object sender, EventArgs e)
         {
-            gridSizeForm.Show();
+            gridSizeForm.ShowDialog();
         }
 
         private void frmSprite_FormClosed(object sender, FormClosedEventArgs e)
@@ -873,6 +903,13 @@ namespace SpriteEditor
         private void cbState_TextChanged(object sender, EventArgs e)
         {
             changeState((string)cbState.Text);
+        }
+
+        private void miAddMultiple_Click(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            addFramesForm.ShowDialog();
         }
 
     }
