@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using SpriteEditor.Properties;
+using System.Drawing.Imaging;
 
 namespace SpriteEditor
 {
@@ -104,9 +105,18 @@ namespace SpriteEditor
                 transform.RotateAt(currentFrame.Angle, new Point(midX + magnifiedWidth / 2, midY + magnifiedWidth / 2));
             }
             e.Graphics.MultiplyTransform(transform);
+            // Set alpha
+            ImageAttributes attributes = new ImageAttributes();
+            if (!Utilities.CheckClose(currentFrame.Opacity, 1.0f, 0.01f))
+            {
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.Matrix33 = currentFrame.Opacity;
+                attributes.SetColorMatrix(matrix);
+            }
             // Draw the sprite
             e.Graphics.FillRectangle(new HatchBrush(HatchStyle.LargeCheckerBoard, Color.LightGray, Color.White), dest);
-            e.Graphics.DrawImage(bmp, dest, source, GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(bmp, dest, source.X, source.Y,
+                source.Width, source.Height, GraphicsUnit.Pixel, attributes);
             // Draw the grid
             if (Settings.Default.ShowGrid)
             {
@@ -286,6 +296,7 @@ namespace SpriteEditor
             txtXMagnification.Text = frame.XMagnification.ToString();
             txtYMagnification.Text = frame.YMagnification.ToString();
             txtAngle.Text = frame.Angle.ToString();
+            txtOpacity.Text = frame.Opacity.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
             txtFrameImage.Text = frame.Image;
@@ -302,6 +313,7 @@ namespace SpriteEditor
             txtXMagnification.Text = "";
             txtYMagnification.Text = "";
             txtAngle.Text = "";
+            txtOpacity.Text = "";
             txtRectangle.Text = "";
             chkTween.Checked = false;
         }
@@ -332,6 +344,7 @@ namespace SpriteEditor
             txtXMagnification.Enabled = !chkTween.Checked;
             txtYMagnification.Enabled = !chkTween.Checked;
             txtAngle.Enabled = !chkTween.Checked;
+            txtOpacity.Enabled = !chkTween.Checked;
             if (selectedFrame != null)
             {
                 selectedFrame.IsTweenFrame = chkTween.Checked;
@@ -497,6 +510,17 @@ namespace SpriteEditor
             if (Int32.TryParse(txtAngle.Text, out angle))
             {
                 selectedFrame.Angle = angle;
+            }
+        }
+
+        private void txtOpacity_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedFrame == null)
+                return;
+            float opacity;
+            if (Single.TryParse(txtOpacity.Text, out opacity))
+            {
+                selectedFrame.Opacity = opacity;
             }
         }
 

@@ -58,6 +58,7 @@
             this.miCopyFrame = new System.Windows.Forms.ToolStripMenuItem();
             this.miPasteFrame = new System.Windows.Forms.ToolStripMenuItem();
             this.miRemoveFrame = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAddMultiple = new System.Windows.Forms.ToolStripMenuItem();
             this.lblFrames = new System.Windows.Forms.Label();
             this.txtBoundingBox = new System.Windows.Forms.TextBox();
             this.lblBoundingBox = new System.Windows.Forms.Label();
@@ -68,6 +69,8 @@
             this.txtPoseName = new System.Windows.Forms.TextBox();
             this.lblPoseName = new System.Windows.Forms.Label();
             this.tabFrame = new System.Windows.Forms.TabPage();
+            this.txtOpacity = new System.Windows.Forms.TextBox();
+            this.lblOpacity = new System.Windows.Forms.Label();
             this.btnFrameTransColor = new System.Windows.Forms.Button();
             this.lblFrameColor = new System.Windows.Forms.Label();
             this.btnBrowseFrameImage = new System.Windows.Forms.Button();
@@ -109,7 +112,6 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
-            this.miAddMultiple = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -382,13 +384,13 @@
             this.miRemoveFrame,
             this.miAddMultiple});
             this.mnuFrame.Name = "mnuPose";
-            this.mnuFrame.Size = new System.Drawing.Size(153, 136);
+            this.mnuFrame.Size = new System.Drawing.Size(144, 114);
             this.mnuFrame.Opening += new System.ComponentModel.CancelEventHandler(this.mnuFrame_Opening);
             // 
             // miAddFrame
             // 
             this.miAddFrame.Name = "miAddFrame";
-            this.miAddFrame.Size = new System.Drawing.Size(152, 22);
+            this.miAddFrame.Size = new System.Drawing.Size(143, 22);
             this.miAddFrame.Text = "Add";
             this.miAddFrame.Click += new System.EventHandler(this.miAddFrame_Click);
             // 
@@ -396,7 +398,7 @@
             // 
             this.miCopyFrame.Enabled = false;
             this.miCopyFrame.Name = "miCopyFrame";
-            this.miCopyFrame.Size = new System.Drawing.Size(152, 22);
+            this.miCopyFrame.Size = new System.Drawing.Size(143, 22);
             this.miCopyFrame.Text = "Copy";
             this.miCopyFrame.Click += new System.EventHandler(this.miCopyFrame_Click);
             // 
@@ -404,16 +406,23 @@
             // 
             this.miPasteFrame.Enabled = false;
             this.miPasteFrame.Name = "miPasteFrame";
-            this.miPasteFrame.Size = new System.Drawing.Size(152, 22);
+            this.miPasteFrame.Size = new System.Drawing.Size(143, 22);
             this.miPasteFrame.Text = "Paste";
             this.miPasteFrame.Click += new System.EventHandler(this.miPasteFrame_Click);
             // 
             // miRemoveFrame
             // 
             this.miRemoveFrame.Name = "miRemoveFrame";
-            this.miRemoveFrame.Size = new System.Drawing.Size(152, 22);
+            this.miRemoveFrame.Size = new System.Drawing.Size(143, 22);
             this.miRemoveFrame.Text = "Remove";
             this.miRemoveFrame.Click += new System.EventHandler(this.miRemoveFrame_Click);
+            // 
+            // miAddMultiple
+            // 
+            this.miAddMultiple.Name = "miAddMultiple";
+            this.miAddMultiple.Size = new System.Drawing.Size(143, 22);
+            this.miAddMultiple.Text = "Add Multiple";
+            this.miAddMultiple.Click += new System.EventHandler(this.miAddMultiple_Click);
             // 
             // lblFrames
             // 
@@ -495,6 +504,8 @@
             // tabFrame
             // 
             this.tabFrame.BackColor = System.Drawing.Color.Transparent;
+            this.tabFrame.Controls.Add(this.txtOpacity);
+            this.tabFrame.Controls.Add(this.lblOpacity);
             this.tabFrame.Controls.Add(this.btnFrameTransColor);
             this.tabFrame.Controls.Add(this.lblFrameColor);
             this.tabFrame.Controls.Add(this.btnBrowseFrameImage);
@@ -519,9 +530,26 @@
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
+            // txtOpacity
+            // 
+            this.txtOpacity.Location = new System.Drawing.Point(9, 198);
+            this.txtOpacity.Name = "txtOpacity";
+            this.txtOpacity.Size = new System.Drawing.Size(177, 20);
+            this.txtOpacity.TabIndex = 23;
+            this.txtOpacity.TextChanged += new System.EventHandler(this.txtOpacity_TextChanged);
+            // 
+            // lblOpacity
+            // 
+            this.lblOpacity.AutoSize = true;
+            this.lblOpacity.Location = new System.Drawing.Point(6, 182);
+            this.lblOpacity.Name = "lblOpacity";
+            this.lblOpacity.Size = new System.Drawing.Size(43, 13);
+            this.lblOpacity.TabIndex = 22;
+            this.lblOpacity.Text = "Opacity";
+            // 
             // btnFrameTransColor
             // 
-            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 263);
+            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 302);
             this.btnFrameTransColor.Name = "btnFrameTransColor";
             this.btnFrameTransColor.Size = new System.Drawing.Size(19, 18);
             this.btnFrameTransColor.TabIndex = 21;
@@ -531,7 +559,7 @@
             // lblFrameColor
             // 
             this.lblFrameColor.AutoSize = true;
-            this.lblFrameColor.Location = new System.Drawing.Point(6, 268);
+            this.lblFrameColor.Location = new System.Drawing.Point(6, 307);
             this.lblFrameColor.Name = "lblFrameColor";
             this.lblFrameColor.Size = new System.Drawing.Size(91, 13);
             this.lblFrameColor.TabIndex = 20;
@@ -539,7 +567,7 @@
             // 
             // btnBrowseFrameImage
             // 
-            this.btnBrowseFrameImage.Location = new System.Drawing.Point(155, 236);
+            this.btnBrowseFrameImage.Location = new System.Drawing.Point(155, 275);
             this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
             this.btnBrowseFrameImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseFrameImage.TabIndex = 19;
@@ -550,7 +578,7 @@
             // lblFrameImage
             // 
             this.lblFrameImage.AutoSize = true;
-            this.lblFrameImage.Location = new System.Drawing.Point(6, 221);
+            this.lblFrameImage.Location = new System.Drawing.Point(6, 260);
             this.lblFrameImage.Name = "lblFrameImage";
             this.lblFrameImage.Size = new System.Drawing.Size(36, 13);
             this.lblFrameImage.TabIndex = 18;
@@ -559,14 +587,14 @@
             // txtFrameImage
             // 
             this.txtFrameImage.Enabled = false;
-            this.txtFrameImage.Location = new System.Drawing.Point(9, 237);
+            this.txtFrameImage.Location = new System.Drawing.Point(9, 276);
             this.txtFrameImage.Name = "txtFrameImage";
             this.txtFrameImage.Size = new System.Drawing.Size(140, 20);
             this.txtFrameImage.TabIndex = 17;
             // 
             // btnNextFrame
             // 
-            this.btnNextFrame.Location = new System.Drawing.Point(98, 306);
+            this.btnNextFrame.Location = new System.Drawing.Point(98, 345);
             this.btnNextFrame.Name = "btnNextFrame";
             this.btnNextFrame.Size = new System.Drawing.Size(88, 23);
             this.btnNextFrame.TabIndex = 16;
@@ -576,7 +604,7 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(9, 306);
+            this.btnPrevFrame.Location = new System.Drawing.Point(9, 345);
             this.btnPrevFrame.Name = "btnPrevFrame";
             this.btnPrevFrame.Size = new System.Drawing.Size(88, 23);
             this.btnPrevFrame.TabIndex = 15;
@@ -597,7 +625,7 @@
             // 
             // txtRectangle
             // 
-            this.txtRectangle.Location = new System.Drawing.Point(9, 198);
+            this.txtRectangle.Location = new System.Drawing.Point(9, 237);
             this.txtRectangle.Name = "txtRectangle";
             this.txtRectangle.Size = new System.Drawing.Size(177, 20);
             this.txtRectangle.TabIndex = 12;
@@ -606,7 +634,7 @@
             // lblRectangle
             // 
             this.lblRectangle.AutoSize = true;
-            this.lblRectangle.Location = new System.Drawing.Point(6, 182);
+            this.lblRectangle.Location = new System.Drawing.Point(6, 221);
             this.lblRectangle.Name = "lblRectangle";
             this.lblRectangle.Size = new System.Drawing.Size(93, 13);
             this.lblRectangle.TabIndex = 11;
@@ -854,13 +882,6 @@
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
-            // miAddMultiple
-            // 
-            this.miAddMultiple.Name = "miAddMultiple";
-            this.miAddMultiple.Size = new System.Drawing.Size(152, 22);
-            this.miAddMultiple.Text = "Add Multiple";
-            this.miAddMultiple.Click += new System.EventHandler(this.miAddMultiple_Click);
-            // 
             // frmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -978,6 +999,8 @@
         private System.Windows.Forms.Label lblFrameImage;
         private System.Windows.Forms.TextBox txtFrameImage;
         private System.Windows.Forms.ToolStripMenuItem miAddMultiple;
+        private System.Windows.Forms.TextBox txtOpacity;
+        private System.Windows.Forms.Label lblOpacity;
     }
 }
 

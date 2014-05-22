@@ -34,6 +34,10 @@ namespace SpriteEditor
         /// </summary>
         public int Angle { get; set; }
         /// <summary>
+        /// Alpha value (0 to 1) 
+        /// </summary>
+        public float Opacity { get; set; }
+        /// <summary>
         /// Is it a tween frame? 
         /// </summary>
         public bool IsTweenFrame { get; set; }
@@ -51,6 +55,7 @@ namespace SpriteEditor
             Duration = -1;
             XMagnification = YMagnification = 1.0f;
             Angle = 0;
+            Opacity = 1.0f;
             IsTweenFrame = false;
             Rectangle = new Rect(0, 0, 0, 0);
         }
@@ -67,6 +72,8 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Y-Mag", YMagnification));
             if (Angle != 0)
                 children.Add(new XAttribute("Angle", Angle));
+            if (!Utilities.CheckClose(Opacity, 1.0f, 0.01f))
+                children.Add(new XAttribute("Opacity", Opacity));
             if (IsTweenFrame)
                 children.Add(new XAttribute("Tween", IsTweenFrame));
             if (!String.IsNullOrEmpty(Image))

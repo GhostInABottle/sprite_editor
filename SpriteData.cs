@@ -88,6 +88,7 @@ namespace SpriteEditor
                                        XMagnification = (float?)frame.Attribute("X-Mag") ?? 1.0f,
                                        YMagnification = (float?)frame.Attribute("Y-Mag") ?? 1.0f,
                                        Angle = (int?)frame.Attribute("Angle") ?? 0,
+                                       Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
                                        IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
                                        Rectangle =
                                            (from rect in frame.Descendants("Rectangle")

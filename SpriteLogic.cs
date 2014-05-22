@@ -136,6 +136,7 @@ namespace SpriteEditor
                     CurrentFrame.XMagnification = lerp(prevFrame.XMagnification, nextFrame.XMagnification, alpha);
                     CurrentFrame.YMagnification = lerp(prevFrame.YMagnification, nextFrame.YMagnification, alpha);
                     CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
+                    CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
 			    }
 			    
 		    }
