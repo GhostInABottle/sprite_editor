@@ -131,7 +131,7 @@ namespace SpriteEditor
                 {
 				    Frame prevFrame = CurrentPose.Frames[frameIndex - 1];
 				    Frame nextFrame = CurrentPose.Frames[frameIndex + 1];
-                    float alpha = (float)(currentTime - oldTime) / CurrentFrame.Duration;
+                    float alpha = (float)(currentTime - oldTime) / frameTime;
 				    alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
                     CurrentFrame.XMagnification = lerp(prevFrame.XMagnification, nextFrame.XMagnification, alpha);
                     CurrentFrame.YMagnification = lerp(prevFrame.YMagnification, nextFrame.YMagnification, alpha);
