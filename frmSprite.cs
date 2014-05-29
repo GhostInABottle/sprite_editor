@@ -30,28 +30,57 @@ namespace SpriteEditor
             InitializeComponent();
         }
 
+        private List<Frame> addFrameImplementation(
+            Bitmap bmp, int startX, int startY,
+            int frameWidth, int frameHeight,
+            int frameCount, int maxRow, int maxColumn)
+        {
+            var newFrames = new List<Frame>();
+            int counter = 0;
+            for (int row = 0; row < maxRow; row++) {
+                for (int column = 0; column < maxColumn; column++) {
+                    int x = startX + column * frameWidth;
+                    int y = startY + row * frameHeight;
+                        if (x < 0 || y < 0 || x + frameWidth > bmp.Width || y + frameHeight > bmp.Height)
+                    {
+                        throw new ArgumentException("Error: Invalid frame positions " + row + ", " + column);
+                    }
+                    Rect rect = new Rect(x, y, frameWidth, frameHeight);
+                    newFrames.Add(new Frame() { Rectangle = rect });
+                    if (++counter > frameCount)
+                        return newFrames;
+                }
+            }
+            return newFrames;
+        }
+
         public void AddFrames(int startX, int startY,
             int frameWidth, int frameHeight,
-            int frameCount, bool isVertical)
+            int frameCount, bool isVertical,
+            bool isRectangular, int perRow)
         {
-            int maxX = startX + (isVertical ? frameWidth : frameWidth * frameCount);
-            int maxY = startY + (isVertical ? frameHeight * frameCount : frameHeight);
-            int incX = isVertical ? 0 : frameWidth;
-            int incY = isVertical ? frameHeight : 0;
             var bmp = openBitmap(spriteLogic.SpriteData.Image);
             if (bmp == null)
-                stlMessage.Text = "Error: Couldn't load bitmap";
-            var newFrames = new List<Frame>();
-            for (int x = startX, y = startY; x < maxX && y < maxY; x += incX, y += incY)
             {
-                if (x < 0 || y < 0 || x + frameWidth > bmp.Width || y + frameHeight > bmp.Height)
-                {
-                    stlMessage.Text = "Error: Invalid frame positions " + x + ", " + y;
-                    return;
-                }
-                Rect rect = new Rect(x, y, frameWidth, frameHeight);
-                newFrames.Add(new Frame() { Rectangle = rect });
+                stlMessage.Text = "Error: Couldn't load bitmap";
+                return;
             }
+            if (!isRectangular)
+                perRow = frameCount;
+            int maxFrames = frameCount / perRow;
+            if (frameCount % perRow != 0)
+                maxFrames++;
+            int maxRow = isVertical ? perRow : maxFrames;
+            int maxColumn = isVertical ? maxFrames : perRow;
+
+            var newFrames = new List<Frame>();
+            try {
+                newFrames = addFrameImplementation(bmp, startX, startY,
+                    frameWidth, frameHeight, frameCount, maxRow, maxColumn);
+            } catch (ArgumentException ex) {
+                stlMessage.Text = ex.Message;
+            }
+
             selectedPose.Frames.AddRange(newFrames);
             populatePose(selectedPose);
             changeSelectedFrame(selectedPose.Frames.Count - 1);

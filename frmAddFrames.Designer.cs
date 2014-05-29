@@ -39,7 +39,10 @@
             this.txtFrameWidth = new System.Windows.Forms.TextBox();
             this.txtFrameHeight = new System.Windows.Forms.TextBox();
             this.txtFrameCount = new System.Windows.Forms.TextBox();
+            this.txtPerRow = new System.Windows.Forms.TextBox();
+            this.lblPerRow = new System.Windows.Forms.Label();
             this.chkVertical = new System.Windows.Forms.CheckBox();
+            this.chkRectangular = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblStartingX
@@ -81,7 +84,7 @@
             // lblFrameCount
             // 
             this.lblFrameCount.AutoSize = true;
-            this.lblFrameCount.Location = new System.Drawing.Point(10, 83);
+            this.lblFrameCount.Location = new System.Drawing.Point(137, 80);
             this.lblFrameCount.Name = "lblFrameCount";
             this.lblFrameCount.Size = new System.Drawing.Size(67, 13);
             this.lblFrameCount.TabIndex = 4;
@@ -90,7 +93,7 @@
             // btnAdd
             // 
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(83, 112);
+            this.btnAdd.Location = new System.Drawing.Point(83, 146);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(107, 32);
             this.btnAdd.TabIndex = 6;
@@ -128,26 +131,57 @@
             // 
             // txtFrameCount
             // 
-            this.txtFrameCount.Location = new System.Drawing.Point(83, 80);
+            this.txtFrameCount.Location = new System.Drawing.Point(213, 77);
             this.txtFrameCount.Name = "txtFrameCount";
             this.txtFrameCount.Size = new System.Drawing.Size(45, 20);
             this.txtFrameCount.TabIndex = 11;
             // 
+            // txtPerRow
+            // 
+            this.txtPerRow.Enabled = false;
+            this.txtPerRow.Location = new System.Drawing.Point(213, 106);
+            this.txtPerRow.Name = "txtPerRow";
+            this.txtPerRow.Size = new System.Drawing.Size(45, 20);
+            this.txtPerRow.TabIndex = 14;
+            // 
+            // lblPerRow
+            // 
+            this.lblPerRow.AutoSize = true;
+            this.lblPerRow.Location = new System.Drawing.Point(137, 109);
+            this.lblPerRow.Name = "lblPerRow";
+            this.lblPerRow.Size = new System.Drawing.Size(76, 13);
+            this.lblPerRow.TabIndex = 13;
+            this.lblPerRow.Text = "Per Row/Clmn";
+            // 
             // chkVertical
             // 
             this.chkVertical.AutoSize = true;
-            this.chkVertical.Location = new System.Drawing.Point(140, 83);
+            this.chkVertical.Location = new System.Drawing.Point(13, 79);
             this.chkVertical.Name = "chkVertical";
-            this.chkVertical.Size = new System.Drawing.Size(98, 17);
+            this.chkVertical.Size = new System.Drawing.Size(106, 17);
             this.chkVertical.TabIndex = 12;
-            this.chkVertical.Text = "Vertical Frames";
+            this.chkVertical.Text = "Vertical Direction";
             this.chkVertical.UseVisualStyleBackColor = true;
+            // 
+            // chkRectangular
+            // 
+            this.chkRectangular.AutoSize = true;
+            this.chkRectangular.Location = new System.Drawing.Point(13, 108);
+            this.chkRectangular.Name = "chkRectangular";
+            this.chkRectangular.Size = new System.Drawing.Size(84, 17);
+            this.chkRectangular.TabIndex = 15;
+            this.chkRectangular.Text = "Rectangular";
+            this.chkRectangular.UseVisualStyleBackColor = true;
+            this.chkRectangular.CheckedChanged += new System.EventHandler(this.chkRectangular_CheckedChanged);
             // 
             // frmAddFrames
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 156);
+            this.ClientSize = new System.Drawing.Size(273, 190);
+            this.Controls.Add(this.chkRectangular);
+            this.Controls.Add(this.txtPerRow);
+            this.Controls.Add(this.lblPerRow);
             this.Controls.Add(this.chkVertical);
             this.Controls.Add(this.txtFrameCount);
             this.Controls.Add(this.txtFrameHeight);
@@ -181,6 +215,9 @@
         private System.Windows.Forms.TextBox txtFrameWidth;
         private System.Windows.Forms.TextBox txtFrameHeight;
         private System.Windows.Forms.TextBox txtFrameCount;
+        private System.Windows.Forms.TextBox txtPerRow;
+        private System.Windows.Forms.Label lblPerRow;
         private System.Windows.Forms.CheckBox chkVertical;
+        private System.Windows.Forms.CheckBox chkRectangular;
     }
 }
