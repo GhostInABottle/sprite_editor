@@ -59,7 +59,9 @@ namespace SpriteEditor
             int frameCount, bool isVertical,
             bool isRectangular, int perRow)
         {
-            var bmp = openBitmap(spriteLogic.SpriteData.Image);
+            var img = String.IsNullOrEmpty(selectedPose.Image) ?
+                spriteLogic.SpriteData.Image : selectedPose.Image;
+            var bmp = openBitmap(img);
             if (bmp == null)
             {
                 stlMessage.Text = "Error: Couldn't load bitmap";
@@ -105,11 +107,12 @@ namespace SpriteEditor
         private void pnlSprite_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(pnlSprite.BackColor);
-            if (spriteLogic.CurrentPose == null || spriteLogic.CurrentFrame == null)
-                return;
+            var currentPose = spriteLogic.CurrentPose;
             var currentFrame = spriteLogic.CurrentFrame;
-            var image = currentFrame.Image ?? spriteLogic.SpriteData.Image;
-            var bmp = openBitmap(image);
+            if (currentPose == null || currentFrame == null)
+                return;
+            var image = spriteLogic.Image;
+            var bmp = image != null ? openBitmap(image) : null;
             if (bmp == null)
                 return;
             // Default values (for full sprite view)
@@ -121,17 +124,18 @@ namespace SpriteEditor
             // Transformed values (for animated and non-animated views)
             if (miPreview.Checked || miAnimated.Checked)
             {
-                
                 if (miPreview.Checked && selectedFrame != null)
                     currentFrame = selectedFrame;
                 source = (Rectangle)currentFrame.Rectangle;
-                var magnifiedWidth = (int)(source.Width * currentFrame.XMagnification);
-                var magnifiedHeight = (int)(source.Height * currentFrame.YMagnification);
+                var magnifiedWidth = (int)(source.Width * currentFrame.Magnification.X);
+                var magnifiedHeight = (int)(source.Height * currentFrame.Magnification.Y);
                 midX = pnlSprite.Width / 2 - magnifiedWidth / 2;
                 midY = pnlSprite.Height / 2 - magnifiedHeight / 2;
                 dest = new Rectangle(midX, midY, magnifiedWidth, magnifiedHeight);
+                var origin = new Point((int)(midX + magnifiedWidth * currentPose.Origin.X),
+                    (int)(midY + magnifiedWidth * currentPose.Origin.Y));
                 transform = e.Graphics.Transform;
-                transform.RotateAt(currentFrame.Angle, new Point(midX + magnifiedWidth / 2, midY + magnifiedWidth / 2));
+                transform.RotateAt(currentFrame.Angle, origin);
             }
             e.Graphics.MultiplyTransform(transform);
             // Set alpha
@@ -192,8 +196,10 @@ namespace SpriteEditor
 
         private Bitmap openBitmap(string filename)
         {
-            filename = resolvePath(filename);
             Bitmap bmp = null;
+            if (string.IsNullOrEmpty(filename))
+                return bmp;
+            filename = resolvePath(filename);
             try
             {
                 bmp = new Bitmap(filename);
@@ -289,6 +295,7 @@ namespace SpriteEditor
             txtDuration.Text = pose.DefaultDuration.ToString(); ;
             txtRepeats.Text = pose.Repeats.ToString();
             txtBoundingBox.Text = pose.BoundingBox.ToString();
+            txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
             {
                 int index = cbDirection.Items.IndexOf(pose.Tags["Direction"]);
@@ -300,6 +307,12 @@ namespace SpriteEditor
                 cbState.Text = pose.Tags["State"];
             else
                 cbState.Text = "";
+            txtPoseImage.Text = pose.Image;
+            var transColor = cdTransparentColor.Color;
+            if (!string.IsNullOrEmpty(pose.TransparentColor))
+                transColor = Utilities.FromHex(pose.TransparentColor);
+            cdTransparentColor.Color = transColor;
+            btnPoseTransColor.BackColor = transColor;
             var frameIndices = pose.Frames.Select((x, i) => (i + 1).ToString());
             lstFrames.Items.Clear();
             lstFrames.Items.AddRange(frameIndices.ToArray());
@@ -311,6 +324,7 @@ namespace SpriteEditor
             txtDuration.Text = "";
             txtRepeats.Text = "";
             txtBoundingBox.Text = "";
+            txtOrigin.Text = "";
             lstFrames.Items.Clear();
         }
 
@@ -322,8 +336,7 @@ namespace SpriteEditor
                 return;
             }
             txtFrameDuration.Text = frame.Duration.ToString();
-            txtXMagnification.Text = frame.XMagnification.ToString();
-            txtYMagnification.Text = frame.YMagnification.ToString();
+            txtMagnification.Text = frame.Magnification.ToString();
             txtAngle.Text = frame.Angle.ToString();
             txtOpacity.Text = frame.Opacity.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
@@ -339,8 +352,7 @@ namespace SpriteEditor
         private void clearFrame()
         {
             txtFrameDuration.Text = "";
-            txtXMagnification.Text = "";
-            txtYMagnification.Text = "";
+            txtMagnification.Text = "";
             txtAngle.Text = "";
             txtOpacity.Text = "";
             txtRectangle.Text = "";
@@ -370,8 +382,7 @@ namespace SpriteEditor
         {
 
             stlMessage.Text = "";
-            txtXMagnification.Enabled = !chkTween.Checked;
-            txtYMagnification.Enabled = !chkTween.Checked;
+            txtMagnification.Enabled = !chkTween.Checked;
             txtAngle.Enabled = !chkTween.Checked;
             txtOpacity.Enabled = !chkTween.Checked;
             if (selectedFrame != null)
@@ -425,10 +436,10 @@ namespace SpriteEditor
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename, false);
+            setImage(fullFilename, "sprite");
         }
 
-        private void setImage(string path, bool forFrame)
+        private void setImage(string path, string type)
         {
             var filename = System.IO.Path.GetFileName(path);
             var bmp = openBitmap(path);
@@ -438,10 +449,15 @@ namespace SpriteEditor
                 var image = path;
                 if (baseDir != "." && Path.IsPathRooted(path))
                     image = Utilities.MakeRelativePath(baseDir, path);
-                if (forFrame)
+                if (type == "frame")
                 {
                     txtFrameImage.Text = filename;
                     selectedFrame.Image = image;
+                }
+                else if (type == "pose")
+                {
+                    txtPoseImage.Text = filename;
+                    selectedPose.Image = image;
                 }
                 else
                 {
@@ -509,25 +525,14 @@ namespace SpriteEditor
             }
         }
 
-        private void txtXMagnification_TextChanged(object sender, EventArgs e)
+        private void txtMagnification_TextChanged(object sender, EventArgs e)
         {
             if (selectedFrame == null)
                 return;
-            float mag;
-            if (Single.TryParse(txtXMagnification.Text, out mag))
+            var mag = Vec2.FromString(txtMagnification.Text);
+            if (mag != null)
             {
-                selectedFrame.XMagnification = mag;
-            }
-        }
-
-        private void txtYMagnification_TextChanged(object sender, EventArgs e)
-        {
-            if (selectedFrame == null)
-                return;
-            float mag;
-            if (Single.TryParse(txtYMagnification.Text, out mag))
-            {
-                selectedFrame.YMagnification = mag;
+                selectedFrame.Magnification = mag;
             }
         }
 
@@ -616,7 +621,7 @@ namespace SpriteEditor
                 return;
             var frames = selectedPose.Frames;
             Rect rect = new Rect(0, 0, 0, 0);
-            var bmp = openBitmap(spriteLogic.SpriteData.Image);
+            var bmp = openBitmap(spriteLogic.Image);
             if (bmp != null)
             {
                 rect = new Rect(0, 0, bmp.Width, bmp.Height);
@@ -649,7 +654,7 @@ namespace SpriteEditor
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename, true);
+            setImage(fullFilename, "frame");
         }
 
         private void btnFrameTransColor_Click(object sender, EventArgs e)
@@ -681,6 +686,17 @@ namespace SpriteEditor
             if (rect != null)
             {
                 selectedPose.BoundingBox = rect;
+            }
+        }
+
+        private void txtOrigin_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            var origin = Vec2.FromString(txtOrigin.Text);
+            if (origin != null)
+            {
+                selectedPose.Origin = origin;
             }
         }
 
@@ -898,7 +914,7 @@ namespace SpriteEditor
             spriteLogic.SpriteData.BaseDirectory = selectedPath;
             txtBase.Text = selectedPath;
             if (!String.IsNullOrEmpty(spriteLogic.SpriteData.Image))
-                setImage(spriteLogic.SpriteData.Image, false);
+                setImage(spriteLogic.SpriteData.Image, "sprite");
         }
 
         private void cbState_DropDown(object sender, EventArgs e)
@@ -965,5 +981,25 @@ namespace SpriteEditor
             addFramesForm.ShowDialog();
         }
 
+        private void btnBrowsePoseImage_Click(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            var result = ofdImage.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK)
+                return;
+            var fullFilename = ofdImage.FileName;
+            setImage(fullFilename, "pose");
+        }
+
+        private void btnPoseTransColor_Click(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+                return;
+            cdTransparentColor.ShowDialog();
+            string hex = cdTransparentColor.Color.ToHex();
+            selectedPose.TransparentColor = hex;
+            btnPoseTransColor.BackColor = cdTransparentColor.Color;
+        }
     }
 }

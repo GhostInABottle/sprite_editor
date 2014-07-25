@@ -22,13 +22,9 @@ namespace SpriteEditor
         /// </summary>
         public Rect Rectangle { get; set; }
         /// <summary>
-        /// Horizontal magnification. 
+        /// Magnification. 
         /// </summary>
-        public float XMagnification { get; set; }
-        /// <summary>
-        /// Vertical magnification. 
-        /// </summary>
-        public float YMagnification { get; set; }
+        public Vec2 Magnification { get; set; }
         /// <summary>
         /// Rotation angle. 
         /// </summary>
@@ -53,7 +49,7 @@ namespace SpriteEditor
         public Frame()
         {
             Duration = -1;
-            XMagnification = YMagnification = 1.0f;
+            Magnification = new Vec2();
             Angle = 0;
             Opacity = 1.0f;
             IsTweenFrame = false;
@@ -66,10 +62,10 @@ namespace SpriteEditor
             if (Duration != -1)
                 children.Add(new XAttribute("Duration", Duration));
             children.Add(Rectangle.ToXml("Rectangle"));
-            if (!Utilities.CheckClose(XMagnification, 1.0f, 0.01f))
-                children.Add(new XAttribute("X-Mag", XMagnification));
-            if (!Utilities.CheckClose(YMagnification, 1.0f, 0.01f))
-                children.Add(new XAttribute("Y-Mag", YMagnification));
+            if (!Utilities.CheckClose(Magnification.X, 1.0f))
+                children.Add(new XAttribute("X-Mag", Magnification.X));
+            if (!Utilities.CheckClose(Magnification.Y, 1.0f))
+                children.Add(new XAttribute("Y-Mag", Magnification.Y));
             if (Angle != 0)
                 children.Add(new XAttribute("Angle", Angle));
             if (!Utilities.CheckClose(Opacity, 1.0f, 0.01f))

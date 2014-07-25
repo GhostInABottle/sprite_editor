@@ -48,6 +48,13 @@
             this.lblImage = new System.Windows.Forms.Label();
             this.txtImage = new System.Windows.Forms.TextBox();
             this.tabPose = new System.Windows.Forms.TabPage();
+            this.btnPoseTransColor = new System.Windows.Forms.Button();
+            this.lblPoseColor = new System.Windows.Forms.Label();
+            this.btnBrowsePoseImage = new System.Windows.Forms.Button();
+            this.lblPoseImage = new System.Windows.Forms.Label();
+            this.txtPoseImage = new System.Windows.Forms.TextBox();
+            this.txtOrigin = new System.Windows.Forms.TextBox();
+            this.lblOrigin = new System.Windows.Forms.Label();
             this.cbState = new System.Windows.Forms.ComboBox();
             this.lblState = new System.Windows.Forms.Label();
             this.cbDirection = new System.Windows.Forms.ComboBox();
@@ -83,10 +90,8 @@
             this.lblRectangle = new System.Windows.Forms.Label();
             this.txtAngle = new System.Windows.Forms.TextBox();
             this.lblAngle = new System.Windows.Forms.Label();
-            this.txtYMagnification = new System.Windows.Forms.TextBox();
-            this.lblYMagnification = new System.Windows.Forms.Label();
-            this.txtXMagnification = new System.Windows.Forms.TextBox();
-            this.lblXMagnification = new System.Windows.Forms.Label();
+            this.txtMagnification = new System.Windows.Forms.TextBox();
+            this.lblMagnification = new System.Windows.Forms.Label();
             this.txtFrameDuration = new System.Windows.Forms.TextBox();
             this.lblFrameDuration = new System.Windows.Forms.Label();
             this.ofdImage = new System.Windows.Forms.OpenFileDialog();
@@ -133,11 +138,11 @@
             this.tbcSprite.Controls.Add(this.tabSprite);
             this.tbcSprite.Controls.Add(this.tabPose);
             this.tbcSprite.Controls.Add(this.tabFrame);
-            this.tbcSprite.Location = new System.Drawing.Point(580, 27);
+            this.tbcSprite.Location = new System.Drawing.Point(780, 27);
             this.tbcSprite.Multiline = true;
             this.tbcSprite.Name = "tbcSprite";
             this.tbcSprite.SelectedIndex = 0;
-            this.tbcSprite.Size = new System.Drawing.Size(202, 520);
+            this.tbcSprite.Size = new System.Drawing.Size(214, 670);
             this.tbcSprite.TabIndex = 1;
             // 
             // tabSprite
@@ -156,7 +161,7 @@
             this.tabSprite.Location = new System.Drawing.Point(4, 22);
             this.tabSprite.Name = "tabSprite";
             this.tabSprite.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSprite.Size = new System.Drawing.Size(194, 494);
+            this.tabSprite.Size = new System.Drawing.Size(206, 644);
             this.tabSprite.TabIndex = 0;
             this.tabSprite.Text = "Sprite";
             // 
@@ -171,7 +176,7 @@
             // 
             // btnBrowseFolder
             // 
-            this.btnBrowseFolder.Location = new System.Drawing.Point(155, 22);
+            this.btnBrowseFolder.Location = new System.Drawing.Point(172, 22);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
             this.btnBrowseFolder.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseFolder.TabIndex = 15;
@@ -184,7 +189,7 @@
             this.txtBase.Enabled = false;
             this.txtBase.Location = new System.Drawing.Point(9, 22);
             this.txtBase.Name = "txtBase";
-            this.txtBase.Size = new System.Drawing.Size(140, 20);
+            this.txtBase.Size = new System.Drawing.Size(157, 20);
             this.txtBase.TabIndex = 14;
             // 
             // btnTransColor
@@ -207,7 +212,7 @@
             // 
             // btnBrowseImage
             // 
-            this.btnBrowseImage.Location = new System.Drawing.Point(155, 60);
+            this.btnBrowseImage.Location = new System.Drawing.Point(172, 60);
             this.btnBrowseImage.Name = "btnBrowseImage";
             this.btnBrowseImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseImage.TabIndex = 11;
@@ -221,7 +226,7 @@
             this.lstPoses.FormattingEnabled = true;
             this.lstPoses.Location = new System.Drawing.Point(9, 133);
             this.lstPoses.Name = "lstPoses";
-            this.lstPoses.Size = new System.Drawing.Size(177, 355);
+            this.lstPoses.Size = new System.Drawing.Size(189, 498);
             this.lstPoses.TabIndex = 5;
             this.lstPoses.SelectedIndexChanged += new System.EventHandler(this.lstPoses_SelectedIndexChanged);
             // 
@@ -289,12 +294,19 @@
             this.txtImage.Enabled = false;
             this.txtImage.Location = new System.Drawing.Point(9, 61);
             this.txtImage.Name = "txtImage";
-            this.txtImage.Size = new System.Drawing.Size(140, 20);
+            this.txtImage.Size = new System.Drawing.Size(157, 20);
             this.txtImage.TabIndex = 0;
             // 
             // tabPose
             // 
             this.tabPose.BackColor = System.Drawing.Color.Transparent;
+            this.tabPose.Controls.Add(this.btnPoseTransColor);
+            this.tabPose.Controls.Add(this.lblPoseColor);
+            this.tabPose.Controls.Add(this.btnBrowsePoseImage);
+            this.tabPose.Controls.Add(this.lblPoseImage);
+            this.tabPose.Controls.Add(this.txtPoseImage);
+            this.tabPose.Controls.Add(this.txtOrigin);
+            this.tabPose.Controls.Add(this.lblOrigin);
             this.tabPose.Controls.Add(this.cbState);
             this.tabPose.Controls.Add(this.lblState);
             this.tabPose.Controls.Add(this.cbDirection);
@@ -312,16 +324,78 @@
             this.tabPose.Location = new System.Drawing.Point(4, 22);
             this.tabPose.Name = "tabPose";
             this.tabPose.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPose.Size = new System.Drawing.Size(194, 494);
+            this.tabPose.Size = new System.Drawing.Size(206, 644);
             this.tabPose.TabIndex = 1;
             this.tabPose.Text = "Pose";
+            // 
+            // btnPoseTransColor
+            // 
+            this.btnPoseTransColor.Location = new System.Drawing.Point(103, 318);
+            this.btnPoseTransColor.Name = "btnPoseTransColor";
+            this.btnPoseTransColor.Size = new System.Drawing.Size(19, 18);
+            this.btnPoseTransColor.TabIndex = 26;
+            this.btnPoseTransColor.UseVisualStyleBackColor = false;
+            this.btnPoseTransColor.Click += new System.EventHandler(this.btnPoseTransColor_Click);
+            // 
+            // lblPoseColor
+            // 
+            this.lblPoseColor.AutoSize = true;
+            this.lblPoseColor.Location = new System.Drawing.Point(6, 323);
+            this.lblPoseColor.Name = "lblPoseColor";
+            this.lblPoseColor.Size = new System.Drawing.Size(91, 13);
+            this.lblPoseColor.TabIndex = 25;
+            this.lblPoseColor.Text = "Transparent Color";
+            // 
+            // btnBrowsePoseImage
+            // 
+            this.btnBrowsePoseImage.Location = new System.Drawing.Point(172, 296);
+            this.btnBrowsePoseImage.Name = "btnBrowsePoseImage";
+            this.btnBrowsePoseImage.Size = new System.Drawing.Size(31, 20);
+            this.btnBrowsePoseImage.TabIndex = 24;
+            this.btnBrowsePoseImage.Text = "...";
+            this.btnBrowsePoseImage.UseVisualStyleBackColor = true;
+            this.btnBrowsePoseImage.Click += new System.EventHandler(this.btnBrowsePoseImage_Click);
+            // 
+            // lblPoseImage
+            // 
+            this.lblPoseImage.AutoSize = true;
+            this.lblPoseImage.Location = new System.Drawing.Point(7, 279);
+            this.lblPoseImage.Name = "lblPoseImage";
+            this.lblPoseImage.Size = new System.Drawing.Size(36, 13);
+            this.lblPoseImage.TabIndex = 23;
+            this.lblPoseImage.Text = "Image";
+            // 
+            // txtPoseImage
+            // 
+            this.txtPoseImage.Enabled = false;
+            this.txtPoseImage.Location = new System.Drawing.Point(10, 297);
+            this.txtPoseImage.Name = "txtPoseImage";
+            this.txtPoseImage.Size = new System.Drawing.Size(156, 20);
+            this.txtPoseImage.TabIndex = 22;
+            // 
+            // txtOrigin
+            // 
+            this.txtOrigin.Location = new System.Drawing.Point(9, 175);
+            this.txtOrigin.Name = "txtOrigin";
+            this.txtOrigin.Size = new System.Drawing.Size(189, 20);
+            this.txtOrigin.TabIndex = 18;
+            this.txtOrigin.TextChanged += new System.EventHandler(this.txtOrigin_TextChanged);
+            // 
+            // lblOrigin
+            // 
+            this.lblOrigin.AutoSize = true;
+            this.lblOrigin.Location = new System.Drawing.Point(6, 159);
+            this.lblOrigin.Name = "lblOrigin";
+            this.lblOrigin.Size = new System.Drawing.Size(34, 13);
+            this.lblOrigin.TabIndex = 17;
+            this.lblOrigin.Text = "Origin";
             // 
             // cbState
             // 
             this.cbState.FormattingEnabled = true;
-            this.cbState.Location = new System.Drawing.Point(9, 217);
+            this.cbState.Location = new System.Drawing.Point(9, 255);
             this.cbState.Name = "cbState";
-            this.cbState.Size = new System.Drawing.Size(177, 21);
+            this.cbState.Size = new System.Drawing.Size(191, 21);
             this.cbState.TabIndex = 16;
             this.cbState.DropDown += new System.EventHandler(this.cbState_DropDown);
             this.cbState.SelectedIndexChanged += new System.EventHandler(this.cbState_SelectedIndexChanged);
@@ -330,7 +404,7 @@
             // lblState
             // 
             this.lblState.AutoSize = true;
-            this.lblState.Location = new System.Drawing.Point(6, 200);
+            this.lblState.Location = new System.Drawing.Point(6, 238);
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(32, 13);
             this.lblState.TabIndex = 15;
@@ -346,16 +420,16 @@
             "Right",
             "Down",
             "Left"});
-            this.cbDirection.Location = new System.Drawing.Point(9, 176);
+            this.cbDirection.Location = new System.Drawing.Point(9, 214);
             this.cbDirection.Name = "cbDirection";
-            this.cbDirection.Size = new System.Drawing.Size(177, 21);
+            this.cbDirection.Size = new System.Drawing.Size(189, 21);
             this.cbDirection.TabIndex = 14;
             this.cbDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
             // 
             // lblDirection
             // 
             this.lblDirection.AutoSize = true;
-            this.lblDirection.Location = new System.Drawing.Point(6, 159);
+            this.lblDirection.Location = new System.Drawing.Point(6, 197);
             this.lblDirection.Name = "lblDirection";
             this.lblDirection.Size = new System.Drawing.Size(49, 13);
             this.lblDirection.TabIndex = 13;
@@ -366,9 +440,9 @@
             this.lstFrames.AllowDrop = true;
             this.lstFrames.ContextMenuStrip = this.mnuFrame;
             this.lstFrames.FormattingEnabled = true;
-            this.lstFrames.Location = new System.Drawing.Point(9, 258);
+            this.lstFrames.Location = new System.Drawing.Point(9, 359);
             this.lstFrames.Name = "lstFrames";
-            this.lstFrames.Size = new System.Drawing.Size(177, 225);
+            this.lstFrames.Size = new System.Drawing.Size(189, 277);
             this.lstFrames.TabIndex = 12;
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
@@ -427,7 +501,7 @@
             // lblFrames
             // 
             this.lblFrames.AutoSize = true;
-            this.lblFrames.Location = new System.Drawing.Point(6, 242);
+            this.lblFrames.Location = new System.Drawing.Point(7, 341);
             this.lblFrames.Name = "lblFrames";
             this.lblFrames.Size = new System.Drawing.Size(41, 13);
             this.lblFrames.TabIndex = 11;
@@ -437,7 +511,7 @@
             // 
             this.txtBoundingBox.Location = new System.Drawing.Point(9, 136);
             this.txtBoundingBox.Name = "txtBoundingBox";
-            this.txtBoundingBox.Size = new System.Drawing.Size(177, 20);
+            this.txtBoundingBox.Size = new System.Drawing.Size(189, 20);
             this.txtBoundingBox.TabIndex = 9;
             this.txtBoundingBox.TextChanged += new System.EventHandler(this.txtBoundingBox_TextChanged);
             // 
@@ -454,7 +528,7 @@
             // 
             this.txtRepeats.Location = new System.Drawing.Point(9, 97);
             this.txtRepeats.Name = "txtRepeats";
-            this.txtRepeats.Size = new System.Drawing.Size(177, 20);
+            this.txtRepeats.Size = new System.Drawing.Size(189, 20);
             this.txtRepeats.TabIndex = 7;
             this.txtRepeats.TextChanged += new System.EventHandler(this.txtRepeats_TextChanged);
             // 
@@ -471,7 +545,7 @@
             // 
             this.txtDuration.Location = new System.Drawing.Point(9, 58);
             this.txtDuration.Name = "txtDuration";
-            this.txtDuration.Size = new System.Drawing.Size(177, 20);
+            this.txtDuration.Size = new System.Drawing.Size(189, 20);
             this.txtDuration.TabIndex = 5;
             this.txtDuration.TextChanged += new System.EventHandler(this.txtDuration_TextChanged);
             // 
@@ -488,7 +562,7 @@
             // 
             this.txtPoseName.Location = new System.Drawing.Point(9, 19);
             this.txtPoseName.Name = "txtPoseName";
-            this.txtPoseName.Size = new System.Drawing.Size(177, 20);
+            this.txtPoseName.Size = new System.Drawing.Size(189, 20);
             this.txtPoseName.TabIndex = 3;
             this.txtPoseName.TextChanged += new System.EventHandler(this.txtPoseName_TextChanged);
             // 
@@ -518,30 +592,28 @@
             this.tabFrame.Controls.Add(this.lblRectangle);
             this.tabFrame.Controls.Add(this.txtAngle);
             this.tabFrame.Controls.Add(this.lblAngle);
-            this.tabFrame.Controls.Add(this.txtYMagnification);
-            this.tabFrame.Controls.Add(this.lblYMagnification);
-            this.tabFrame.Controls.Add(this.txtXMagnification);
-            this.tabFrame.Controls.Add(this.lblXMagnification);
+            this.tabFrame.Controls.Add(this.txtMagnification);
+            this.tabFrame.Controls.Add(this.lblMagnification);
             this.tabFrame.Controls.Add(this.txtFrameDuration);
             this.tabFrame.Controls.Add(this.lblFrameDuration);
             this.tabFrame.Location = new System.Drawing.Point(4, 22);
             this.tabFrame.Name = "tabFrame";
-            this.tabFrame.Size = new System.Drawing.Size(194, 494);
+            this.tabFrame.Size = new System.Drawing.Size(206, 644);
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
             // txtOpacity
             // 
-            this.txtOpacity.Location = new System.Drawing.Point(9, 198);
+            this.txtOpacity.Location = new System.Drawing.Point(9, 159);
             this.txtOpacity.Name = "txtOpacity";
-            this.txtOpacity.Size = new System.Drawing.Size(177, 20);
+            this.txtOpacity.Size = new System.Drawing.Size(189, 20);
             this.txtOpacity.TabIndex = 23;
             this.txtOpacity.TextChanged += new System.EventHandler(this.txtOpacity_TextChanged);
             // 
             // lblOpacity
             // 
             this.lblOpacity.AutoSize = true;
-            this.lblOpacity.Location = new System.Drawing.Point(6, 182);
+            this.lblOpacity.Location = new System.Drawing.Point(6, 143);
             this.lblOpacity.Name = "lblOpacity";
             this.lblOpacity.Size = new System.Drawing.Size(43, 13);
             this.lblOpacity.TabIndex = 22;
@@ -549,7 +621,7 @@
             // 
             // btnFrameTransColor
             // 
-            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 302);
+            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 263);
             this.btnFrameTransColor.Name = "btnFrameTransColor";
             this.btnFrameTransColor.Size = new System.Drawing.Size(19, 18);
             this.btnFrameTransColor.TabIndex = 21;
@@ -559,7 +631,7 @@
             // lblFrameColor
             // 
             this.lblFrameColor.AutoSize = true;
-            this.lblFrameColor.Location = new System.Drawing.Point(6, 307);
+            this.lblFrameColor.Location = new System.Drawing.Point(6, 268);
             this.lblFrameColor.Name = "lblFrameColor";
             this.lblFrameColor.Size = new System.Drawing.Size(91, 13);
             this.lblFrameColor.TabIndex = 20;
@@ -567,7 +639,7 @@
             // 
             // btnBrowseFrameImage
             // 
-            this.btnBrowseFrameImage.Location = new System.Drawing.Point(155, 275);
+            this.btnBrowseFrameImage.Location = new System.Drawing.Point(167, 237);
             this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
             this.btnBrowseFrameImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseFrameImage.TabIndex = 19;
@@ -578,7 +650,7 @@
             // lblFrameImage
             // 
             this.lblFrameImage.AutoSize = true;
-            this.lblFrameImage.Location = new System.Drawing.Point(6, 260);
+            this.lblFrameImage.Location = new System.Drawing.Point(6, 221);
             this.lblFrameImage.Name = "lblFrameImage";
             this.lblFrameImage.Size = new System.Drawing.Size(36, 13);
             this.lblFrameImage.TabIndex = 18;
@@ -587,14 +659,14 @@
             // txtFrameImage
             // 
             this.txtFrameImage.Enabled = false;
-            this.txtFrameImage.Location = new System.Drawing.Point(9, 276);
+            this.txtFrameImage.Location = new System.Drawing.Point(9, 237);
             this.txtFrameImage.Name = "txtFrameImage";
-            this.txtFrameImage.Size = new System.Drawing.Size(140, 20);
+            this.txtFrameImage.Size = new System.Drawing.Size(152, 20);
             this.txtFrameImage.TabIndex = 17;
             // 
             // btnNextFrame
             // 
-            this.btnNextFrame.Location = new System.Drawing.Point(98, 345);
+            this.btnNextFrame.Location = new System.Drawing.Point(115, 320);
             this.btnNextFrame.Name = "btnNextFrame";
             this.btnNextFrame.Size = new System.Drawing.Size(88, 23);
             this.btnNextFrame.TabIndex = 16;
@@ -604,7 +676,7 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(9, 345);
+            this.btnPrevFrame.Location = new System.Drawing.Point(9, 320);
             this.btnPrevFrame.Name = "btnPrevFrame";
             this.btnPrevFrame.Size = new System.Drawing.Size(88, 23);
             this.btnPrevFrame.TabIndex = 15;
@@ -625,16 +697,16 @@
             // 
             // txtRectangle
             // 
-            this.txtRectangle.Location = new System.Drawing.Point(9, 237);
+            this.txtRectangle.Location = new System.Drawing.Point(9, 198);
             this.txtRectangle.Name = "txtRectangle";
-            this.txtRectangle.Size = new System.Drawing.Size(177, 20);
+            this.txtRectangle.Size = new System.Drawing.Size(189, 20);
             this.txtRectangle.TabIndex = 12;
             this.txtRectangle.TextChanged += new System.EventHandler(this.txtRectangle_TextChanged);
             // 
             // lblRectangle
             // 
             this.lblRectangle.AutoSize = true;
-            this.lblRectangle.Location = new System.Drawing.Point(6, 221);
+            this.lblRectangle.Location = new System.Drawing.Point(6, 182);
             this.lblRectangle.Name = "lblRectangle";
             this.lblRectangle.Size = new System.Drawing.Size(93, 13);
             this.lblRectangle.TabIndex = 11;
@@ -642,60 +714,43 @@
             // 
             // txtAngle
             // 
-            this.txtAngle.Location = new System.Drawing.Point(9, 159);
+            this.txtAngle.Location = new System.Drawing.Point(9, 120);
             this.txtAngle.Name = "txtAngle";
-            this.txtAngle.Size = new System.Drawing.Size(177, 20);
+            this.txtAngle.Size = new System.Drawing.Size(189, 20);
             this.txtAngle.TabIndex = 10;
             this.txtAngle.TextChanged += new System.EventHandler(this.txtAngle_TextChanged);
             // 
             // lblAngle
             // 
             this.lblAngle.AutoSize = true;
-            this.lblAngle.Location = new System.Drawing.Point(6, 143);
+            this.lblAngle.Location = new System.Drawing.Point(6, 104);
             this.lblAngle.Name = "lblAngle";
             this.lblAngle.Size = new System.Drawing.Size(34, 13);
             this.lblAngle.TabIndex = 9;
             this.lblAngle.Text = "Angle";
             // 
-            // txtYMagnification
+            // txtMagnification
             // 
-            this.txtYMagnification.Location = new System.Drawing.Point(9, 120);
-            this.txtYMagnification.Name = "txtYMagnification";
-            this.txtYMagnification.Size = new System.Drawing.Size(177, 20);
-            this.txtYMagnification.TabIndex = 8;
-            this.txtYMagnification.TextChanged += new System.EventHandler(this.txtYMagnification_TextChanged);
+            this.txtMagnification.Location = new System.Drawing.Point(9, 81);
+            this.txtMagnification.Name = "txtMagnification";
+            this.txtMagnification.Size = new System.Drawing.Size(189, 20);
+            this.txtMagnification.TabIndex = 6;
+            this.txtMagnification.TextChanged += new System.EventHandler(this.txtMagnification_TextChanged);
             // 
-            // lblYMagnification
+            // lblMagnification
             // 
-            this.lblYMagnification.AutoSize = true;
-            this.lblYMagnification.Location = new System.Drawing.Point(6, 104);
-            this.lblYMagnification.Name = "lblYMagnification";
-            this.lblYMagnification.Size = new System.Drawing.Size(80, 13);
-            this.lblYMagnification.TabIndex = 7;
-            this.lblYMagnification.Text = "Y Magnification";
-            // 
-            // txtXMagnification
-            // 
-            this.txtXMagnification.Location = new System.Drawing.Point(9, 81);
-            this.txtXMagnification.Name = "txtXMagnification";
-            this.txtXMagnification.Size = new System.Drawing.Size(177, 20);
-            this.txtXMagnification.TabIndex = 6;
-            this.txtXMagnification.TextChanged += new System.EventHandler(this.txtXMagnification_TextChanged);
-            // 
-            // lblXMagnification
-            // 
-            this.lblXMagnification.AutoSize = true;
-            this.lblXMagnification.Location = new System.Drawing.Point(6, 65);
-            this.lblXMagnification.Name = "lblXMagnification";
-            this.lblXMagnification.Size = new System.Drawing.Size(80, 13);
-            this.lblXMagnification.TabIndex = 5;
-            this.lblXMagnification.Text = "X Magnification";
+            this.lblMagnification.AutoSize = true;
+            this.lblMagnification.Location = new System.Drawing.Point(6, 65);
+            this.lblMagnification.Name = "lblMagnification";
+            this.lblMagnification.Size = new System.Drawing.Size(70, 13);
+            this.lblMagnification.TabIndex = 5;
+            this.lblMagnification.Text = "Magnification";
             // 
             // txtFrameDuration
             // 
             this.txtFrameDuration.Location = new System.Drawing.Point(9, 42);
             this.txtFrameDuration.Name = "txtFrameDuration";
-            this.txtFrameDuration.Size = new System.Drawing.Size(177, 20);
+            this.txtFrameDuration.Size = new System.Drawing.Size(189, 20);
             this.txtFrameDuration.TabIndex = 4;
             this.txtFrameDuration.TextChanged += new System.EventHandler(this.txtFrameDuration_TextChanged);
             // 
@@ -720,7 +775,7 @@
             this.viewToolStripMenuItem});
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(794, 24);
+            this.mnuMain.Size = new System.Drawing.Size(994, 24);
             this.mnuMain.TabIndex = 7;
             this.mnuMain.Text = "menuStrip1";
             // 
@@ -850,9 +905,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stlMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 550);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 700);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(794, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(994, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "stsMain";
@@ -878,7 +933,7 @@
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlSprite.Location = new System.Drawing.Point(0, 27);
             this.pnlSprite.Name = "pnlSprite";
-            this.pnlSprite.Size = new System.Drawing.Size(574, 520);
+            this.pnlSprite.Size = new System.Drawing.Size(774, 666);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
@@ -886,7 +941,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(794, 572);
+            this.ClientSize = new System.Drawing.Size(994, 722);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mnuMain);
             this.Controls.Add(this.pnlSprite);
@@ -940,10 +995,8 @@
         private System.Windows.Forms.ListBox lstFrames;
         private System.Windows.Forms.TextBox txtFrameDuration;
         private System.Windows.Forms.Label lblFrameDuration;
-        private System.Windows.Forms.TextBox txtYMagnification;
-        private System.Windows.Forms.Label lblYMagnification;
-        private System.Windows.Forms.TextBox txtXMagnification;
-        private System.Windows.Forms.Label lblXMagnification;
+        private System.Windows.Forms.TextBox txtMagnification;
+        private System.Windows.Forms.Label lblMagnification;
         private System.Windows.Forms.TextBox txtAngle;
         private System.Windows.Forms.Label lblAngle;
         private System.Windows.Forms.CheckBox chkTween;
@@ -1001,6 +1054,13 @@
         private System.Windows.Forms.ToolStripMenuItem miAddMultiple;
         private System.Windows.Forms.TextBox txtOpacity;
         private System.Windows.Forms.Label lblOpacity;
+        private System.Windows.Forms.Button btnPoseTransColor;
+        private System.Windows.Forms.Label lblPoseColor;
+        private System.Windows.Forms.Button btnBrowsePoseImage;
+        private System.Windows.Forms.Label lblPoseImage;
+        private System.Windows.Forms.TextBox txtPoseImage;
+        private System.Windows.Forms.TextBox txtOrigin;
+        private System.Windows.Forms.Label lblOrigin;
     }
 }
 

@@ -62,8 +62,8 @@ namespace SpriteEditor
                           {
                               DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                               Repeats = (int?)pose.Attribute("Repeats") ?? -1,
-                              XOrigin = (float?)pose.Attribute("X-Origin") ?? 0.0f,
-                              YOrigin = (float?)pose.Attribute("Y-Origin") ?? 0.0f,
+                              Origin = new Vec2((float?)pose.Attribute("X-Origin") ?? 0.0f,
+                                    (float?)pose.Attribute("Y-Origin") ?? 0.0f),
                               BoundingBox =
                                   (from box in pose.Descendants("Bounding-Box")
                                    select new Rect(
@@ -72,6 +72,8 @@ namespace SpriteEditor
                                        (int)box.Attribute("Width"),
                                        (int)box.Attribute("Height"))
                                   ).DefaultIfEmpty(new Rect()).First(),
+                              Image = (string)pose.Attribute("Image"),
+                              TransparentColor = (string)pose.Attribute("Transparent-Color"),
                               Tags =
                                   (from tag in pose.Descendants("Tag")
                                    select new
@@ -85,8 +87,8 @@ namespace SpriteEditor
                                    select new Frame()
                                    {
                                        Duration = (int?)frame.Attribute("Duration") ?? -1,
-                                       XMagnification = (float?)frame.Attribute("X-Mag") ?? 1.0f,
-                                       YMagnification = (float?)frame.Attribute("Y-Mag") ?? 1.0f,
+                                       Magnification = new Vec2((float?)frame.Attribute("X-Mag") ?? 1.0f,
+                                            (float?)frame.Attribute("Y-Mag") ?? 1.0f),
                                        Angle = (int?)frame.Attribute("Angle") ?? 0,
                                        Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
                                        IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,

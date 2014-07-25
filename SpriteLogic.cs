@@ -22,6 +22,23 @@ namespace SpriteEditor
         /// Source rectangle of the current frame.
         /// </summary>
         public Rectangle srcRect { get; set; }
+        /// <summary>
+        /// Get currently active image.
+        /// </summary>
+        public string Image
+        {
+            get
+            {
+                if (CurrentFrame != null && !String.IsNullOrEmpty(CurrentFrame.Image))
+                    return CurrentFrame.Image;
+                else if (CurrentPose != null && !String.IsNullOrEmpty(CurrentPose.Image))
+                    return CurrentPose.Image;
+                else if (!String.IsNullOrEmpty(SpriteData.Image))
+                    return SpriteData.Image;
+                else
+                    return null;
+            }
+        }
 	    /// <summary>
         /// Current frame index.
         /// </summary>
@@ -133,8 +150,8 @@ namespace SpriteEditor
 				    Frame nextFrame = CurrentPose.Frames[frameIndex + 1];
                     float alpha = (float)(currentTime - oldTime) / frameTime;
 				    alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
-                    CurrentFrame.XMagnification = lerp(prevFrame.XMagnification, nextFrame.XMagnification, alpha);
-                    CurrentFrame.YMagnification = lerp(prevFrame.YMagnification, nextFrame.YMagnification, alpha);
+                    CurrentFrame.Magnification.X = lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
+                    CurrentFrame.Magnification.Y = lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
                     CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
                     CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
 			    }
