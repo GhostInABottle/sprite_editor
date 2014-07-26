@@ -8,6 +8,7 @@ using System.Drawing;
 
 namespace SpriteEditor
 {
+    [Serializable()]
     public class Vec2
     {
         public float X { get; set; }
