@@ -102,6 +102,7 @@ namespace SpriteEditor
                                        ).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
                                        Image = (string)frame.Attribute("Image"),
                                        TransparentColor = (string)frame.Attribute("Transparent-Color"),
+                                       Sound = (string)frame.Attribute("Sound"),
                                    }).ToList<Frame>()
                           }).ToList<Pose>()
                  }).FirstOrDefault();

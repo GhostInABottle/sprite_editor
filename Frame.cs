@@ -45,6 +45,9 @@ namespace SpriteEditor
         /// Transparent color as hex string
         /// </summary>
         public string TransparentColor { get; set; }
+        /// Sound effect to play
+        /// </summary>
+        public String Sound { get; set; }
 
         public Frame()
         {
@@ -76,6 +79,8 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Image", Image));
             if (!String.IsNullOrEmpty(TransparentColor))
                 children.Add(new XAttribute("Transparent-Color", TransparentColor));
+            if (!String.IsNullOrEmpty(Sound))
+                children.Add(new XAttribute("Sound", Sound));
             return new XElement("Frame", children.ToArray());
         }
     }

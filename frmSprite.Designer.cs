@@ -76,6 +76,9 @@
             this.txtPoseName = new System.Windows.Forms.TextBox();
             this.lblPoseName = new System.Windows.Forms.Label();
             this.tabFrame = new System.Windows.Forms.TabPage();
+            this.btnBrowseSound = new System.Windows.Forms.Button();
+            this.lblSound = new System.Windows.Forms.Label();
+            this.txtSound = new System.Windows.Forms.TextBox();
             this.txtOpacity = new System.Windows.Forms.TextBox();
             this.lblOpacity = new System.Windows.Forms.Label();
             this.btnFrameTransColor = new System.Windows.Forms.Button();
@@ -117,6 +120,7 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
+            this.ofdSound = new System.Windows.Forms.OpenFileDialog();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -578,6 +582,9 @@
             // tabFrame
             // 
             this.tabFrame.BackColor = System.Drawing.Color.Transparent;
+            this.tabFrame.Controls.Add(this.btnBrowseSound);
+            this.tabFrame.Controls.Add(this.lblSound);
+            this.tabFrame.Controls.Add(this.txtSound);
             this.tabFrame.Controls.Add(this.txtOpacity);
             this.tabFrame.Controls.Add(this.lblOpacity);
             this.tabFrame.Controls.Add(this.btnFrameTransColor);
@@ -602,6 +609,33 @@
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
+            // btnBrowseSound
+            // 
+            this.btnBrowseSound.Location = new System.Drawing.Point(167, 239);
+            this.btnBrowseSound.Name = "btnBrowseSound";
+            this.btnBrowseSound.Size = new System.Drawing.Size(31, 20);
+            this.btnBrowseSound.TabIndex = 26;
+            this.btnBrowseSound.Text = "...";
+            this.btnBrowseSound.UseVisualStyleBackColor = true;
+            this.btnBrowseSound.Click += new System.EventHandler(this.btnBrowseSound_Click);
+            // 
+            // lblSound
+            // 
+            this.lblSound.AutoSize = true;
+            this.lblSound.Location = new System.Drawing.Point(6, 221);
+            this.lblSound.Name = "lblSound";
+            this.lblSound.Size = new System.Drawing.Size(38, 13);
+            this.lblSound.TabIndex = 25;
+            this.lblSound.Text = "Sound";
+            // 
+            // txtSound
+            // 
+            this.txtSound.Enabled = false;
+            this.txtSound.Location = new System.Drawing.Point(9, 239);
+            this.txtSound.Name = "txtSound";
+            this.txtSound.Size = new System.Drawing.Size(152, 20);
+            this.txtSound.TabIndex = 24;
+            // 
             // txtOpacity
             // 
             this.txtOpacity.Location = new System.Drawing.Point(9, 159);
@@ -621,7 +655,7 @@
             // 
             // btnFrameTransColor
             // 
-            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 263);
+            this.btnFrameTransColor.Location = new System.Drawing.Point(103, 307);
             this.btnFrameTransColor.Name = "btnFrameTransColor";
             this.btnFrameTransColor.Size = new System.Drawing.Size(19, 18);
             this.btnFrameTransColor.TabIndex = 21;
@@ -631,7 +665,7 @@
             // lblFrameColor
             // 
             this.lblFrameColor.AutoSize = true;
-            this.lblFrameColor.Location = new System.Drawing.Point(6, 268);
+            this.lblFrameColor.Location = new System.Drawing.Point(6, 312);
             this.lblFrameColor.Name = "lblFrameColor";
             this.lblFrameColor.Size = new System.Drawing.Size(91, 13);
             this.lblFrameColor.TabIndex = 20;
@@ -639,7 +673,7 @@
             // 
             // btnBrowseFrameImage
             // 
-            this.btnBrowseFrameImage.Location = new System.Drawing.Point(167, 237);
+            this.btnBrowseFrameImage.Location = new System.Drawing.Point(167, 281);
             this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
             this.btnBrowseFrameImage.Size = new System.Drawing.Size(31, 20);
             this.btnBrowseFrameImage.TabIndex = 19;
@@ -650,7 +684,7 @@
             // lblFrameImage
             // 
             this.lblFrameImage.AutoSize = true;
-            this.lblFrameImage.Location = new System.Drawing.Point(6, 221);
+            this.lblFrameImage.Location = new System.Drawing.Point(6, 265);
             this.lblFrameImage.Name = "lblFrameImage";
             this.lblFrameImage.Size = new System.Drawing.Size(36, 13);
             this.lblFrameImage.TabIndex = 18;
@@ -659,14 +693,14 @@
             // txtFrameImage
             // 
             this.txtFrameImage.Enabled = false;
-            this.txtFrameImage.Location = new System.Drawing.Point(9, 237);
+            this.txtFrameImage.Location = new System.Drawing.Point(9, 281);
             this.txtFrameImage.Name = "txtFrameImage";
             this.txtFrameImage.Size = new System.Drawing.Size(152, 20);
             this.txtFrameImage.TabIndex = 17;
             // 
             // btnNextFrame
             // 
-            this.btnNextFrame.Location = new System.Drawing.Point(115, 320);
+            this.btnNextFrame.Location = new System.Drawing.Point(110, 367);
             this.btnNextFrame.Name = "btnNextFrame";
             this.btnNextFrame.Size = new System.Drawing.Size(88, 23);
             this.btnNextFrame.TabIndex = 16;
@@ -676,7 +710,7 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(9, 320);
+            this.btnPrevFrame.Location = new System.Drawing.Point(9, 367);
             this.btnPrevFrame.Name = "btnPrevFrame";
             this.btnPrevFrame.Size = new System.Drawing.Size(88, 23);
             this.btnPrevFrame.TabIndex = 15;
@@ -937,6 +971,11 @@
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
+            // ofdSound
+            // 
+            this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
+            this.ofdSound.Title = "Select sprite image";
+            // 
             // frmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1061,6 +1100,10 @@
         private System.Windows.Forms.TextBox txtPoseImage;
         private System.Windows.Forms.TextBox txtOrigin;
         private System.Windows.Forms.Label lblOrigin;
+        private System.Windows.Forms.Button btnBrowseSound;
+        private System.Windows.Forms.Label lblSound;
+        private System.Windows.Forms.TextBox txtSound;
+        private System.Windows.Forms.OpenFileDialog ofdSound;
     }
 }
 

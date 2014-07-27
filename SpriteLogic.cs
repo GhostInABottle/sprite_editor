@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Media;
+using System.IO;
 
 namespace SpriteEditor
 {
@@ -14,6 +16,10 @@ namespace SpriteEditor
         /// Data to act on.
         /// </summary>
 	    public SpriteData SpriteData { get; set; }
+        /// <summary>
+        /// Name of currently opened sprite file
+        /// </summary>
+        public string OpenedFileName { get; set; }
 	    /// <summary>
         /// Currently active pose.
         /// </summary>
@@ -21,7 +27,7 @@ namespace SpriteEditor
 	    /// <summary>
         /// Source rectangle of the current frame.
         /// </summary>
-        public Rectangle srcRect { get; set; }
+        public Rectangle SrcRect { get; set; }
         /// <summary>
         /// Get currently active image.
         /// </summary>
@@ -63,13 +69,23 @@ namespace SpriteEditor
         /// Is the animation in a tween frame?
         /// </summary>
 	    private bool tweening;
+        /// <summary>
+        /// For playing sound effects
+        /// </summary>
+        private SoundPlayer player = new System.Media.SoundPlayer();
+        /// <summary>
+        /// Last frame where sound was played
+        /// </summary>
+        private int lastSoundFrame;
 
 	    public SpriteLogic() {
-		    srcRect = new Rectangle(-1, -1, -1, -1);
+		    SrcRect = new Rectangle(-1, -1, -1, -1);
+            lastSoundFrame = -1;
 	    }
 
-	    public SpriteLogic(SpriteData spriteData) : this() {
+	    public SpriteLogic(SpriteData spriteData, string path) : this() {
 		    SpriteData = spriteData;
+            OpenedFileName = path;
 	    }
 
 	    /// <summary>
@@ -82,6 +98,7 @@ namespace SpriteEditor
 		    frameCount = CurrentPose.Frames.Count;
 		    IsFinished = false;
             tweening = false;
+            lastSoundFrame = -1;
 	    }
 
 	    /// <summary>
@@ -122,6 +139,13 @@ namespace SpriteEditor
 
 		    // If animation is still not finished...
 		    if (CurrentPose.Repeats == -1 || repeatNumber < CurrentPose.Repeats) {
+                if (!String.IsNullOrEmpty(CurrentFrame.Sound) && lastSoundFrame != frameIndex)
+                {
+                    player.SoundLocation = ResolvePath(CurrentFrame.Sound);
+                    player.Play();
+                    lastSoundFrame = frameIndex;
+                }
+
 			    int frameDuration = CurrentFrame.Duration;
 			    int frameTime = frameDuration == -1 ? 
                     CurrentPose.DefaultDuration : frameDuration;
@@ -134,6 +158,7 @@ namespace SpriteEditor
                     if (frameIndex >= frameCount - 1)
                     {
                         repeatNumber++;
+                        lastSoundFrame = -1;
                     }
                     frameIndex %= frameCount;
                 }
@@ -197,6 +222,38 @@ namespace SpriteEditor
 	    public void Stop() {
             IsFinished = true;
 	    }
+
+        /// <summary>
+        /// Resolve a relative base directory to a full path
+        /// </summary>
+        public string ResolveBaseDir()
+        {
+            string baseDir = SpriteData.BaseDirectory;
+            if (OpenedFileName != null && !Path.IsPathRooted(baseDir))
+                baseDir = Utilities.ResolveRelativePath(
+                    Path.GetDirectoryName(OpenedFileName), baseDir);
+            return baseDir;
+        }
+
+        /// <summary>
+        /// Resolve a relative path into a full one
+        /// </summary>
+        public string ResolvePath(string filename)
+        {
+            string baseDir = SpriteData.BaseDirectory;
+            if (baseDir != "." && !Path.IsPathRooted(filename))
+            {
+                try
+                {
+                    baseDir = ResolveBaseDir();
+                    filename = Utilities.ResolveRelativePath(baseDir, filename);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return filename;
+        }
 
     }
 }

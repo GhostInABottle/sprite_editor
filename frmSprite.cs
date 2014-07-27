@@ -18,7 +18,6 @@ namespace SpriteEditor
         private SpriteLogic spriteLogic;
         private Pose selectedPose;
         private Frame selectedFrame;
-        private string openedFileName;
         private Pose copiedPose;
         private Frame copiedFrame;
         private frmGridSize gridSizeForm = new frmGridSize();
@@ -199,7 +198,7 @@ namespace SpriteEditor
             Bitmap bmp = null;
             if (string.IsNullOrEmpty(filename))
                 return bmp;
-            filename = resolvePath(filename);
+            filename = spriteLogic.ResolvePath(filename);
             try
             {
                 bmp = new Bitmap(filename);
@@ -208,32 +207,6 @@ namespace SpriteEditor
             {
             }
             return bmp;
-        }
-
-        private string resolveBaseDir()
-        {
-            string baseDir = spriteLogic.SpriteData.BaseDirectory;
-            if (openedFileName != null && !Path.IsPathRooted(baseDir))
-                baseDir = Utilities.ResolveRelativePath(
-                    Path.GetDirectoryName(openedFileName), baseDir);
-            return baseDir;
-        }
-
-        private string resolvePath(string filename)
-        {
-            string baseDir = spriteLogic.SpriteData.BaseDirectory;
-            if (baseDir != "." && !Path.IsPathRooted(filename))
-            {
-                try
-                {
-                    baseDir = resolveBaseDir();
-                    filename = Utilities.ResolveRelativePath(baseDir, filename);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return filename;
         }
 
         private bool validateFrames(List<Frame> frames)
@@ -341,6 +314,7 @@ namespace SpriteEditor
             txtOpacity.Text = frame.Opacity.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
+            txtSound.Text = frame.Sound;
             txtFrameImage.Text = frame.Image;
             var transColor = cdTransparentColor.Color;
             if (!string.IsNullOrEmpty(frame.TransparentColor))
@@ -445,7 +419,7 @@ namespace SpriteEditor
             var bmp = openBitmap(path);
             if (bmp != null)
             {
-                var baseDir = resolveBaseDir();
+                var baseDir = spriteLogic.ResolveBaseDir();
                 var image = path;
                 if (baseDir != "." && Path.IsPathRooted(path))
                     image = Utilities.MakeRelativePath(baseDir, path);
@@ -727,11 +701,10 @@ namespace SpriteEditor
         {
             selectedPose = null;
             selectedFrame = null;
-            openedFileName = null;
             List<Pose> poses = new List<Pose>();
             var frames = new List<Frame>();
             SpriteData spriteData = new SpriteData() { Image = "", Poses = poses };
-            spriteLogic = new SpriteLogic(spriteData);
+            spriteLogic = new SpriteLogic(spriteData, null);
             populateSprite(spriteData);
             miAdd_Click(sender, e);
             miAddFrame_Click(sender, e);
@@ -752,13 +725,12 @@ namespace SpriteEditor
             stlMessage.Text = "";
             try
             {
-                openedFileName = path;
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path));
-                this.Text = "Sprite Editor - " + Path.GetFileName(openedFileName);
+                this.Text = "Sprite Editor - " + Path.GetFileName(path);
                 var spriteData = SpriteData.Load(path);
                 if (spriteData == null)
                     throw new IOException("Error loading sprite data.");
-                spriteLogic = new SpriteLogic(spriteData);
+                spriteLogic = new SpriteLogic(spriteData, path);
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
                 {
@@ -782,9 +754,9 @@ namespace SpriteEditor
 
         private void miSave_Click(object sender, EventArgs e)
         {
-            if (openedFileName == null)
+            if (spriteLogic.OpenedFileName == null)
                 miSaveAs_Click(sender, e);
-            saveSprite(openedFileName);
+            saveSprite(spriteLogic.OpenedFileName);
         }
 
         private bool saveSprite(string filename)
@@ -809,8 +781,8 @@ namespace SpriteEditor
                 return;
             if (saveSprite(sfdSprite.FileName))
             {
-                openedFileName = sfdSprite.FileName;
-                this.Text = "Sprite Editor - " + System.IO.Path.GetFileName(openedFileName);
+                spriteLogic.OpenedFileName = sfdSprite.FileName;
+                this.Text = "Sprite Editor - " + Path.GetFileName(spriteLogic.OpenedFileName);
             }
         }
 
@@ -903,14 +875,15 @@ namespace SpriteEditor
 
         private void btnBrowseFolder_Click(object sender, EventArgs e)
         {
-            if (openedFileName != null)
-                fbdBase.SelectedPath = Path.GetDirectoryName(openedFileName);
+            if (spriteLogic.OpenedFileName != null)
+                fbdBase.SelectedPath = Path.GetDirectoryName(spriteLogic.OpenedFileName);
             fbdBase.ShowDialog();
             var selectedPath = fbdBase.SelectedPath;
             if (String.IsNullOrEmpty(selectedPath))
                 return;
-            if (openedFileName != null)
-                selectedPath = Utilities.MakeRelativePath(openedFileName, selectedPath);
+            if (spriteLogic.OpenedFileName != null)
+                selectedPath = Utilities.MakeRelativePath(
+                    spriteLogic.OpenedFileName, selectedPath);
             spriteLogic.SpriteData.BaseDirectory = selectedPath;
             txtBase.Text = selectedPath;
             if (!String.IsNullOrEmpty(spriteLogic.SpriteData.Image))
@@ -1000,6 +973,22 @@ namespace SpriteEditor
             string hex = cdTransparentColor.Color.ToHex();
             selectedPose.TransparentColor = hex;
             btnPoseTransColor.BackColor = cdTransparentColor.Color;
+        }
+
+        private void btnBrowseSound_Click(object sender, EventArgs e)
+        {
+            if (selectedFrame == null)
+                return;
+            var result = ofdSound.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK)
+                return;
+            var path = ofdSound.FileName;
+            var filename = System.IO.Path.GetFileName(path);
+            var baseDir = spriteLogic.ResolveBaseDir();
+            if (baseDir != "." && Path.IsPathRooted(path))
+                path = Utilities.MakeRelativePath(baseDir, path);
+            txtSound.Text = filename;
+            selectedFrame.Sound = path;
         }
     }
 }
