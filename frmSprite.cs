@@ -35,7 +35,7 @@ namespace SpriteEditor
             int frameCount, int maxRow, int maxColumn)
         {
             var newFrames = new List<Frame>();
-            int counter = 0;
+            int counter = 1;
             for (int row = 0; row < maxRow; row++) {
                 for (int column = 0; column < maxColumn; column++) {
                     int x = startX + column * frameWidth;
