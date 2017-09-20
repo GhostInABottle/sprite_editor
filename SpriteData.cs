@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using System.Drawing;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace SpriteEditor
 {
@@ -11,39 +10,84 @@ namespace SpriteEditor
     /// A container of poses. SpriteData only contains data read from XML files and
     /// not any actual logic, which is represented by SpriteLogic.
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class SpriteData
     {
-        /// <summary>
-        /// Name of the sprite image. 
-        /// </summary>
-        public String Image { get; set; }
-        /// </summary>
-        /// Transparent color as hex string
-        /// </summary>
-        public string TransparentColor { get; set; }
-        /// </summary>
-        /// Transparent color as hex string
-        /// </summary>
-        public string BaseDirectory { get; set; }
-        /// <summary>
-        /// List of poses. 
-        /// </summary>
-        public List<Pose> Poses { get; set; }
-
         public SpriteData()
         {
             BaseDirectory = ".";
             Poses = new List<Pose>();
         }
 
+        /// <summary>
+        /// Name of the sprite image. 
+        /// </summary>
+        public string Image { get; set; }
+
+        /// </summary>
+        /// Transparent color as hex string
+        /// </summary>
+        public string TransparentColor { get; set; }
+
+        /// </summary>
+        /// Transparent color as hex string
+        /// </summary>
+        public string BaseDirectory { get; set; }
+
+        /// <summary>
+        /// List of poses. 
+        /// </summary>
+        public List<Pose> Poses { get; set; }
+
         public static void Save(SpriteData sprite, string filename)
         {
             var doc = new XDocument(
                 new XDeclaration("1.0", "us-ascii", null),
-                sprite.ToXml()
-            );
+                sprite.ToXml());
             doc.Save(filename);
+        }
+
+        public static SpriteData Load(string filename)
+        {
+            var extension = System.IO.Path.GetExtension(filename);
+            if (extension == ".spr")
+            {
+                return LoadSprite(filename);
+            }
+            else if (extension == ".png")
+            {
+                return LoadImage(filename);
+            }
+            else
+            {
+                throw new ArgumentException("Trying to load a wrong file format");
+            }
+        }
+
+        public XElement ToXml()
+        {
+            var children = new List<object>();
+            if (!string.IsNullOrEmpty(Image))
+            {
+                children.Add(new XAttribute("Image", Image));
+            }
+
+            if (!string.IsNullOrEmpty(TransparentColor))
+            {
+                children.Add(new XAttribute("Transparent-Color", TransparentColor));
+            }
+
+            if (BaseDirectory != ".")
+            {
+                children.Add(new XAttribute("Base-Dir", BaseDirectory));
+            }
+
+            foreach (var pose in Poses)
+            {
+                children.Add(pose.ToXml());
+            }
+
+            return new XElement("Sprite", children);
         }
 
         private static SpriteData LoadSprite(string filename)
@@ -62,16 +106,16 @@ namespace SpriteEditor
                           {
                               DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                               Repeats = (int?)pose.Attribute("Repeats") ?? -1,
-                              Origin = new Vec2((float?)pose.Attribute("X-Origin") ?? 0.0f,
-                                    (float?)pose.Attribute("Y-Origin") ?? 0.0f),
+                              Origin = new Vec2(
+                                                (float?)pose.Attribute("X-Origin") ?? 0.0f,
+                                                (float?)pose.Attribute("Y-Origin") ?? 0.0f),
                               BoundingBox =
                                   (from box in pose.Descendants("Bounding-Box")
                                    select new Rect(
                                        (int)box.Attribute("X"),
                                        (int)box.Attribute("Y"),
                                        (int)box.Attribute("Width"),
-                                       (int)box.Attribute("Height"))
-                                  ).DefaultIfEmpty(new Rect()).First(),
+                                       (int)box.Attribute("Height"))).DefaultIfEmpty(new Rect()).First(),
                               Image = (string)pose.Attribute("Image"),
                               TransparentColor = (string)pose.Attribute("Transparent-Color"),
                               Tags =
@@ -80,15 +124,15 @@ namespace SpriteEditor
                                    {
                                        Key = (string)tag.Attribute("Key"),
                                        Value = (string)tag.Attribute("Value")
-                                   }
-                                  ).ToDictionary(tag => tag.Key, tag => tag.Value),
+                                   }).ToDictionary(tag => tag.Key, tag => tag.Value),
                               Frames =
                                   (from frame in pose.Descendants("Frame")
                                    select new Frame()
                                    {
                                        Duration = (int?)frame.Attribute("Duration") ?? -1,
-                                       Magnification = new Vec2((float?)frame.Attribute("X-Mag") ?? 1.0f,
-                                            (float?)frame.Attribute("Y-Mag") ?? 1.0f),
+                                       Magnification = new Vec2(
+                                                                (float?)frame.Attribute("X-Mag") ?? 1.0f,
+                                                                (float?)frame.Attribute("Y-Mag") ?? 1.0f),
                                        Angle = (int?)frame.Attribute("Angle") ?? 0,
                                        Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
                                        IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
@@ -98,13 +142,12 @@ namespace SpriteEditor
                                                 (int)rect.Attribute("X"),
                                                 (int)rect.Attribute("Y"),
                                                 (int)rect.Attribute("Width"),
-                                                (int)rect.Attribute("Height"))
-                                       ).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
+                                                (int)rect.Attribute("Height"))).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
                                        Image = (string)frame.Attribute("Image"),
                                        TransparentColor = (string)frame.Attribute("Transparent-Color"),
                                        Sound = (string)frame.Attribute("Sound"),
-                                   }).ToList<Frame>()
-                          }).ToList<Pose>()
+                                   }).ToList()
+                          }).ToList()
                  }).FirstOrDefault();
             return spriteData;
         }
@@ -123,7 +166,7 @@ namespace SpriteEditor
                         BoundingBox = new Rect(0, 0, bmp.Width, bmp.Height),
                         Tags = new Dictionary<string, string>()
                         {
-                            {"Name", "Main"}
+                            { "Name", "Main" }
                         },
                         Frames = new List<Frame>()
                         {
@@ -134,38 +177,8 @@ namespace SpriteEditor
                         }
                     }
                 }
-
             };
             return spriteData;
-        }
-
-        public static SpriteData Load(string filename)
-        {
-            var extension = System.IO.Path.GetExtension(filename);
-            if (extension == ".spr")
-                return LoadSprite(filename);
-            else if (extension == ".png")
-                return LoadImage(filename);
-            else
-                throw new ArgumentException("Trying to load a wrong file format");
-        }
-
-        public XElement ToXml()
-        {
-            var children = new List<object>();
-            if (!String.IsNullOrEmpty(Image))
-                children.Add(new XAttribute("Image", Image));
-            if (!String.IsNullOrEmpty(TransparentColor))
-                children.Add(new XAttribute("Transparent-Color", TransparentColor));
-            if (BaseDirectory != ".")
-                children.Add(new XAttribute("Base-Dir", BaseDirectory));
-
-            foreach (var pose in Poses)
-            {
-                children.Add(pose.ToXml());
-            }
-
-            return new XElement("Sprite", children);
         }
     }
 }

@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using System.Text.RegularExpressions;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace SpriteEditor
 {
-    [Serializable()]
+    [Serializable]
     public class Vec2
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-
         public Vec2()
         {
             X = Y = 1.0f;
@@ -25,19 +18,13 @@ namespace SpriteEditor
             Y = y;
         }
 
-        public bool equals(int x, int y)
-        {
-            return Utilities.CheckClose(X, x) && Utilities.CheckClose(Y, y);
-        }
+        public float X { get; set; }
+
+        public float Y { get; set; }
 
         public static explicit operator Point(Vec2 r)
         {
             return new Point((int)r.X, (int)r.Y);
-        }
-
-        public override string ToString()
-        {
-            return String.Format("({0}, {1})", X, Y);
         }
 
         public static Vec2 FromString(string input)
@@ -47,11 +34,24 @@ namespace SpriteEditor
             var match = Regex.Match(input, pattern);
             if (match.Success)
             {
-                result = new Vec2();
-                result.X = Single.Parse(match.Groups[1].Value);
-                result.Y = Single.Parse(match.Groups[3].Value);
+                result = new Vec2
+                {
+                    X = float.Parse(match.Groups[1].Value),
+                    Y = float.Parse(match.Groups[3].Value)
+                };
             }
+
             return result;
+        }
+
+        public bool Equals(int x, int y)
+        {
+            return Utilities.CheckClose(X, x) && Utilities.CheckClose(Y, y);
+        }
+
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
         }
     }
 }

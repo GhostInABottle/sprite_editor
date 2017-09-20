@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
 namespace SpriteEditor
 {
@@ -14,7 +11,6 @@ namespace SpriteEditor
     /// Provides a method for performing a deep copy of an object.
     /// Binary Serialization is used to perform the copy.
     /// </summary>
-
     public static class ObjectCopier
     {
         /// <summary>
@@ -31,7 +27,7 @@ namespace SpriteEditor
             }
 
             // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
+            if (object.ReferenceEquals(source, null))
             {
                 return default(T);
             }

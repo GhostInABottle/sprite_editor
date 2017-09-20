@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SpriteEditor
 {
     public partial class frmAddFrames : Form
     {
-        private frmSprite mainForm;
+        private FrmSprite mainForm;
+
         public frmAddFrames()
         {
             InitializeComponent();
         }
-        public frmAddFrames(frmSprite mainForm)
+
+        public frmAddFrames(FrmSprite mainForm)
         {
             this.mainForm = mainForm;
             InitializeComponent();
@@ -24,16 +20,30 @@ namespace SpriteEditor
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            int startX, startY, frameWidth, frameHeight, frameCount, perRow;
-            if (!int.TryParse(txtStartX.Text, out startX)) return;
-            if (!int.TryParse(txtStartY.Text, out startY)) return;
-            if (!int.TryParse(txtFrameWidth.Text, out frameWidth)) return;
-            if (!int.TryParse(txtFrameHeight.Text, out frameHeight)) return;
-            if (!int.TryParse(txtFrameCount.Text, out frameCount)) return;
-            if (!int.TryParse(txtPerRow.Text, out perRow))
+            if (!int.TryParse(txtStartX.Text, out int startX) ||
+                !int.TryParse(txtStartY.Text, out int startY) ||
+                !int.TryParse(txtFrameWidth.Text, out int frameWidth) ||
+                !int.TryParse(txtFrameHeight.Text, out int frameHeight) ||
+                !int.TryParse(txtFrameCount.Text, out int frameCount))
+            {
+                return;
+            }
+
+            if (!int.TryParse(txtPerRow.Text, out int perRow))
+            {
                 perRow = frameCount;
-            mainForm.AddFrames(startX, startY, frameWidth, frameHeight,
-                frameCount, chkVertical.Checked, chkRectangular.Checked, perRow);
+            }
+
+            mainForm.AddFrames(
+                startX,
+                startY,
+                frameWidth,
+                frameHeight,
+                frameCount,
+                chkVertical.Checked,
+                chkRectangular.Checked,
+                perRow);
+
             Hide();
         }
 
@@ -41,6 +51,5 @@ namespace SpriteEditor
         {
             txtPerRow.Enabled = chkRectangular.Checked;
         }
-
     }
 }

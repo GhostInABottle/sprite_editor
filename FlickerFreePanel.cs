@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Forms;
 
 namespace SpriteEditor
 {
-    class FlickerFreePanel : Panel
+    public class FlickerFreePanel : Panel
     {
         public FlickerFreePanel() : base()
         {

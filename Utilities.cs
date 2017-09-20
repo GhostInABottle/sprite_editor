@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using System.IO;
-
+using System.Text.RegularExpressions;
 
 namespace SpriteEditor
 {
     public static class Utilities
     {
+        private static Regex hexRegex = new Regex(
+                @"^#((?'R'[0-9a-f]{2})(?'G'[0-9a-f]{2})(?'B'[0-9a-f]{2}))"
+                + @"|((?'R'[0-9a-f])(?'G'[0-9a-f])(?'B'[0-9a-f]))$",
+                RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         // http://stackoverflow.com/questions/982028/convert-net-color-objects-to-hex-codes-and-back
         public static string ToHex(this Color color)
         {
-            return string.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
-
-        static Regex hexRegex = new Regex(
-            @"^#((?'R'[0-9a-f]{2})(?'G'[0-9a-f]{2})(?'B'[0-9a-f]{2}))"
-            + @"|((?'R'[0-9a-f])(?'G'[0-9a-f])(?'B'[0-9a-f]))$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static Color FromHex(string colorString)
         {
@@ -31,32 +29,30 @@ namespace SpriteEditor
             var match = hexRegex.Match(colorString);
             if (!match.Success)
             {
-                var msg = "The string \"{0}\" doesn't represent a valid hexadecimal color";
-                msg = string.Format(msg, colorString);
+                var msg = $"The string \"{colorString}\" doesn't represent a valid hexadecimal color";
 
-                throw new ArgumentException(msg,
-                    "colorString");
+                throw new ArgumentException(msg, "colorString");
             }
 
             return Color.FromArgb(
                 ColorComponentToValue(match.Groups["R"].Value),
                 ColorComponentToValue(match.Groups["G"].Value),
-                ColorComponentToValue(match.Groups["B"].Value)
-            );
+                ColorComponentToValue(match.Groups["B"].Value));
         }
 
-        static int ColorComponentToValue(string component)
+        public static int ColorComponentToValue(string component)
         {
-            Debug.Assert(component != null);
-            Debug.Assert(component.Length > 0);
-            Debug.Assert(component.Length <= 2);
+            Debug.Assert(component != null, "Color component is not null");
+            Debug.Assert(component.Length > 0, "Color component length greater than 0");
+            Debug.Assert(component.Length <= 2, "Color component length less than 0");
 
             if (component.Length == 1)
             {
                 component += component;
             }
 
-            return int.Parse(component,
+            return int.Parse(
+                component,
                 System.Globalization.NumberStyles.HexNumber);
         }
 
@@ -71,10 +67,13 @@ namespace SpriteEditor
             float absB = Math.Abs(b);
             float diff = Math.Abs(a - b);
 
-            if (a * b == 0) { // a or b or both are zero
+            if (a * b == 0)
+            { // a or b or both are zero
                 // relative error is not meaningful here
                 return diff < (epsilon * epsilon);
-            } else { // use relative error
+            }
+            else
+            { // use relative error
                 return diff / (absA + absB) < epsilon;
             }
         }
@@ -87,11 +86,25 @@ namespace SpriteEditor
 
         public static string MakeRelativePath(string fromPath, string toPath)
         {
-            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
-            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+            if (string.IsNullOrEmpty(fromPath))
+            {
+                throw new ArgumentNullException("fromPath");
+            }
 
-            if (Directory.Exists(fromPath) && !fromPath.EndsWith("\\")) fromPath += "\\";
-            if (Directory.Exists(toPath) && !toPath.EndsWith("\\")) toPath += "\\";
+            if (string.IsNullOrEmpty(toPath))
+            {
+                throw new ArgumentNullException("toPath");
+            }
+
+            if (Directory.Exists(fromPath) && !fromPath.EndsWith("\\"))
+            {
+                fromPath += "\\";
+            }
+
+            if (Directory.Exists(toPath) && !toPath.EndsWith("\\"))
+            {
+                toPath += "\\";
+            }
 
             var fromUri = new Uri(fromPath);
             var toUri = new Uri(toPath);
