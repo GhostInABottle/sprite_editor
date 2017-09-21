@@ -18,7 +18,7 @@ namespace SpriteEditor
             new HatchBrush(HatchStyle.LargeCheckerBoard, Color.LightGray, Color.White);
 
         private static readonly Brush SourceRectBrush =
-            new SolidBrush(Color.FromArgb(80, Color.Yellow));
+            new SolidBrush(Color.FromArgb(150, Color.DarkGray));
 
         private SpriteLogic spriteLogic;
         private Pose selectedPose;
@@ -332,6 +332,7 @@ namespace SpriteEditor
                 currentRect.Width = (int)(currentRect.Width * scalingX);
                 currentRect.Height = (int)(currentRect.Height * scalingY);
                 e.Graphics.FillRectangle(SourceRectBrush, currentRect);
+                e.Graphics.DrawRectangle(new Pen(Color.Blue), currentRect);
             }
 
             e.Graphics.ResetTransform();
