@@ -27,6 +27,8 @@ namespace SpriteEditor
         private Frame copiedFrame;
         private frmGridSize gridSizeForm = new frmGridSize();
         private frmAddFrames addFramesForm;
+        private string lastImageName;
+        private Bitmap lastBitmap;
 
         public FrmSprite()
         {
@@ -173,17 +175,27 @@ namespace SpriteEditor
             }
 
             var image = spriteLogic.Image;
-            var bmp = openBitmap(image);
-            if (bmp == null)
+            if (spriteLogic.Image != lastImageName)
+            {
+                lastImageName = spriteLogic.Image;
+                lastBitmap = openBitmap(lastImageName);
+            }
+
+            if (lastBitmap == null)
             {
                 return;
             }
 
             // Default values (for full sprite view)
-            var midX = pnlSprite.Width / 2 - bmp.Width / 2;
-            var midY = pnlSprite.Height / 2 - bmp.Height / 2;
-            var source = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            var dest = new Rectangle(midX, midY, bmp.Width, bmp.Height);
+            float scalingX = e.Graphics.DpiX / lastBitmap.HorizontalResolution;
+            float scalingY = e.Graphics.DpiY / lastBitmap.VerticalResolution;
+            int scaledWidth = (int)(lastBitmap.Width * scalingX);
+            int scaledHeight = (int)(lastBitmap.Height * scalingY);
+            var midX = Math.Max(0, pnlSprite.Width / 2 - scaledWidth / 2);
+            var midY = Math.Max(0, pnlSprite.Height / 2 - scaledHeight / 2);
+            var source = new Rectangle(0, 0, lastBitmap.Width, lastBitmap.Height);
+            var dest = new Rectangle(midX, midY, scaledWidth, scaledHeight);
+
             var transform = new Matrix();
 
             // Transformed values (for animated and non-animated views)
@@ -195,10 +207,10 @@ namespace SpriteEditor
                 }
 
                 source = (Rectangle)currentFrame.Rectangle;
-                var magnifiedWidth = (int)(source.Width * currentFrame.Magnification.X);
-                var magnifiedHeight = (int)(source.Height * currentFrame.Magnification.Y);
-                midX = pnlSprite.Width / 2 - magnifiedWidth / 2;
-                midY = pnlSprite.Height / 2 - magnifiedHeight / 2;
+                var magnifiedWidth = (int)(source.Width * scalingX * currentFrame.Magnification.X);
+                var magnifiedHeight = (int)(source.Height * scalingY * currentFrame.Magnification.Y);
+                midX = Math.Max(0, pnlSprite.Width / 2 - magnifiedWidth / 2);
+                midY = Math.Max(0, pnlSprite.Height / 2 - magnifiedHeight / 2);
                 dest = new Rectangle(midX, midY, magnifiedWidth, magnifiedHeight);
                 var origin = new Point(
                                         (int)(midX + magnifiedWidth * currentPose.Origin.X),
@@ -207,6 +219,9 @@ namespace SpriteEditor
                 transform.RotateAt(currentFrame.Angle, origin);
             }
 
+            pnlSprite.AutoScrollMinSize = new Size(dest.Width, dest.Height);
+
+            e.Graphics.TranslateTransform(pnlSprite.AutoScrollPosition.X, pnlSprite.AutoScrollPosition.Y);
             e.Graphics.MultiplyTransform(transform);
 
             // Set alpha
@@ -222,8 +237,9 @@ namespace SpriteEditor
 
             // Draw the sprite
             e.Graphics.FillRectangle(BackgroundBrush, dest);
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(
-                                    bmp,
+                                    lastBitmap,
                                     dest,
                                     source.X,
                                     source.Y,
@@ -485,10 +501,9 @@ namespace SpriteEditor
             var poses = spriteLogic.SpriteData.Poses;
             selectedPose = poses[lstPoses.SelectedIndex];
             populatePose(selectedPose);
-            spriteLogic.SetPose(selectedPose.NameWithTags(), System.Environment.TickCount);
+            spriteLogic.SetPose(selectedPose.NameWithTags(), Environment.TickCount);
             if (lstFrames.Items.Count > 0)
             {
-                lstFrames.SelectedIndex = 0;
                 changeSelectedFrame(0);
             }
             else
@@ -506,7 +521,7 @@ namespace SpriteEditor
             if (selectedFrame != null)
             {
                 selectedFrame.IsTweenFrame = chkTween.Checked;
-                spriteLogic.Reset(System.Environment.TickCount);
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -796,7 +811,7 @@ namespace SpriteEditor
             frames.Add(new Frame() { Rectangle = rect });
             populatePose(selectedPose);
             changeSelectedFrame(frames.Count - 1);
-            spriteLogic.Reset(System.Environment.TickCount);
+            spriteLogic.Reset(Environment.TickCount);
         }
 
         private void miRemoveFrame_Click(object sender, EventArgs e)
@@ -818,7 +833,7 @@ namespace SpriteEditor
                 clearFrame();
             }
 
-            spriteLogic.Reset(System.Environment.TickCount);
+            spriteLogic.Reset(Environment.TickCount);
         }
 
         private void btnBrowseFrameImage_Click(object sender, EventArgs e)
@@ -920,6 +935,8 @@ namespace SpriteEditor
         {
             selectedPose = null;
             selectedFrame = null;
+            lastImageName = null;
+            lastBitmap = null;
             List<Pose> poses = new List<Pose>();
             var frames = new List<Frame>();
             SpriteData spriteData = new SpriteData() { Image = "", Poses = poses };
@@ -954,17 +971,18 @@ namespace SpriteEditor
                     throw new IOException("Error loading sprite data.");
                 }
 
+                lastImageName = null;
+                lastBitmap = null;
                 spriteLogic = new SpriteLogic(spriteData, path);
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
                 {
-                    spriteLogic.SetPose(spriteData.Poses[0].NameWithTags(), System.Environment.TickCount);
+                    spriteLogic.SetPose(spriteData.Poses[0].NameWithTags(), Environment.TickCount);
                     lstPoses.SelectedIndex = 0;
                 }
 
                 if (lstFrames.Items.Count > 0)
                 {
-                    lstFrames.SelectedIndex = 0;
                     changeSelectedFrame(0);
                 }
 

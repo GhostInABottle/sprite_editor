@@ -50,11 +50,11 @@ namespace SpriteEditor
         public static SpriteData Load(string filename)
         {
             var extension = System.IO.Path.GetExtension(filename);
-            if (extension == ".spr")
+            if (extension.Equals(".spr", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadSprite(filename);
             }
-            else if (extension == ".png")
+            else if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadImage(filename);
             }
