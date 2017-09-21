@@ -1035,7 +1035,7 @@
             // 
             // ofdSprite
             // 
-            this.ofdSprite.Filter = "Sprite XML Files|*.spr|Image Files|*.png";
+            this.ofdSprite.Filter = "Sprite and Image Files|*.spr;*.png|Sprite XML Files|*.spr|Image Files|*.png";
             this.ofdSprite.Title = "Select sprite file";
             // 
             // sfdSprite
