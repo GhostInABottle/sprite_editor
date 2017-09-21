@@ -100,6 +100,16 @@
             this.miShowBoundingBox = new System.Windows.Forms.ToolStripMenuItem();
             this.miShowGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.miGridSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miMagnification = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification50 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification100 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification200 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification400 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification800 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnification1600 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnificationZoomIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.miMagnificationZoomOut = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.stlMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.ofdSprite = new System.Windows.Forms.OpenFileDialog();
@@ -108,6 +118,8 @@
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -806,7 +818,8 @@
             this.miNew,
             this.miOpen,
             this.miSave,
-            this.miSaveAs});
+            this.miSaveAs,
+            this.miRecentFiles});
             this.miFile.Name = "miFile";
             this.miFile.Size = new System.Drawing.Size(37, 20);
             this.miFile.Text = "&File";
@@ -852,7 +865,9 @@
             this.miShowSrcRect,
             this.miShowBoundingBox,
             this.miShowGrid,
-            this.miGridSettings});
+            this.miGridSettings,
+            this.toolStripSeparator2,
+            this.miMagnification});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
@@ -922,6 +937,86 @@
             this.miGridSettings.Text = "Grid Settings...";
             this.miGridSettings.Click += new System.EventHandler(this.miGridSettings_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            // 
+            // miMagnification
+            // 
+            this.miMagnification.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miMagnification50,
+            this.miMagnification100,
+            this.miMagnification200,
+            this.miMagnification400,
+            this.miMagnification800,
+            this.miMagnification1600,
+            this.toolStripSeparator3,
+            this.miMagnificationZoomIn,
+            this.miMagnificationZoomOut});
+            this.miMagnification.Name = "miMagnification";
+            this.miMagnification.Size = new System.Drawing.Size(223, 22);
+            this.miMagnification.Text = "Magnification";
+            // 
+            // miMagnification50
+            // 
+            this.miMagnification50.Name = "miMagnification50";
+            this.miMagnification50.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification50.Text = "50%";
+            this.miMagnification50.Click += new System.EventHandler(this.miMagnification50_Click);
+            // 
+            // miMagnification100
+            // 
+            this.miMagnification100.Name = "miMagnification100";
+            this.miMagnification100.ShortcutKeyDisplayString = "Ctrl+0";
+            this.miMagnification100.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification100.Text = "100%";
+            this.miMagnification100.Click += new System.EventHandler(this.miMagnification100_Click);
+            // 
+            // miMagnification200
+            // 
+            this.miMagnification200.Name = "miMagnification200";
+            this.miMagnification200.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification200.Text = "200%";
+            this.miMagnification200.Click += new System.EventHandler(this.miMagnification200_Click);
+            // 
+            // miMagnification400
+            // 
+            this.miMagnification400.Name = "miMagnification400";
+            this.miMagnification400.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification400.Text = "400%";
+            this.miMagnification400.Click += new System.EventHandler(this.miMagnification400_Click);
+            // 
+            // miMagnification800
+            // 
+            this.miMagnification800.Name = "miMagnification800";
+            this.miMagnification800.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification800.Text = "800%";
+            this.miMagnification800.Click += new System.EventHandler(this.miMagnification800_Click);
+            // 
+            // miMagnification1600
+            // 
+            this.miMagnification1600.Name = "miMagnification1600";
+            this.miMagnification1600.Size = new System.Drawing.Size(168, 22);
+            this.miMagnification1600.Text = "1600%";
+            this.miMagnification1600.Click += new System.EventHandler(this.miMagnification1600_Click);
+            // 
+            // miMagnificationZoomIn
+            // 
+            this.miMagnificationZoomIn.Name = "miMagnificationZoomIn";
+            this.miMagnificationZoomIn.ShortcutKeyDisplayString = "Ctrl++";
+            this.miMagnificationZoomIn.Size = new System.Drawing.Size(168, 22);
+            this.miMagnificationZoomIn.Text = "Zoom In";
+            this.miMagnificationZoomIn.Click += new System.EventHandler(this.miMagnificationZoomIn_Click);
+            // 
+            // miMagnificationZoomOut
+            // 
+            this.miMagnificationZoomOut.Name = "miMagnificationZoomOut";
+            this.miMagnificationZoomOut.ShortcutKeyDisplayString = "Ctrl+-";
+            this.miMagnificationZoomOut.Size = new System.Drawing.Size(168, 22);
+            this.miMagnificationZoomOut.Text = "Zoom Out";
+            this.miMagnificationZoomOut.Click += new System.EventHandler(this.miMagnificationZoomOut_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -963,7 +1058,18 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
-            // frmSprite
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
+            // 
+            // miRecentFiles
+            // 
+            this.miRecentFiles.Name = "miRecentFiles";
+            this.miRecentFiles.Size = new System.Drawing.Size(155, 22);
+            this.miRecentFiles.Text = "Recent Files";
+            // 
+            // FrmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -974,11 +1080,13 @@
             this.Controls.Add(this.tbcSprite);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "frmSprite";
+            this.Name = "FrmSprite";
             this.Text = "Sprite Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSprite_FormClosed);
             this.Load += new System.EventHandler(this.frmSprite_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmSprite_KeyDown);
             this.tbcSprite.ResumeLayout(false);
             this.tabSprite.ResumeLayout(false);
             this.tabSprite.PerformLayout();
@@ -1091,6 +1199,18 @@
         private System.Windows.Forms.Label lblSound;
         private System.Windows.Forms.TextBox txtSound;
         private System.Windows.Forms.OpenFileDialog ofdSound;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification50;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification100;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification200;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification400;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification800;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification1600;
+        private System.Windows.Forms.ToolStripMenuItem miMagnificationZoomIn;
+        private System.Windows.Forms.ToolStripMenuItem miMagnificationZoomOut;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem miRecentFiles;
     }
 }
 

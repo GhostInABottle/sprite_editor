@@ -29,6 +29,8 @@ namespace SpriteEditor
         private frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
+        private float[] scales = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 16.0f };
+        private int scaleIndex = 1;
 
         public FrmSprite()
         {
@@ -153,6 +155,7 @@ namespace SpriteEditor
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
             bool opened = false;
+            populateRecentFiles();
             if (args.Length > 1 && File.Exists(args[1]))
             {
                 opened = openSprite(args[1]);
@@ -161,6 +164,20 @@ namespace SpriteEditor
             if (!opened)
             {
                 miNew_Click(sender, e);
+            }
+        }
+
+        private void populateRecentFiles()
+        {
+            miRecentFiles.DropDownItems.Clear();
+            foreach (var file in Settings.Default.RecentFiles)
+            {
+                if (string.IsNullOrWhiteSpace(file))
+                {
+                    continue;
+                }
+                var miRecentFile = new ToolStripMenuItem(file, null, miRecentFile_Click);
+                miRecentFiles.DropDownItems.Add(miRecentFile);
             }
         }
 
@@ -187,8 +204,9 @@ namespace SpriteEditor
             }
 
             // Default values (for full sprite view)
-            float scalingX = e.Graphics.DpiX / lastBitmap.HorizontalResolution;
-            float scalingY = e.Graphics.DpiY / lastBitmap.VerticalResolution;
+            float magnification = scales[scaleIndex];
+            float scalingX = e.Graphics.DpiX / lastBitmap.HorizontalResolution * magnification;
+            float scalingY = e.Graphics.DpiY / lastBitmap.VerticalResolution * magnification;
             int scaledWidth = (int)(lastBitmap.Width * scalingX);
             int scaledHeight = (int)(lastBitmap.Height * scalingY);
             var midX = Math.Max(0, pnlSprite.Width / 2 - scaledWidth / 2);
@@ -252,8 +270,8 @@ namespace SpriteEditor
             if (Settings.Default.ShowGrid)
             {
                 var pen = new Pen(Settings.Default.GridColor);
-                var gridWidth = Settings.Default.GridWidth;
-                var gridHeight = Settings.Default.GridHeight;
+                var gridWidth = (int)(Settings.Default.GridWidth * scalingX);
+                var gridHeight = (int)(Settings.Default.GridHeight * scalingY);
                 for (int y = dest.Y; y <= dest.Y + dest.Height; y += gridHeight)
                 {
                     for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
@@ -284,14 +302,23 @@ namespace SpriteEditor
                 {
                     box.Width = dest.Width;
                 }
+                else
+                {
+                    box.Width = (int)(box.Width * scalingX);
+                }
 
                 if (box.Height == -1)
                 {
                     box.Height = dest.Height;
                 }
+                else
+                {
+                    box.Height = (int)(box.Height * scalingY);
+                }
 
-                box.X += midX;
-                box.Y += midY;
+                box.X = (int)(box.X * scalingX) + midX;
+                box.Y = (int)(box.Y * scalingY) + midY;
+
                 e.Graphics.DrawRectangle(new Pen(Color.Black), box);
             }
 
@@ -300,8 +327,10 @@ namespace SpriteEditor
                 miFull.Checked && selectedFrame != null)
             {
                 var currentRect = (Rectangle)selectedFrame.Rectangle;
-                currentRect.X += midX;
-                currentRect.Y += midY;
+                currentRect.X = (int)(currentRect.X * scalingX) + midX;
+                currentRect.Y = (int)(currentRect.Y * scalingY) + midY;
+                currentRect.Width = (int)(currentRect.Width * scalingX);
+                currentRect.Height = (int)(currentRect.Height * scalingY);
                 e.Graphics.FillRectangle(SourceRectBrush, currentRect);
             }
 
@@ -937,6 +966,7 @@ namespace SpriteEditor
             selectedFrame = null;
             lastImageName = null;
             lastBitmap = null;
+            zoom(1);
             List<Pose> poses = new List<Pose>();
             var frames = new List<Frame>();
             SpriteData spriteData = new SpriteData() { Image = "", Poses = poses };
@@ -973,6 +1003,7 @@ namespace SpriteEditor
 
                 lastImageName = null;
                 lastBitmap = null;
+                zoom(1);
                 spriteLogic = new SpriteLogic(spriteData, path);
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
@@ -987,6 +1018,8 @@ namespace SpriteEditor
                 }
 
                 pnlSprite.Invalidate();
+
+                addRecentFile(path);
             }
             catch (Exception ex)
             {
@@ -995,6 +1028,28 @@ namespace SpriteEditor
             }
 
             return true;
+        }
+
+        private void addRecentFile(string path)
+        {
+            var fileSet = new HashSet<string>();
+            var fileList = new List<string>();
+            fileSet.Add(path);
+            fileList.Add(path);
+            foreach (var file in Settings.Default.RecentFiles)
+            {
+                if (!fileSet.Contains(file))
+                {
+                    fileSet.Add(file);
+                    fileList.Add(file);
+                }
+            }
+            Settings.Default.RecentFiles.Clear();
+            foreach (var file in fileList.Take(8))
+            {
+                Settings.Default.RecentFiles.Add(file);
+            }
+            populateRecentFiles();
         }
 
         private void miSave_Click(object sender, EventArgs e)
@@ -1302,6 +1357,92 @@ namespace SpriteEditor
 
             txtSound.Text = filename;
             selectedFrame.Sound = path;
+        }
+
+        private void FrmSprite_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers != Keys.Control)
+            {
+                return;
+            }
+            if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
+            {
+                zoom(scaleIndex + 1);
+            }
+            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
+            {
+                zoom(scaleIndex - 1);
+            }
+            else if (e.KeyCode == Keys.D0 || e.KeyCode == Keys.NumPad0)
+            {
+                zoom(1);
+            }
+        }
+
+        private void zoom(int newIndex)
+        {
+            if (newIndex != scaleIndex && newIndex >= 0 && newIndex <= 5)
+            {
+                scaleIndex = newIndex;
+                pnlSprite.Invalidate();
+            }
+            checkMagnificationMenuItem();
+        }
+
+        private void miMagnification50_Click(object sender, EventArgs e)
+        {
+            zoom(0);
+        }
+
+        private void miMagnification100_Click(object sender, EventArgs e)
+        {
+            zoom(1);
+        }
+
+        private void miMagnification200_Click(object sender, EventArgs e)
+        {
+            zoom(2);
+        }
+
+        private void miMagnification400_Click(object sender, EventArgs e)
+        {
+            zoom(3);
+        }
+
+        private void miMagnification800_Click(object sender, EventArgs e)
+        {
+            zoom(4);
+        }
+
+        private void miMagnification1600_Click(object sender, EventArgs e)
+        {
+            zoom(5);
+        }
+
+        private void miMagnificationZoomIn_Click(object sender, EventArgs e)
+        {
+            zoom(scaleIndex + 1);
+        }
+
+        private void miMagnificationZoomOut_Click(object sender, EventArgs e)
+        {
+            zoom(scaleIndex - 1);
+        }
+
+        private void checkMagnificationMenuItem()
+        {
+            miMagnification50.Checked = scaleIndex == 0;
+            miMagnification100.Checked = scaleIndex == 1;
+            miMagnification200.Checked = scaleIndex == 2;
+            miMagnification400.Checked = scaleIndex == 3;
+            miMagnification800.Checked = scaleIndex == 4;
+            miMagnification1600.Checked = scaleIndex == 5;
+        }
+
+        private void miRecentFile_Click(object sender, EventArgs e)
+        {
+            var mi = sender as ToolStripMenuItem;
+            openSprite(mi.Text);
         }
     }
 }
