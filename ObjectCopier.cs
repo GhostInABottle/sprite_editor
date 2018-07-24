@@ -7,7 +7,7 @@ namespace SpriteEditor
 {
     /// <summary>
     /// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx
-    /// 
+    ///
     /// Provides a method for performing a deep copy of an object.
     /// Binary Serialization is used to perform the copy.
     /// </summary>
@@ -23,7 +23,7 @@ namespace SpriteEditor
         {
             if (!typeof(T).IsSerializable)
             {
-                throw new ArgumentException("The type must be serializable.", "source");
+                throw new ArgumentException("The type must be serializable.", nameof(source));
             }
 
             // Don't serialize a null object, simply return the default for that object
@@ -41,5 +41,5 @@ namespace SpriteEditor
                 return (T)formatter.Deserialize(stream);
             }
         }
-    }    
+    }
 }

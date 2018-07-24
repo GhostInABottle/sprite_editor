@@ -8,7 +8,7 @@ namespace SpriteEditor
 {
     public static class Utilities
     {
-        private static Regex hexRegex = new Regex(
+        private static readonly Regex hexRegex = new Regex(
                 @"^#((?'R'[0-9a-f]{2})(?'G'[0-9a-f]{2})(?'B'[0-9a-f]{2}))"
                 + @"|((?'R'[0-9a-f])(?'G'[0-9a-f])(?'B'[0-9a-f]))$",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -29,9 +29,9 @@ namespace SpriteEditor
             var match = hexRegex.Match(colorString);
             if (!match.Success)
             {
-                var msg = $"The string \"{colorString}\" doesn't represent a valid hexadecimal color";
 
-                throw new ArgumentException(msg, "colorString");
+                throw new ArgumentException(
+                    $"\"{colorString}\" doesn't represent a valid hex color", nameof(colorString));
             }
 
             return Color.FromArgb(
@@ -68,19 +68,19 @@ namespace SpriteEditor
             float diff = Math.Abs(a - b);
 
             if (a * b == 0)
-            { // a or b or both are zero
+            {
+                // a or b or both are zero
                 // relative error is not meaningful here
                 return diff < (epsilon * epsilon);
             }
-            else
-            { // use relative error
-                return diff / (absA + absB) < epsilon;
-            }
+
+            // use relative error
+            return diff / (absA + absB) < epsilon;
         }
 
         public static string ResolveRelativePath(string referencePath, string relativePath)
         {
-            Uri uri = new Uri(Path.Combine(referencePath, relativePath));
+            var uri = new Uri(Path.Combine(referencePath, relativePath));
             return Uri.UnescapeDataString(Path.GetFullPath(uri.AbsolutePath));
         }
 
@@ -88,12 +88,12 @@ namespace SpriteEditor
         {
             if (string.IsNullOrEmpty(fromPath))
             {
-                throw new ArgumentNullException("fromPath");
+                throw new ArgumentNullException(nameof(fromPath));
             }
 
             if (string.IsNullOrEmpty(toPath))
             {
-                throw new ArgumentNullException("toPath");
+                throw new ArgumentNullException(nameof(toPath));
             }
 
             if (Directory.Exists(fromPath) && !fromPath.EndsWith("\\"))

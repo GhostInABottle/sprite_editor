@@ -31,35 +31,36 @@ namespace SpriteEditor
         public Rect Rectangle { get; set; }
 
         /// <summary>
-        /// Magnification. 
+        /// Magnification.
         /// </summary>
         public Vec2 Magnification { get; set; }
 
         /// <summary>
-        /// Rotation angle. 
+        /// Rotation angle.
         /// </summary>
         public int Angle { get; set; }
 
         /// <summary>
-        /// Alpha value (0 to 1) 
+        /// Alpha value (0 to 1)
         /// </summary>
         public float Opacity { get; set; }
 
         /// <summary>
-        /// Is it a tween frame? 
+        /// Is it a tween frame?
         /// </summary>
         public bool IsTweenFrame { get; set; }
 
         /// <summary>
-        /// Name of the frame's image. 
+        /// Name of the frame's image.
         /// </summary>
         public string Image { get; set; }
 
-        /// </summary>
+        /// <summary>
         /// Transparent color as hex string
         /// </summary>
         public string TransparentColor { get; set; }
 
+        /// <summary>
         /// Sound effect to play
         /// </summary>
         public string Sound { get; set; }

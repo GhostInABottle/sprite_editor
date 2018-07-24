@@ -37,7 +37,7 @@ namespace SpriteEditor
         public static Rect FromString(string input)
         {
             Rect result = null;
-            string pattern = @"^\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\)$";
+            const string pattern = @"^\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\)$";
             var match = Regex.Match(input, pattern);
             if (match.Success)
             {

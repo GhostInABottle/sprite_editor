@@ -5,13 +5,13 @@ using System.Xml.Linq;
 namespace SpriteEditor
 {
     /// <summary>
-    /// A single pose in a sprite. 
+    /// A single pose in a sprite.
     /// </summary>
     [Serializable]
     public class Pose
     {
         /// <summary>
-        /// Default constructor. 
+        /// Default constructor.
         /// </summary>
         public Pose()
         {
@@ -24,17 +24,17 @@ namespace SpriteEditor
         }
 
         /// <summary>
-        /// Collision bounding box. 
+        /// Collision bounding box.
         /// </summary>
         public Rect BoundingBox { get; set; }
 
         /// <summary>
-        /// Total duration of one pose cycle in milliseconds. 
+        /// Total duration of one pose cycle in milliseconds.
         /// </summary>
         public int DefaultDuration { get; set; }
 
         /// <summary>
-        /// Number of times pose is repeated (-1 = forever). 
+        /// Number of times pose is repeated (-1 = forever).
         /// </summary>
         public int Repeats { get; set; }
 
@@ -44,11 +44,11 @@ namespace SpriteEditor
         public Vec2 Origin { get; set; }
 
         /// <summary>
-        /// Name of the pose's image. 
+        /// Name of the pose's image.
         /// </summary>
         public string Image { get; set; }
 
-        /// </summary>
+        /// <summary>
         /// Transparent color as hex string
         /// </summary>
         public string TransparentColor { get; set; }
@@ -59,7 +59,7 @@ namespace SpriteEditor
         public Dictionary<string, string> Tags { get; set; }
 
         /// <summary>
-        /// List of frames. 
+        /// List of frames.
         /// </summary>
         public List<Frame> Frames { get; set; }
 
@@ -70,7 +70,7 @@ namespace SpriteEditor
 
         public string NameWithTags()
         {
-            string name = GetName();
+            var name = GetName();
             if (Tags.ContainsKey("Direction"))
             {
                 name += " [" + Tags["Direction"] + "]";
@@ -125,8 +125,8 @@ namespace SpriteEditor
             foreach (var pair in Tags)
             {
                 var tagElement = new XElement(
-                    "Tag", 
-                    new XAttribute("Key", pair.Key), 
+                    "Tag",
+                    new XAttribute("Key", pair.Key),
                     new XAttribute("Value", pair.Value));
                 children.Add(tagElement);
             }

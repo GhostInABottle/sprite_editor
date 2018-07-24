@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -25,11 +24,11 @@ namespace SpriteEditor
         private Frame selectedFrame;
         private Pose copiedPose;
         private Frame copiedFrame;
-        private frmGridSize gridSizeForm = new frmGridSize();
-        private frmAddFrames addFramesForm;
+        private readonly frmGridSize gridSizeForm = new frmGridSize();
+        private readonly frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
-        private float[] scales = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 16.0f };
+        private readonly float[] scales = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 16.0f };
         private int scaleIndex = 1;
 
         public FrmSprite()
@@ -53,7 +52,7 @@ namespace SpriteEditor
             var bmp = openBitmap(img);
             if (bmp == null)
             {
-                stlMessage.Text = "Error: Couldn't load bitmap";
+                stlMessage.Text = $"Error: Couldn't load bitmap {img}";
                 return;
             }
 
@@ -95,15 +94,16 @@ namespace SpriteEditor
             spriteLogic.Reset(Environment.TickCount);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                components?.Dispose();
             }
 
             spriteLogic.Dispose();
@@ -243,10 +243,10 @@ namespace SpriteEditor
             e.Graphics.MultiplyTransform(transform);
 
             // Set alpha
-            ImageAttributes attributes = new ImageAttributes();
+            var attributes = new ImageAttributes();
             if (!Utilities.CheckClose(currentFrame.Opacity, 1.0f, 0.01f))
             {
-                ColorMatrix matrix = new ColorMatrix
+                var matrix = new ColorMatrix
                 {
                     Matrix33 = currentFrame.Opacity
                 };
@@ -323,7 +323,7 @@ namespace SpriteEditor
             }
 
             // Draw source rect in full sprite view
-            if (Settings.Default.ShowSrcRect && 
+            if (Settings.Default.ShowSrcRect &&
                 miFull.Checked && selectedFrame != null)
             {
                 var currentRect = (Rectangle)selectedFrame.Rectangle;
@@ -340,32 +340,30 @@ namespace SpriteEditor
 
         private Bitmap openBitmap(string filename)
         {
-            Bitmap bmp = null;
             if (string.IsNullOrEmpty(filename))
             {
-                return bmp;
+                return null;
             }
 
             filename = spriteLogic.ResolvePath(filename);
             try
             {
-                bmp = new Bitmap(filename);
+               return new Bitmap(filename);
             }
             catch (Exception)
             {
+                return null;
             }
-
-            return bmp;
         }
 
         private bool validateFrames(List<Frame> frames)
         {
-            for (int i = 0; i < frames.Count; ++i)
+            for (var i = 0; i < frames.Count; ++i)
             {
                 var frame = frames[i];
                 if (frame.IsTweenFrame && (i == 0 || i == frames.Count - 1))
                 {
-                    stlMessage.Text = "Error: Tween frame " + lstFrames.Items[i].ToString();
+                    stlMessage.Text = $"Error: Tween frame {lstFrames.Items[i]}";
                     return false;
                 }
             }
@@ -375,8 +373,7 @@ namespace SpriteEditor
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
-            if (spriteLogic == null ||
-                spriteLogic.CurrentPose == null ||
+            if (spriteLogic?.CurrentPose == null ||
                 spriteLogic.CurrentFrame == null ||
                 !validateFrames(spriteLogic.CurrentPose.Frames))
             {
@@ -385,7 +382,7 @@ namespace SpriteEditor
 
             if (miAnimated.Checked)
             {
-                spriteLogic.Update(System.Environment.TickCount);
+                spriteLogic.Update(Environment.TickCount);
             }
             else if (lstFrames.SelectedIndex != -1)
             {
@@ -429,14 +426,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (pose.Tags.ContainsKey("Name"))
-            {
-                txtPoseName.Text = pose.Tags["Name"];
-            }
-            else
-            {
-                txtPoseName.Text = "";
-            }
+            txtPoseName.Text = pose.Tags.ContainsKey("Name") ? pose.Tags["Name"] : "";
 
             txtDuration.Text = pose.DefaultDuration.ToString();
             txtRepeats.Text = pose.Repeats.ToString();
@@ -444,7 +434,7 @@ namespace SpriteEditor
             txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
             {
-                int index = cbDirection.Items.IndexOf(pose.Tags["Direction"]);
+                var index = cbDirection.Items.IndexOf(pose.Tags["Direction"]);
                 cbDirection.SelectedIndex = index;
             }
             else
@@ -452,14 +442,7 @@ namespace SpriteEditor
                 cbDirection.SelectedIndex = 0;
             }
 
-            if (pose.Tags.ContainsKey("State"))
-            {
-                cbState.Text = pose.Tags["State"];
-            }
-            else
-            {
-                cbState.Text = "";
-            }
+            cbState.Text = pose.Tags.ContainsKey("State") ? pose.Tags["State"] : "";
 
             txtPoseImage.Text = pose.Image;
             var transColor = cdTransparentColor.Color;
@@ -575,7 +558,7 @@ namespace SpriteEditor
 
         private void lstFrames_DragDrop(object sender, DragEventArgs e)
         {
-            Point point = lstFrames.PointToClient(new Point(e.X, e.Y));
+            var point = lstFrames.PointToClient(new Point(e.X, e.Y));
             int toIndex = lstFrames.IndexFromPoint(point);
             if (toIndex < 0)
             {
@@ -583,13 +566,12 @@ namespace SpriteEditor
             }
 
             int fromIndex = (int)e.Data.GetData(typeof(int));
-            string data = lstFrames.Items[fromIndex].ToString();
-            var fromFrame = selectedPose.Frames[fromIndex];
+            var data = lstFrames.Items[fromIndex].ToString();
             lstFrames.Items.RemoveAt(fromIndex);
             lstFrames.Items.Insert(toIndex, data);
-            Frame tempFrame = selectedPose.Frames[fromIndex];
-            selectedPose.Frames[fromIndex] = selectedPose.Frames[toIndex];
-            selectedPose.Frames[toIndex] = tempFrame;
+            var tempFrame = selectedPose.Frames[fromIndex];
+            selectedPose.Frames.RemoveAt(fromIndex);
+            selectedPose.Frames.Insert(toIndex, tempFrame);
             changeSelectedFrame(toIndex);
             stlMessage.Text = "";
         }
@@ -691,7 +673,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (int.TryParse(txtRepeats.Text, out int repeats))
+            if (int.TryParse(txtRepeats.Text, out var repeats))
             {
                 if (spriteLogic.CurrentPose != null)
                 {
@@ -709,7 +691,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (int.TryParse(txtFrameDuration.Text, out int duration))
+            if (int.TryParse(txtFrameDuration.Text, out var duration))
             {
                 selectedFrame.Duration = duration;
 
@@ -737,7 +719,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (int.TryParse(txtAngle.Text, out int angle))
+            if (int.TryParse(txtAngle.Text, out var angle))
             {
                 selectedFrame.Angle = angle;
             }
@@ -750,7 +732,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (float.TryParse(txtOpacity.Text, out float opacity))
+            if (float.TryParse(txtOpacity.Text, out var opacity))
             {
                 selectedFrame.Opacity = opacity;
             }
@@ -764,8 +746,13 @@ namespace SpriteEditor
             }
 
             var poses = spriteLogic.SpriteData.Poses;
-            var pose = new Pose();
-            pose.Tags["Name"] = "Unnamed Pose " + lstPoses.Items.Count;
+            var pose = new Pose
+            {
+                Tags =
+                {
+                    ["Name"] = "Unnamed Pose " + lstPoses.Items.Count
+                }
+            };
             poses.Add(pose);
             populateSprite(spriteLogic.SpriteData);
             populateFrame(null);
@@ -831,7 +818,7 @@ namespace SpriteEditor
             }
 
             var frames = selectedPose.Frames;
-            Rect rect = new Rect(0, 0, 0, 0);
+            var rect = new Rect(0, 0, 0, 0);
             var bmp = openBitmap(spriteLogic.Image);
             if (bmp != null)
             {
@@ -891,7 +878,7 @@ namespace SpriteEditor
             }
 
             cdTransparentColor.ShowDialog();
-            string hex = cdTransparentColor.Color.ToHex();
+            var hex = cdTransparentColor.Color.ToHex();
             selectedFrame.TransparentColor = hex;
             btnFrameTransColor.BackColor = cdTransparentColor.Color;
         }
@@ -968,9 +955,8 @@ namespace SpriteEditor
             lastImageName = null;
             lastBitmap = null;
             zoom(1);
-            List<Pose> poses = new List<Pose>();
-            var frames = new List<Frame>();
-            SpriteData spriteData = new SpriteData() { Image = "", Poses = poses };
+            var poses = new List<Pose>();
+            var spriteData = new SpriteData() { Image = "", Poses = poses };
             spriteLogic = new SpriteLogic(spriteData, null);
             populateSprite(spriteData);
             miAdd_Click(sender, e);
@@ -1072,7 +1058,7 @@ namespace SpriteEditor
             }
             catch (Exception ex)
             {
-                stlMessage.Text = "Error: Couldn't save file " + filename + ": " + ex.Message;
+                stlMessage.Text = $"Error: Couldn't save file {filename}: {ex.Message}";
                 return false;
             }
 
@@ -1090,7 +1076,7 @@ namespace SpriteEditor
             if (saveSprite(sfdSprite.FileName))
             {
                 spriteLogic.OpenedFileName = sfdSprite.FileName;
-                Text = "Sprite Editor - " + Path.GetFileName(spriteLogic.OpenedFileName);
+                Text = $"Sprite Editor - {Path.GetFileName(spriteLogic.OpenedFileName)}";
             }
         }
 
@@ -1287,7 +1273,7 @@ namespace SpriteEditor
                 return;
             }
 
-            changeState((string)cbState.SelectedItem); 
+            changeState((string)cbState.SelectedItem);
         }
 
         private void cbState_TextChanged(object sender, EventArgs e)
@@ -1330,7 +1316,7 @@ namespace SpriteEditor
             }
 
             cdTransparentColor.ShowDialog();
-            string hex = cdTransparentColor.Color.ToHex();
+            var hex = cdTransparentColor.Color.ToHex();
             selectedPose.TransparentColor = hex;
             btnPoseTransColor.BackColor = cdTransparentColor.Color;
         }
@@ -1366,17 +1352,21 @@ namespace SpriteEditor
             {
                 return;
             }
-            if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
+
+            switch (e.KeyCode)
             {
-                zoom(scaleIndex + 1);
-            }
-            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
-            {
-                zoom(scaleIndex - 1);
-            }
-            else if (e.KeyCode == Keys.D0 || e.KeyCode == Keys.NumPad0)
-            {
-                zoom(1);
+                case Keys.Add:
+                case Keys.Oemplus:
+                    zoom(scaleIndex + 1);
+                    break;
+                case Keys.Subtract:
+                case Keys.OemMinus:
+                    zoom(scaleIndex - 1);
+                    break;
+                case Keys.D0:
+                case Keys.NumPad0:
+                    zoom(1);
+                    break;
             }
         }
 

@@ -20,16 +20,16 @@ namespace SpriteEditor
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(txtStartX.Text, out int startX) ||
-                !int.TryParse(txtStartY.Text, out int startY) ||
-                !int.TryParse(txtFrameWidth.Text, out int frameWidth) ||
-                !int.TryParse(txtFrameHeight.Text, out int frameHeight) ||
-                !int.TryParse(txtFrameCount.Text, out int frameCount))
+            if (!int.TryParse(txtStartX.Text, out var startX) ||
+                !int.TryParse(txtStartY.Text, out var startY) ||
+                !int.TryParse(txtFrameWidth.Text, out var frameWidth) ||
+                !int.TryParse(txtFrameHeight.Text, out var frameHeight) ||
+                !int.TryParse(txtFrameCount.Text, out var frameCount))
             {
                 return;
             }
 
-            if (!int.TryParse(txtPerRow.Text, out int perRow))
+            if (!int.TryParse(txtPerRow.Text, out var perRow))
             {
                 perRow = frameCount;
             }

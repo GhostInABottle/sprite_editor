@@ -30,7 +30,7 @@ namespace SpriteEditor
         public static Vec2 FromString(string input)
         {
             Vec2 result = null;
-            string pattern = @"^\(\s*(-?(\d+.)?\d+)\s*,\s*(-?(\d+.)?\d+)\s*\)$";
+            const string pattern = @"^\(\s*(-?(\d+.)?\d+)\s*,\s*(-?(\d+.)?\d+)\s*\)$";
             var match = Regex.Match(input, pattern);
             if (match.Success)
             {

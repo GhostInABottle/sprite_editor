@@ -90,40 +90,26 @@ namespace SpriteEditor
         {
             get
             {
-                if (CurrentFrame != null && !string.IsNullOrEmpty(CurrentFrame.Image))
+                if (!string.IsNullOrEmpty(CurrentFrame?.Image))
                 {
                     return CurrentFrame.Image;
                 }
-                else if (CurrentPose != null && !string.IsNullOrEmpty(CurrentPose.Image))
+                if (!string.IsNullOrEmpty(CurrentPose?.Image))
                 {
                     return CurrentPose.Image;
                 }
-                else if (!string.IsNullOrEmpty(SpriteData.Image))
+                if (!string.IsNullOrEmpty(SpriteData.Image))
                 {
                     return SpriteData.Image;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
         }
 
         /// <summary>
         /// Current frame in the current pose.
         /// </summary>
-        public Frame CurrentFrame
-        {
-            get
-            {
-                if (frameCount == 0)
-                {
-                    return null;
-                }
-
-                return CurrentPose.Frames[frameIndex];
-            }
-        }
+        public Frame CurrentFrame => frameCount == 0 ? null : CurrentPose.Frames[frameIndex];
 
         /// <summary>
         /// Reset values to their defaults.
@@ -140,10 +126,13 @@ namespace SpriteEditor
         }
 
         /// <summary>
-        /// Set the current pose.  
+        /// Set the current pose.
         /// </summary>
         /// <param name="poseName">
         /// Name of the new pose.
+        /// </param>
+        /// <param name="currentTime">
+        /// Update time.
         /// </param>
         public void SetPose(string poseName, int currentTime)
         {
@@ -151,7 +140,6 @@ namespace SpriteEditor
             if (CurrentPose == null ||
                 !poseName.Equals(CurrentPose.NameWithTags(), StringComparison.InvariantCultureIgnoreCase))
             {
-                int poseCount = poses.Count;
                 var pose =
                     poses.FirstOrDefault(p => p.NameWithTags()
                             .Equals(poseName, StringComparison.InvariantCultureIgnoreCase));
@@ -196,7 +184,7 @@ namespace SpriteEditor
                 }
 
                 int frameDuration = CurrentFrame.Duration;
-                int frameTime = frameDuration == -1 ? 
+                int frameTime = frameDuration == -1 ?
                     CurrentPose.DefaultDuration : frameDuration;
                 if (currentTime - oldTime >= frameTime)
                 {
@@ -218,7 +206,7 @@ namespace SpriteEditor
 
                 if (!tweening && CurrentFrame.IsTweenFrame)
                 {
-                    Frame prevFrame = CurrentPose.Frames[frameIndex - 1];
+                    var prevFrame = CurrentPose.Frames[frameIndex - 1];
                     CurrentFrame.Rectangle = prevFrame.Rectangle;
                     oldTime = currentTime;
                     tweening = true;
@@ -226,15 +214,15 @@ namespace SpriteEditor
 
                 if (tweening)
                 {
-                    Frame prevFrame = CurrentPose.Frames[frameIndex - 1];
-                    Frame nextFrame = CurrentPose.Frames[frameIndex + 1];
+                    var prevFrame = CurrentPose.Frames[frameIndex - 1];
+                    var nextFrame = CurrentPose.Frames[frameIndex + 1];
                     float alpha = (float)(currentTime - oldTime) / (frameTime == 0 ? 1 : frameTime);
                     alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
                     CurrentFrame.Magnification.X = lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
                     CurrentFrame.Magnification.Y = lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
                     CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
                     CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
-                } 
+                }
             }
         }
 
@@ -260,7 +248,7 @@ namespace SpriteEditor
         /// </summary>
         public string ResolveBaseDir()
         {
-            string baseDir = SpriteData.BaseDirectory;
+            var baseDir = SpriteData.BaseDirectory;
             if (OpenedFileName != null && !Path.IsPathRooted(baseDir))
             {
                 baseDir = Utilities.ResolveRelativePath(
@@ -275,20 +263,17 @@ namespace SpriteEditor
         /// </summary>
         public string ResolvePath(string filename)
         {
-            string baseDir = SpriteData.BaseDirectory;
-            if (baseDir != "." && !Path.IsPathRooted(filename))
+            var baseDir = SpriteData.BaseDirectory;
+            if (baseDir == "." || Path.IsPathRooted(filename)) return filename;
+            try
             {
-                try
-                {
-                    baseDir = ResolveBaseDir();
-                    filename = Utilities.ResolveRelativePath(baseDir, filename);
-                }
-                catch (Exception)
-                {
-                }
+                baseDir = ResolveBaseDir();
+                return Utilities.ResolveRelativePath(baseDir, filename);
             }
-
-            return filename;
+            catch (Exception)
+            {
+                return filename;
+            }
         }
 
         public void Dispose()
@@ -299,14 +284,9 @@ namespace SpriteEditor
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (player != null)
-                {
-                    player.Dispose();
-                    player = null;
-                }
-            }
+            if (!disposing || player == null) return;
+            player.Dispose();
+            player = null;
         }
 
         /// <summary>

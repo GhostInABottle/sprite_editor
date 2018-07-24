@@ -20,22 +20,22 @@ namespace SpriteEditor
         }
 
         /// <summary>
-        /// Name of the sprite image. 
+        /// Name of the sprite image.
         /// </summary>
         public string Image { get; set; }
 
-        /// </summary>
+        /// <summary>
         /// Transparent color as hex string
         /// </summary>
         public string TransparentColor { get; set; }
 
-        /// </summary>
+        /// <summary>
         /// Transparent color as hex string
         /// </summary>
         public string BaseDirectory { get; set; }
 
         /// <summary>
-        /// List of poses. 
+        /// List of poses.
         /// </summary>
         public List<Pose> Poses { get; set; }
 
@@ -50,18 +50,19 @@ namespace SpriteEditor
         public static SpriteData Load(string filename)
         {
             var extension = System.IO.Path.GetExtension(filename);
+            if (extension == null)
+            {
+                throw new ArgumentException($"Unknown extension for file {filename}", nameof(filename));
+            }
             if (extension.Equals(".spr", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadSprite(filename);
             }
-            else if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
+            if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadImage(filename);
             }
-            else
-            {
-                throw new ArgumentException("Trying to load a wrong file format");
-            }
+            throw new ArgumentException($"Trying to load a wrong file format {filename}", nameof(filename));
         }
 
         public XElement ToXml()
@@ -154,7 +155,7 @@ namespace SpriteEditor
 
         private static SpriteData LoadImage(string filename)
         {
-            Bitmap bmp = new Bitmap(filename);
+            var bmp = new Bitmap(filename);
             var spriteData = new SpriteData()
             {
                 Image = filename,

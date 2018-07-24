@@ -4,7 +4,7 @@ namespace SpriteEditor
 {
     public class FlickerFreePanel : Panel
     {
-        public FlickerFreePanel() : base()
+        public FlickerFreePanel()
         {
             DoubleBuffered = true;
         }
