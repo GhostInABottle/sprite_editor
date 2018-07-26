@@ -184,6 +184,7 @@ namespace SpriteEditor
         private void pnlSprite_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(pnlSprite.BackColor);
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             var currentPose = spriteLogic.CurrentPose;
             var currentFrame = spriteLogic.CurrentFrame;
             if (currentPose == null || currentFrame == null)

@@ -91,6 +91,7 @@
             this.miOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miFull = new System.Windows.Forms.ToolStripMenuItem();
             this.miPreview = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,6 +109,7 @@
             this.miMagnification400 = new System.Windows.Forms.ToolStripMenuItem();
             this.miMagnification800 = new System.Windows.Forms.ToolStripMenuItem();
             this.miMagnification1600 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.miMagnificationZoomIn = new System.Windows.Forms.ToolStripMenuItem();
             this.miMagnificationZoomOut = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -118,8 +120,6 @@
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.miRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -141,11 +141,11 @@
             this.tbcSprite.Controls.Add(this.tabSprite);
             this.tbcSprite.Controls.Add(this.tabPose);
             this.tbcSprite.Controls.Add(this.tabFrame);
-            this.tbcSprite.Location = new System.Drawing.Point(780, 27);
+            this.tbcSprite.Location = new System.Drawing.Point(646, 27);
             this.tbcSprite.Multiline = true;
             this.tbcSprite.Name = "tbcSprite";
             this.tbcSprite.SelectedIndex = 0;
-            this.tbcSprite.Size = new System.Drawing.Size(214, 670);
+            this.tbcSprite.Size = new System.Drawing.Size(214, 480);
             this.tbcSprite.TabIndex = 1;
             // 
             // tabSprite
@@ -164,7 +164,7 @@
             this.tabSprite.Location = new System.Drawing.Point(4, 22);
             this.tabSprite.Name = "tabSprite";
             this.tabSprite.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSprite.Size = new System.Drawing.Size(206, 644);
+            this.tabSprite.Size = new System.Drawing.Size(206, 454);
             this.tabSprite.TabIndex = 0;
             this.tabSprite.Text = "Sprite";
             // 
@@ -227,9 +227,9 @@
             // 
             this.lstPoses.ContextMenuStrip = this.mnuPose;
             this.lstPoses.FormattingEnabled = true;
-            this.lstPoses.Location = new System.Drawing.Point(9, 133);
+            this.lstPoses.Location = new System.Drawing.Point(6, 131);
             this.lstPoses.Name = "lstPoses";
-            this.lstPoses.Size = new System.Drawing.Size(189, 498);
+            this.lstPoses.Size = new System.Drawing.Size(189, 316);
             this.lstPoses.TabIndex = 5;
             this.lstPoses.SelectedIndexChanged += new System.EventHandler(this.lstPoses_SelectedIndexChanged);
             // 
@@ -327,7 +327,7 @@
             this.tabPose.Location = new System.Drawing.Point(4, 22);
             this.tabPose.Name = "tabPose";
             this.tabPose.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPose.Size = new System.Drawing.Size(206, 644);
+            this.tabPose.Size = new System.Drawing.Size(206, 454);
             this.tabPose.TabIndex = 1;
             this.tabPose.Text = "Pose";
             // 
@@ -443,9 +443,9 @@
             this.lstFrames.AllowDrop = true;
             this.lstFrames.ContextMenuStrip = this.mnuFrame;
             this.lstFrames.FormattingEnabled = true;
-            this.lstFrames.Location = new System.Drawing.Point(9, 359);
+            this.lstFrames.Location = new System.Drawing.Point(10, 357);
             this.lstFrames.Name = "lstFrames";
-            this.lstFrames.Size = new System.Drawing.Size(189, 277);
+            this.lstFrames.Size = new System.Drawing.Size(189, 82);
             this.lstFrames.TabIndex = 12;
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
@@ -604,7 +604,7 @@
             this.tabFrame.Controls.Add(this.lblFrameDuration);
             this.tabFrame.Location = new System.Drawing.Point(4, 22);
             this.tabFrame.Name = "tabFrame";
-            this.tabFrame.Size = new System.Drawing.Size(206, 644);
+            this.tabFrame.Size = new System.Drawing.Size(206, 454);
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
@@ -808,7 +808,7 @@
             this.viewToolStripMenuItem});
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(994, 24);
+            this.mnuMain.Size = new System.Drawing.Size(867, 24);
             this.mnuMain.TabIndex = 7;
             this.mnuMain.Text = "menuStrip1";
             // 
@@ -854,6 +854,12 @@
             this.miSaveAs.Size = new System.Drawing.Size(155, 22);
             this.miSaveAs.Text = "Save &As...";
             this.miSaveAs.Click += new System.EventHandler(this.miSaveAs_Click);
+            // 
+            // miRecentFiles
+            // 
+            this.miRecentFiles.Name = "miRecentFiles";
+            this.miRecentFiles.Size = new System.Drawing.Size(155, 22);
+            this.miRecentFiles.Text = "Recent Files";
             // 
             // viewToolStripMenuItem
             // 
@@ -1001,6 +1007,11 @@
             this.miMagnification1600.Text = "1600%";
             this.miMagnification1600.Click += new System.EventHandler(this.miMagnification1600_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
+            // 
             // miMagnificationZoomIn
             // 
             this.miMagnificationZoomIn.Name = "miMagnificationZoomIn";
@@ -1021,9 +1032,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stlMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 700);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 513);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(994, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(867, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "stsMain";
@@ -1049,7 +1060,7 @@
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlSprite.Location = new System.Drawing.Point(0, 27);
             this.pnlSprite.Name = "pnlSprite";
-            this.pnlSprite.Size = new System.Drawing.Size(774, 666);
+            this.pnlSprite.Size = new System.Drawing.Size(640, 480);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             // 
@@ -1058,22 +1069,11 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
-            // 
-            // miRecentFiles
-            // 
-            this.miRecentFiles.Name = "miRecentFiles";
-            this.miRecentFiles.Size = new System.Drawing.Size(155, 22);
-            this.miRecentFiles.Text = "Recent Files";
-            // 
             // FrmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(994, 722);
+            this.ClientSize = new System.Drawing.Size(867, 535);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mnuMain);
             this.Controls.Add(this.pnlSprite);
