@@ -195,7 +195,7 @@ namespace SpriteEditor
                     }
 
                     frameIndex++;
-                    if (frameIndex >= frameCount - 1)
+                    if (frameIndex >= frameCount)
                     {
                         repeatNumber++;
                         lastSoundFrame = -1;
