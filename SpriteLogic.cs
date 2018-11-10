@@ -163,7 +163,7 @@ namespace SpriteEditor
             }
 
             // If we number of repeats is reached then animation is finished
-            if (CurrentPose.Repeats != -1 && repeatNumber >= CurrentPose.Repeats)
+            if (FinishedRepeating())
             {
                 IsFinished = true;
             }
@@ -174,55 +174,57 @@ namespace SpriteEditor
             }
 
             // If animation is still not finished...
-            if (CurrentPose.Repeats == -1 || repeatNumber < CurrentPose.Repeats)
+            if (!string.IsNullOrEmpty(CurrentFrame.Sound) && lastSoundFrame != frameIndex)
             {
-                if (!string.IsNullOrEmpty(CurrentFrame.Sound) && lastSoundFrame != frameIndex)
-                {
-                    player.SoundLocation = ResolvePath(CurrentFrame.Sound);
-                    player.Play();
-                    lastSoundFrame = frameIndex;
-                }
+                player.SoundLocation = ResolvePath(CurrentFrame.Sound);
+                player.Play();
+                lastSoundFrame = frameIndex;
+            }
 
-                int frameDuration = CurrentFrame.Duration;
-                int frameTime = frameDuration == -1 ?
-                    CurrentPose.DefaultDuration : frameDuration;
-                if (currentTime - oldTime >= frameTime)
-                {
-                    oldTime = currentTime;
-                    if (tweening)
-                    {
-                        tweening = false;
-                    }
-
-                    frameIndex++;
-                    if (frameIndex >= frameCount)
-                    {
-                        repeatNumber++;
-                        lastSoundFrame = -1;
-                    }
-
-                    frameIndex %= frameCount;
-                }
-
-                if (!tweening && CurrentFrame.IsTweenFrame)
-                {
-                    var prevFrame = CurrentPose.Frames[frameIndex - 1];
-                    CurrentFrame.Rectangle = prevFrame.Rectangle;
-                    oldTime = currentTime;
-                    tweening = true;
-                }
-
+            int frameDuration = CurrentFrame.Duration;
+            int frameTime = frameDuration == -1 ?
+                CurrentPose.DefaultDuration : frameDuration;
+            if (currentTime - oldTime >= frameTime)
+            {
+                oldTime = currentTime;
                 if (tweening)
                 {
-                    var prevFrame = CurrentPose.Frames[frameIndex - 1];
-                    var nextFrame = CurrentPose.Frames[frameIndex + 1];
-                    float alpha = (float)(currentTime - oldTime) / (frameTime == 0 ? 1 : frameTime);
-                    alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
-                    CurrentFrame.Magnification.X = lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
-                    CurrentFrame.Magnification.Y = lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
-                    CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
-                    CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
+                    tweening = false;
                 }
+
+                frameIndex++;
+                if (frameIndex >= frameCount)
+                {
+                    repeatNumber++;
+                    lastSoundFrame = -1;
+                    if (FinishedRepeating())
+                    {
+                        frameIndex--;
+                        return;
+                    }
+                }
+
+                frameIndex %= frameCount;
+            }
+
+            if (!tweening && CurrentFrame.IsTweenFrame)
+            {
+                var prevFrame = CurrentPose.Frames[frameIndex - 1];
+                CurrentFrame.Rectangle = prevFrame.Rectangle;
+                oldTime = currentTime;
+                tweening = true;
+            }
+
+            if (tweening)
+            {
+                var prevFrame = CurrentPose.Frames[frameIndex - 1];
+                var nextFrame = CurrentPose.Frames[frameIndex + 1];
+                float alpha = (float)(currentTime - oldTime) / (frameTime == 0 ? 1 : frameTime);
+                alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
+                CurrentFrame.Magnification.X = lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
+                CurrentFrame.Magnification.Y = lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
+                CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
+                CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
             }
         }
 
@@ -299,6 +301,11 @@ namespace SpriteEditor
         private float lerp(float start, float end, float alpha)
         {
             return (1.0f - alpha) * start + alpha * end;
+        }
+
+        private bool FinishedRepeating()
+        {
+            return CurrentPose.Repeats != -1 && repeatNumber >= CurrentPose.Repeats;
         }
     }
 }

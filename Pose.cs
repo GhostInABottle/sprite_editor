@@ -92,10 +92,7 @@ namespace SpriteEditor
                 children.Add(BoundingBox.ToXml("Bounding-Box"));
             }
 
-            if (DefaultDuration != 100)
-            {
-                children.Add(new XAttribute("Duration", DefaultDuration));
-            }
+            children.Add(new XAttribute("Duration", DefaultDuration));
 
             if (Repeats != -1)
             {
