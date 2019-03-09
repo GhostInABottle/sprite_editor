@@ -152,6 +152,7 @@ namespace SpriteEditor
             miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
             miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
             miShowGrid.Checked = Settings.Default.ShowGrid;
+            zoom(Settings.Default.ZoomLevel);
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
             bool opened = false;
@@ -955,7 +956,6 @@ namespace SpriteEditor
             selectedFrame = null;
             lastImageName = null;
             lastBitmap = null;
-            zoom(1);
             var poses = new List<Pose>();
             var spriteData = new SpriteData() { Image = "", Poses = poses };
             spriteLogic = new SpriteLogic(spriteData, null);
@@ -991,7 +991,6 @@ namespace SpriteEditor
 
                 lastImageName = null;
                 lastBitmap = null;
-                zoom(1);
                 spriteLogic = new SpriteLogic(spriteData, path);
                 populateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
@@ -1377,6 +1376,7 @@ namespace SpriteEditor
             {
                 scaleIndex = newIndex;
                 pnlSprite.Invalidate();
+                Settings.Default.ZoomLevel = scaleIndex;
             }
             checkMagnificationMenuItem();
         }
