@@ -1,11 +1,11 @@
 bin/
 obj/
+.vs/
 *.suo
 *.pidb
 *.userprefs
 *.user
 *.vsmdi
 *.testsettings
-/.vs/SpriteEditor/v15/sqlite3/*.ide
 /*.StyleCop
 /*.Cache

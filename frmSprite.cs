@@ -37,61 +37,17 @@ namespace SpriteEditor
             InitializeComponent();
         }
 
-        public void AddFrames(
-            int startX,
-            int startY,
-            int frameWidth,
-            int frameHeight,
-            int frameCount,
-            bool isVertical,
-            bool isRectangular,
-            int perRow)
+        public void AddFrames(List<Frame> newFrames)
         {
-            var img = string.IsNullOrEmpty(selectedPose.Image) ?
-                spriteLogic.SpriteData.Image : selectedPose.Image;
-            var bmp = openBitmap(img);
-            if (bmp == null)
-            {
-                stlMessage.Text = $"Error: Couldn't load bitmap {img}";
-                return;
-            }
-
-            if (!isRectangular)
-            {
-                perRow = frameCount;
-            }
-
-            int maxFrames = frameCount / perRow;
-            if (frameCount % perRow != 0)
-            {
-                maxFrames++;
-            }
-
-            int maxRow = isVertical ? perRow : maxFrames;
-            int maxColumn = isVertical ? maxFrames : perRow;
-
-            var newFrames = new List<Frame>();
-            try
-            {
-                newFrames = addFrameImplementation(
-                                            bmp,
-                                            startX,
-                                            startY,
-                                            frameWidth,
-                                            frameHeight,
-                                            frameCount,
-                                            maxRow,
-                                            maxColumn);
-            }
-            catch (ArgumentException ex)
-            {
-                stlMessage.Text = ex.Message;
-            }
-
             selectedPose.Frames.AddRange(newFrames);
             populatePose(selectedPose);
             changeSelectedFrame(selectedPose.Frames.Count - 1);
             spriteLogic.Reset(Environment.TickCount);
+        }
+
+        public void ShowError(string message)
+        {
+            stlMessage.Text = message;
         }
 
         /// <inheritdoc />
@@ -108,42 +64,6 @@ namespace SpriteEditor
 
             spriteLogic.Dispose();
             base.Dispose(disposing);
-        }
-
-        private List<Frame> addFrameImplementation(
-            Bitmap bmp,
-            int startX,
-            int startY,
-            int frameWidth,
-            int frameHeight,
-            int frameCount,
-            int maxRow,
-            int maxColumn)
-        {
-            var newFrames = new List<Frame>();
-            int counter = 1;
-            for (int row = 0; row < maxRow; row++)
-            {
-                for (int column = 0; column < maxColumn; column++)
-                {
-                    int x = startX + column * frameWidth;
-                    int y = startY + row * frameHeight;
-                    if (x < 0 || y < 0 || x + frameWidth > bmp.Width || y + frameHeight > bmp.Height)
-                    {
-                        throw new ArgumentException("Error: Invalid frame positions " + row + ", " + column);
-                    }
-
-                    Rect rect = new Rect(x, y, frameWidth, frameHeight);
-                    newFrames.Add(new Frame() { Rectangle = rect });
-
-                    if (++counter > frameCount)
-                    {
-                        return newFrames;
-                    }
-                }
-            }
-
-            return newFrames;
         }
 
         private void frmSprite_Load(object sender, EventArgs e)
@@ -1288,7 +1208,15 @@ namespace SpriteEditor
                 return;
             }
 
-            addFramesForm.ShowDialog();
+            var img = string.IsNullOrEmpty(selectedPose.Image) ?
+                spriteLogic.SpriteData.Image : selectedPose.Image;
+            var bmp = openBitmap(img);
+            if (bmp == null)
+            {
+                stlMessage.Text = $"Error: Couldn't load bitmap {img}";
+                return;
+            }
+            addFramesForm.ShowDialog(bmp);
         }
 
         private void btnBrowsePoseImage_Click(object sender, EventArgs e)
