@@ -118,8 +118,9 @@
             this.sfdSprite = new System.Windows.Forms.SaveFileDialog();
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
-            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
+            this.miClearFrames = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -232,6 +233,7 @@
             this.lstPoses.Size = new System.Drawing.Size(189, 316);
             this.lstPoses.TabIndex = 5;
             this.lstPoses.SelectedIndexChanged += new System.EventHandler(this.lstPoses_SelectedIndexChanged);
+            this.lstPoses.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LstPoses_KeyUp);
             // 
             // mnuPose
             // 
@@ -450,6 +452,7 @@
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
             this.lstFrames.DragOver += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragOver);
+            this.lstFrames.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LstFrames_KeyUp);
             this.lstFrames.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstFrames_MouseDown);
             // 
             // mnuFrame
@@ -459,9 +462,10 @@
             this.miCopyFrame,
             this.miPasteFrame,
             this.miRemoveFrame,
+            this.miClearFrames,
             this.miAddMultiple});
             this.mnuFrame.Name = "mnuPose";
-            this.mnuFrame.Size = new System.Drawing.Size(144, 114);
+            this.mnuFrame.Size = new System.Drawing.Size(144, 136);
             this.mnuFrame.Opening += new System.ComponentModel.CancelEventHandler(this.mnuFrame_Opening);
             // 
             // miAddFrame
@@ -1055,6 +1059,18 @@
             this.sfdSprite.Filter = "Sprite XML Files|*.spr";
             this.sfdSprite.Title = "Save sprite file as...";
             // 
+            // ofdSound
+            // 
+            this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
+            this.ofdSound.Title = "Select sprite image";
+            // 
+            // miClearFrames
+            // 
+            this.miClearFrames.Name = "miClearFrames";
+            this.miClearFrames.Size = new System.Drawing.Size(143, 22);
+            this.miClearFrames.Text = "Clear";
+            this.miClearFrames.Click += new System.EventHandler(this.miClearFrames_Click);
+            // 
             // pnlSprite
             // 
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1063,11 +1079,6 @@
             this.pnlSprite.Size = new System.Drawing.Size(640, 480);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
-            // 
-            // ofdSound
-            // 
-            this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
-            this.ofdSound.Title = "Select sprite image";
             // 
             // FrmSprite
             // 
@@ -1211,6 +1222,7 @@
         private System.Windows.Forms.ToolStripMenuItem miMagnificationZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem miRecentFiles;
+        private System.Windows.Forms.ToolStripMenuItem miClearFrames;
     }
 }
 

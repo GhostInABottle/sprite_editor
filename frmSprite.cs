@@ -775,6 +775,18 @@ namespace SpriteEditor
             spriteLogic.Reset(Environment.TickCount);
         }
 
+        private void miClearFrames_Click(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+            {
+                return;
+            }
+            selectedPose.Frames.Clear();
+            populatePose(selectedPose);
+            clearFrame();
+            spriteLogic.Reset(Environment.TickCount);
+        }
+
         private void btnBrowseFrameImage_Click(object sender, EventArgs e)
         {
             if (selectedFrame == null)
@@ -1363,6 +1375,22 @@ namespace SpriteEditor
         {
             var mi = sender as ToolStripMenuItem;
             openSprite(mi.Text);
+        }
+
+        private void LstFrames_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                miRemoveFrame_Click(sender, e);
+            }
+        }
+
+        private void LstPoses_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                miRemove_Click(sender, e);
+            }
         }
     }
 }
