@@ -155,16 +155,24 @@ namespace SpriteEditor
 
         private static SpriteData LoadImage(string filename)
         {
-            var bmp = new Bitmap(filename);
+            string transparentColor;
+            int bitmapWidth, bitmapHeight;
+            using (var bmp = new Bitmap(filename))
+            {
+                transparentColor = bmp.GetPixel(0, 0).ToHex();
+                bitmapWidth = bmp.Width;
+                bitmapHeight = bmp.Height;
+            }
+
             var spriteData = new SpriteData()
             {
                 Image = filename,
-                TransparentColor = bmp.GetPixel(0, 0).ToHex(),
+                TransparentColor = transparentColor,
                 Poses = new List<Pose>()
                 {
                     new Pose()
                     {
-                        BoundingBox = new Rect(0, 0, bmp.Width, bmp.Height),
+                        BoundingBox = new Rect(0, 0, bitmapWidth, bitmapHeight),
                         Tags = new Dictionary<string, string>()
                         {
                             { "Name", "Main" }
@@ -173,7 +181,7 @@ namespace SpriteEditor
                         {
                             new Frame()
                             {
-                                Rectangle = new Rect(0, 0, bmp.Width, bmp.Height)
+                                Rectangle = new Rect(0, 0, bitmapWidth, bitmapHeight)
                             }
                         }
                     }

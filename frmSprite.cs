@@ -270,7 +270,10 @@ namespace SpriteEditor
             filename = spriteLogic.ResolvePath(filename);
             try
             {
-               return new Bitmap(filename);
+                using (var tempBitmap = new Bitmap(filename))
+                {
+                    return new Bitmap(tempBitmap);
+                }    
             }
             catch (Exception)
             {
