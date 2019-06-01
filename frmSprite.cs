@@ -355,6 +355,7 @@ namespace SpriteEditor
 
             txtDuration.Text = pose.DefaultDuration.ToString();
             txtRepeats.Text = pose.Repeats.ToString();
+            txtMinRepeats.Enabled = pose.Repeats == -1;
             txtBoundingBox.Text = pose.BoundingBox.ToString();
             txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
@@ -388,6 +389,8 @@ namespace SpriteEditor
             txtPoseName.Text = "";
             txtDuration.Text = "";
             txtRepeats.Text = "";
+            txtMinRepeats.Enabled = false;
+            txtMinRepeats.Text = "";
             txtBoundingBox.Text = "";
             txtOrigin.Text = "";
             lstFrames.Items.Clear();
@@ -606,6 +609,7 @@ namespace SpriteEditor
                 }
 
                 selectedPose.Repeats = repeats;
+                txtMinRepeats.Enabled = repeats == -1;
             }
         }
 
@@ -1393,6 +1397,19 @@ namespace SpriteEditor
             if (e.KeyCode == Keys.Delete)
             {
                 miRemove_Click(sender, e);
+            }
+        }
+
+        private void TxtMinRepeats_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedPose == null)
+            {
+                return;
+            }
+
+            if (int.TryParse(txtMinRepeats.Text, out var minRepeats))
+            {
+                selectedPose.MinRepeats = minRepeats;
             }
         }
     }

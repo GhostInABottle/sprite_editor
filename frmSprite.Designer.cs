@@ -52,6 +52,7 @@
             this.miCopyFrame = new System.Windows.Forms.ToolStripMenuItem();
             this.miPasteFrame = new System.Windows.Forms.ToolStripMenuItem();
             this.miRemoveFrame = new System.Windows.Forms.ToolStripMenuItem();
+            this.miClearFrames = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddMultiple = new System.Windows.Forms.ToolStripMenuItem();
             this.lblFrames = new System.Windows.Forms.Label();
             this.txtBoundingBox = new System.Windows.Forms.TextBox();
@@ -119,7 +120,8 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
-            this.miClearFrames = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblMinRepeats = new System.Windows.Forms.Label();
+            this.txtMinRepeats = new System.Windows.Forms.TextBox();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
@@ -305,6 +307,8 @@
             // tabPose
             // 
             this.tabPose.BackColor = System.Drawing.Color.Transparent;
+            this.tabPose.Controls.Add(this.txtMinRepeats);
+            this.tabPose.Controls.Add(this.lblMinRepeats);
             this.tabPose.Controls.Add(this.btnPoseTransColor);
             this.tabPose.Controls.Add(this.lblPoseColor);
             this.tabPose.Controls.Add(this.btnBrowsePoseImage);
@@ -338,7 +342,7 @@
             this.btnPoseTransColor.Location = new System.Drawing.Point(103, 318);
             this.btnPoseTransColor.Name = "btnPoseTransColor";
             this.btnPoseTransColor.Size = new System.Drawing.Size(19, 18);
-            this.btnPoseTransColor.TabIndex = 26;
+            this.btnPoseTransColor.TabIndex = 22;
             this.btnPoseTransColor.UseVisualStyleBackColor = false;
             this.btnPoseTransColor.Click += new System.EventHandler(this.btnPoseTransColor_Click);
             // 
@@ -348,7 +352,7 @@
             this.lblPoseColor.Location = new System.Drawing.Point(6, 323);
             this.lblPoseColor.Name = "lblPoseColor";
             this.lblPoseColor.Size = new System.Drawing.Size(91, 13);
-            this.lblPoseColor.TabIndex = 25;
+            this.lblPoseColor.TabIndex = 21;
             this.lblPoseColor.Text = "Transparent Color";
             // 
             // btnBrowsePoseImage
@@ -356,7 +360,7 @@
             this.btnBrowsePoseImage.Location = new System.Drawing.Point(172, 296);
             this.btnBrowsePoseImage.Name = "btnBrowsePoseImage";
             this.btnBrowsePoseImage.Size = new System.Drawing.Size(31, 20);
-            this.btnBrowsePoseImage.TabIndex = 24;
+            this.btnBrowsePoseImage.TabIndex = 20;
             this.btnBrowsePoseImage.Text = "...";
             this.btnBrowsePoseImage.UseVisualStyleBackColor = true;
             this.btnBrowsePoseImage.Click += new System.EventHandler(this.btnBrowsePoseImage_Click);
@@ -367,7 +371,7 @@
             this.lblPoseImage.Location = new System.Drawing.Point(7, 279);
             this.lblPoseImage.Name = "lblPoseImage";
             this.lblPoseImage.Size = new System.Drawing.Size(36, 13);
-            this.lblPoseImage.TabIndex = 23;
+            this.lblPoseImage.TabIndex = 18;
             this.lblPoseImage.Text = "Image";
             // 
             // txtPoseImage
@@ -376,14 +380,14 @@
             this.txtPoseImage.Location = new System.Drawing.Point(10, 297);
             this.txtPoseImage.Name = "txtPoseImage";
             this.txtPoseImage.Size = new System.Drawing.Size(156, 20);
-            this.txtPoseImage.TabIndex = 22;
+            this.txtPoseImage.TabIndex = 19;
             // 
             // txtOrigin
             // 
             this.txtOrigin.Location = new System.Drawing.Point(9, 175);
             this.txtOrigin.Name = "txtOrigin";
             this.txtOrigin.Size = new System.Drawing.Size(189, 20);
-            this.txtOrigin.TabIndex = 18;
+            this.txtOrigin.TabIndex = 13;
             this.txtOrigin.TextChanged += new System.EventHandler(this.txtOrigin_TextChanged);
             // 
             // lblOrigin
@@ -392,7 +396,7 @@
             this.lblOrigin.Location = new System.Drawing.Point(6, 159);
             this.lblOrigin.Name = "lblOrigin";
             this.lblOrigin.Size = new System.Drawing.Size(34, 13);
-            this.lblOrigin.TabIndex = 17;
+            this.lblOrigin.TabIndex = 12;
             this.lblOrigin.Text = "Origin";
             // 
             // cbState
@@ -401,7 +405,7 @@
             this.cbState.Location = new System.Drawing.Point(9, 255);
             this.cbState.Name = "cbState";
             this.cbState.Size = new System.Drawing.Size(191, 21);
-            this.cbState.TabIndex = 16;
+            this.cbState.TabIndex = 17;
             this.cbState.DropDown += new System.EventHandler(this.cbState_DropDown);
             this.cbState.SelectedIndexChanged += new System.EventHandler(this.cbState_SelectedIndexChanged);
             this.cbState.TextChanged += new System.EventHandler(this.cbState_TextChanged);
@@ -412,7 +416,7 @@
             this.lblState.Location = new System.Drawing.Point(6, 238);
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(32, 13);
-            this.lblState.TabIndex = 15;
+            this.lblState.TabIndex = 16;
             this.lblState.Text = "State";
             // 
             // cbDirection
@@ -428,7 +432,7 @@
             this.cbDirection.Location = new System.Drawing.Point(9, 214);
             this.cbDirection.Name = "cbDirection";
             this.cbDirection.Size = new System.Drawing.Size(189, 21);
-            this.cbDirection.TabIndex = 14;
+            this.cbDirection.TabIndex = 15;
             this.cbDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
             // 
             // lblDirection
@@ -437,7 +441,7 @@
             this.lblDirection.Location = new System.Drawing.Point(6, 197);
             this.lblDirection.Name = "lblDirection";
             this.lblDirection.Size = new System.Drawing.Size(49, 13);
-            this.lblDirection.TabIndex = 13;
+            this.lblDirection.TabIndex = 14;
             this.lblDirection.Text = "Direction";
             // 
             // lstFrames
@@ -448,7 +452,7 @@
             this.lstFrames.Location = new System.Drawing.Point(10, 357);
             this.lstFrames.Name = "lstFrames";
             this.lstFrames.Size = new System.Drawing.Size(189, 82);
-            this.lstFrames.TabIndex = 12;
+            this.lstFrames.TabIndex = 24;
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
             this.lstFrames.DragOver += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragOver);
@@ -498,6 +502,13 @@
             this.miRemoveFrame.Text = "Remove";
             this.miRemoveFrame.Click += new System.EventHandler(this.miRemoveFrame_Click);
             // 
+            // miClearFrames
+            // 
+            this.miClearFrames.Name = "miClearFrames";
+            this.miClearFrames.Size = new System.Drawing.Size(143, 22);
+            this.miClearFrames.Text = "Clear";
+            this.miClearFrames.Click += new System.EventHandler(this.miClearFrames_Click);
+            // 
             // miAddMultiple
             // 
             this.miAddMultiple.Name = "miAddMultiple";
@@ -511,7 +522,7 @@
             this.lblFrames.Location = new System.Drawing.Point(7, 341);
             this.lblFrames.Name = "lblFrames";
             this.lblFrames.Size = new System.Drawing.Size(41, 13);
-            this.lblFrames.TabIndex = 11;
+            this.lblFrames.TabIndex = 23;
             this.lblFrames.Text = "Frames";
             // 
             // txtBoundingBox
@@ -519,7 +530,7 @@
             this.txtBoundingBox.Location = new System.Drawing.Point(9, 136);
             this.txtBoundingBox.Name = "txtBoundingBox";
             this.txtBoundingBox.Size = new System.Drawing.Size(189, 20);
-            this.txtBoundingBox.TabIndex = 9;
+            this.txtBoundingBox.TabIndex = 11;
             this.txtBoundingBox.TextChanged += new System.EventHandler(this.txtBoundingBox_TextChanged);
             // 
             // lblBoundingBox
@@ -528,14 +539,14 @@
             this.lblBoundingBox.Location = new System.Drawing.Point(6, 120);
             this.lblBoundingBox.Name = "lblBoundingBox";
             this.lblBoundingBox.Size = new System.Drawing.Size(73, 13);
-            this.lblBoundingBox.TabIndex = 8;
+            this.lblBoundingBox.TabIndex = 10;
             this.lblBoundingBox.Text = "Bounding Box";
             // 
             // txtRepeats
             // 
             this.txtRepeats.Location = new System.Drawing.Point(9, 97);
             this.txtRepeats.Name = "txtRepeats";
-            this.txtRepeats.Size = new System.Drawing.Size(189, 20);
+            this.txtRepeats.Size = new System.Drawing.Size(88, 20);
             this.txtRepeats.TabIndex = 7;
             this.txtRepeats.TextChanged += new System.EventHandler(this.txtRepeats_TextChanged);
             // 
@@ -1064,12 +1075,23 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
-            // miClearFrames
+            // lblMinRepeats
             // 
-            this.miClearFrames.Name = "miClearFrames";
-            this.miClearFrames.Size = new System.Drawing.Size(143, 22);
-            this.miClearFrames.Text = "Clear";
-            this.miClearFrames.Click += new System.EventHandler(this.miClearFrames_Click);
+            this.lblMinRepeats.AutoSize = true;
+            this.lblMinRepeats.Location = new System.Drawing.Point(103, 81);
+            this.lblMinRepeats.Name = "lblMinRepeats";
+            this.lblMinRepeats.Size = new System.Drawing.Size(70, 13);
+            this.lblMinRepeats.TabIndex = 8;
+            this.lblMinRepeats.Text = "Min. Repeats";
+            // 
+            // txtMinRepeats
+            // 
+            this.txtMinRepeats.Enabled = false;
+            this.txtMinRepeats.Location = new System.Drawing.Point(110, 97);
+            this.txtMinRepeats.Name = "txtMinRepeats";
+            this.txtMinRepeats.Size = new System.Drawing.Size(88, 20);
+            this.txtMinRepeats.TabIndex = 9;
+            this.txtMinRepeats.TextChanged += new System.EventHandler(this.TxtMinRepeats_TextChanged);
             // 
             // pnlSprite
             // 
@@ -1223,6 +1245,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem miRecentFiles;
         private System.Windows.Forms.ToolStripMenuItem miClearFrames;
+        private System.Windows.Forms.TextBox txtMinRepeats;
+        private System.Windows.Forms.Label lblMinRepeats;
     }
 }
 

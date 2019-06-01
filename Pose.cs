@@ -18,6 +18,7 @@ namespace SpriteEditor
             BoundingBox = new Rect(-1, -1, -1, -1);
             DefaultDuration = 100;
             Repeats = -1;
+            MinRepeats = 0;
             Origin = new Vec2(0.0f, 0.0f);
             Tags = new Dictionary<string, string>();
             Frames = new List<Frame>();
@@ -37,6 +38,12 @@ namespace SpriteEditor
         /// Number of times pose is repeated (-1 = forever).
         /// </summary>
         public int Repeats { get; set; }
+
+        /// <summary>
+        /// How many times to repeat never-ending poses
+        /// before completion.
+        /// </summary>
+        public int MinRepeats { get; set; }
 
         /// <summary>
         /// Image origin.
@@ -97,6 +104,10 @@ namespace SpriteEditor
             if (Repeats != -1)
             {
                 children.Add(new XAttribute("Repeats", Repeats));
+            }
+            else if (MinRepeats != 0)
+            {
+                children.Add(new XAttribute("Min-Repeats", MinRepeats));
             }
 
             if (!Utilities.CheckClose(Origin.X, 0.0f))

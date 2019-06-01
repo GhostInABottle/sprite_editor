@@ -107,6 +107,7 @@ namespace SpriteEditor
                           {
                               DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                               Repeats = (int?)pose.Attribute("Repeats") ?? -1,
+                              MinRepeats = (int?)pose.Attribute("Min-Repeats") ?? 0,
                               Origin = new Vec2(
                                                 (float?)pose.Attribute("X-Origin") ?? 0.0f,
                                                 (float?)pose.Attribute("Y-Origin") ?? 0.0f),
