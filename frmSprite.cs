@@ -356,6 +356,7 @@ namespace SpriteEditor
             txtDuration.Text = pose.DefaultDuration.ToString();
             txtRepeats.Text = pose.Repeats.ToString();
             chkRequireCompletion.Enabled = pose.Repeats == -1;
+            chkRequireCompletion.Checked = pose.RequireCompletion;
             txtBoundingBox.Text = pose.BoundingBox.ToString();
             txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
