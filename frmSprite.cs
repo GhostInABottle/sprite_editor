@@ -355,7 +355,7 @@ namespace SpriteEditor
 
             txtDuration.Text = pose.DefaultDuration.ToString();
             txtRepeats.Text = pose.Repeats.ToString();
-            txtMinRepeats.Enabled = pose.Repeats == -1;
+            chkRequireCompletion.Enabled = pose.Repeats == -1;
             txtBoundingBox.Text = pose.BoundingBox.ToString();
             txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
@@ -389,8 +389,8 @@ namespace SpriteEditor
             txtPoseName.Text = "";
             txtDuration.Text = "";
             txtRepeats.Text = "";
-            txtMinRepeats.Enabled = false;
-            txtMinRepeats.Text = "";
+            chkRequireCompletion.Enabled = false;
+            chkRequireCompletion.Checked = false;
             txtBoundingBox.Text = "";
             txtOrigin.Text = "";
             lstFrames.Items.Clear();
@@ -609,7 +609,7 @@ namespace SpriteEditor
                 }
 
                 selectedPose.Repeats = repeats;
-                txtMinRepeats.Enabled = repeats == -1;
+                chkRequireCompletion.Enabled = repeats == -1;
             }
         }
 
@@ -1400,17 +1400,14 @@ namespace SpriteEditor
             }
         }
 
-        private void TxtMinRepeats_TextChanged(object sender, EventArgs e)
+        private void chkRequireCompletion_CheckedChanged(object sender, EventArgs e)
         {
             if (selectedPose == null)
             {
                 return;
             }
 
-            if (int.TryParse(txtMinRepeats.Text, out var minRepeats))
-            {
-                selectedPose.MinRepeats = minRepeats;
-            }
+            selectedPose.RequireCompletion = chkRequireCompletion.Checked;
         }
     }
 }

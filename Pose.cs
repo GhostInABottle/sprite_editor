@@ -18,7 +18,7 @@ namespace SpriteEditor
             BoundingBox = new Rect(-1, -1, -1, -1);
             DefaultDuration = 100;
             Repeats = -1;
-            MinRepeats = 0;
+            RequireCompletion = false;
             Origin = new Vec2(0.0f, 0.0f);
             Tags = new Dictionary<string, string>();
             Frames = new List<Frame>();
@@ -40,10 +40,10 @@ namespace SpriteEditor
         public int Repeats { get; set; }
 
         /// <summary>
-        /// How many times to repeat never-ending poses
-        /// before completion.
+        /// Should all never-ending pose frames be finished before
+        /// it can be marked as completed?
         /// </summary>
-        public int MinRepeats { get; set; }
+        public bool RequireCompletion { get; set; }
 
         /// <summary>
         /// Image origin.
@@ -105,9 +105,9 @@ namespace SpriteEditor
             {
                 children.Add(new XAttribute("Repeats", Repeats));
             }
-            else if (MinRepeats != 0)
+            else if (RequireCompletion)
             {
-                children.Add(new XAttribute("Min-Repeats", MinRepeats));
+                children.Add(new XAttribute("Require-Completion", RequireCompletion));
             }
 
             if (!Utilities.CheckClose(Origin.X, 0.0f))

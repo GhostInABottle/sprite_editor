@@ -120,9 +120,8 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
-            this.lblMinRepeats = new System.Windows.Forms.Label();
-            this.txtMinRepeats = new System.Windows.Forms.TextBox();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
+            this.chkRequireCompletion = new System.Windows.Forms.CheckBox();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -307,8 +306,7 @@
             // tabPose
             // 
             this.tabPose.BackColor = System.Drawing.Color.Transparent;
-            this.tabPose.Controls.Add(this.txtMinRepeats);
-            this.tabPose.Controls.Add(this.lblMinRepeats);
+            this.tabPose.Controls.Add(this.chkRequireCompletion);
             this.tabPose.Controls.Add(this.btnPoseTransColor);
             this.tabPose.Controls.Add(this.lblPoseColor);
             this.tabPose.Controls.Add(this.btnBrowsePoseImage);
@@ -546,7 +544,7 @@
             // 
             this.txtRepeats.Location = new System.Drawing.Point(9, 97);
             this.txtRepeats.Name = "txtRepeats";
-            this.txtRepeats.Size = new System.Drawing.Size(88, 20);
+            this.txtRepeats.Size = new System.Drawing.Size(84, 20);
             this.txtRepeats.TabIndex = 7;
             this.txtRepeats.TextChanged += new System.EventHandler(this.txtRepeats_TextChanged);
             // 
@@ -1075,24 +1073,6 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
-            // lblMinRepeats
-            // 
-            this.lblMinRepeats.AutoSize = true;
-            this.lblMinRepeats.Location = new System.Drawing.Point(103, 81);
-            this.lblMinRepeats.Name = "lblMinRepeats";
-            this.lblMinRepeats.Size = new System.Drawing.Size(70, 13);
-            this.lblMinRepeats.TabIndex = 8;
-            this.lblMinRepeats.Text = "Min. Repeats";
-            // 
-            // txtMinRepeats
-            // 
-            this.txtMinRepeats.Enabled = false;
-            this.txtMinRepeats.Location = new System.Drawing.Point(110, 97);
-            this.txtMinRepeats.Name = "txtMinRepeats";
-            this.txtMinRepeats.Size = new System.Drawing.Size(88, 20);
-            this.txtMinRepeats.TabIndex = 9;
-            this.txtMinRepeats.TextChanged += new System.EventHandler(this.TxtMinRepeats_TextChanged);
-            // 
             // pnlSprite
             // 
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1101,6 +1081,18 @@
             this.pnlSprite.Size = new System.Drawing.Size(640, 480);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
+            // 
+            // chkRequireCompletion
+            // 
+            this.chkRequireCompletion.AutoSize = true;
+            this.chkRequireCompletion.Enabled = false;
+            this.chkRequireCompletion.Location = new System.Drawing.Point(99, 99);
+            this.chkRequireCompletion.Name = "chkRequireCompletion";
+            this.chkRequireCompletion.Size = new System.Drawing.Size(101, 17);
+            this.chkRequireCompletion.TabIndex = 8;
+            this.chkRequireCompletion.Text = "Must complete?";
+            this.chkRequireCompletion.UseVisualStyleBackColor = true;
+            this.chkRequireCompletion.CheckedChanged += new System.EventHandler(this.chkRequireCompletion_CheckedChanged);
             // 
             // FrmSprite
             // 
@@ -1245,8 +1237,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem miRecentFiles;
         private System.Windows.Forms.ToolStripMenuItem miClearFrames;
-        private System.Windows.Forms.TextBox txtMinRepeats;
-        private System.Windows.Forms.Label lblMinRepeats;
+        private System.Windows.Forms.CheckBox chkRequireCompletion;
     }
 }
 
