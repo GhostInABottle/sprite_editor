@@ -341,6 +341,13 @@ namespace SpriteEditor
             var poseNames = spriteData.Poses.Select(x => x.NameWithTags());
             lstPoses.Items.Clear();
             lstPoses.Items.AddRange(poseNames.ToArray());
+            cbDefaultPose.Items.Clear();
+            cbDefaultPose.Items.Add("");
+            cbDefaultPose.Items.AddRange(spriteData.GetPoseNames().ToArray<object>());
+            if (!string.IsNullOrEmpty(spriteData.DefaultPose))
+            {
+                cbDefaultPose.SelectedItem = spriteData.DefaultPose;
+            }
         }
 
         private void populatePose(Pose pose)
@@ -1409,6 +1416,14 @@ namespace SpriteEditor
             }
 
             selectedPose.RequireCompletion = chkRequireCompletion.Checked;
+        }
+
+        private void cbDefaultPose_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selected = (string)cbDefaultPose.SelectedItem;
+            if (string.IsNullOrEmpty(selected)) return;
+
+            spriteLogic.SpriteData.DefaultPose = selected;
         }
     }
 }

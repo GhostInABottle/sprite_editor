@@ -35,6 +35,11 @@ namespace SpriteEditor
         public string BaseDirectory { get; set; }
 
         /// <summary>
+        /// The default pose for this sprite
+        /// </summary>
+        public string DefaultPose { get; set; }
+
+        /// <summary>
         /// List of poses.
         /// </summary>
         public List<Pose> Poses { get; set; }
@@ -83,6 +88,11 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Base-Dir", BaseDirectory));
             }
 
+            if (!string.IsNullOrEmpty(DefaultPose))
+            {
+                children.Add(new XAttribute("Default-Pose", DefaultPose));
+            }
+
             foreach (var pose in Poses)
             {
                 children.Add(pose.ToXml());
@@ -101,6 +111,7 @@ namespace SpriteEditor
                      Image = (string)sprite.Attribute("Image"),
                      TransparentColor = (string)sprite.Attribute("Transparent-Color"),
                      BaseDirectory = (string)sprite.Attribute("Base-Dir") ?? ".",
+                     DefaultPose = (string)sprite.Attribute("Default-Pose"),
                      Poses =
                          (from pose in sprite.Descendants("Pose")
                           select new Pose()
@@ -189,6 +200,18 @@ namespace SpriteEditor
                 }
             };
             return spriteData;
+        }
+
+        public IEnumerable<string> GetPoseNames()
+        {
+            var poses = new HashSet<string>();
+            foreach (var pose in Poses)
+            {
+                var poseName = pose.GetName();
+                if (string.IsNullOrEmpty(poseName)) continue;
+                poses.Add(pose.GetName());
+            }
+            return poses;
         }
     }
 }
