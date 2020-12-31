@@ -19,6 +19,8 @@
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.tbcSprite = new System.Windows.Forms.TabControl();
             this.tabSprite = new System.Windows.Forms.TabPage();
+            this.cbDefaultPose = new System.Windows.Forms.ComboBox();
+            this.lblDefaultPose = new System.Windows.Forms.Label();
             this.lblBaseFolder = new System.Windows.Forms.Label();
             this.btnBrowseFolder = new System.Windows.Forms.Button();
             this.txtBase = new System.Windows.Forms.TextBox();
@@ -121,9 +123,9 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
-            this.lblDefaultPose = new System.Windows.Forms.Label();
-            this.cbDefaultPose = new System.Windows.Forms.ComboBox();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
+            this.fswUpdatedImageWatcher = new System.IO.FileSystemWatcher();
+            this.miAutoReload = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -132,6 +134,7 @@
             this.tabFrame.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fswUpdatedImageWatcher)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrUpdate
@@ -173,6 +176,25 @@
             this.tabSprite.Size = new System.Drawing.Size(232, 639);
             this.tabSprite.TabIndex = 0;
             this.tabSprite.Text = "Sprite";
+            // 
+            // cbDefaultPose
+            // 
+            this.cbDefaultPose.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDefaultPose.FormattingEnabled = true;
+            this.cbDefaultPose.Location = new System.Drawing.Point(9, 132);
+            this.cbDefaultPose.Name = "cbDefaultPose";
+            this.cbDefaultPose.Size = new System.Drawing.Size(211, 21);
+            this.cbDefaultPose.TabIndex = 18;
+            this.cbDefaultPose.SelectedIndexChanged += new System.EventHandler(this.cbDefaultPose_SelectedIndexChanged);
+            // 
+            // lblDefaultPose
+            // 
+            this.lblDefaultPose.AutoSize = true;
+            this.lblDefaultPose.Location = new System.Drawing.Point(6, 116);
+            this.lblDefaultPose.Name = "lblDefaultPose";
+            this.lblDefaultPose.Size = new System.Drawing.Size(68, 13);
+            this.lblDefaultPose.TabIndex = 17;
+            this.lblDefaultPose.Text = "Default Pose";
             // 
             // lblBaseFolder
             // 
@@ -848,6 +870,7 @@
             this.miOpen,
             this.miSave,
             this.miSaveAs,
+            this.miAutoReload,
             this.miRecentFiles});
             this.miFile.Name = "miFile";
             this.miFile.Size = new System.Drawing.Size(37, 20);
@@ -857,7 +880,7 @@
             // 
             this.miNew.Name = "miNew";
             this.miNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.miNew.Size = new System.Drawing.Size(155, 22);
+            this.miNew.Size = new System.Drawing.Size(182, 22);
             this.miNew.Text = "&New";
             this.miNew.Click += new System.EventHandler(this.miNew_Click);
             // 
@@ -865,7 +888,7 @@
             // 
             this.miOpen.Name = "miOpen";
             this.miOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.miOpen.Size = new System.Drawing.Size(155, 22);
+            this.miOpen.Size = new System.Drawing.Size(182, 22);
             this.miOpen.Text = "&Open...";
             this.miOpen.Click += new System.EventHandler(this.miOpen_Click);
             // 
@@ -873,21 +896,21 @@
             // 
             this.miSave.Name = "miSave";
             this.miSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.miSave.Size = new System.Drawing.Size(155, 22);
+            this.miSave.Size = new System.Drawing.Size(182, 22);
             this.miSave.Text = "&Save";
             this.miSave.Click += new System.EventHandler(this.miSave_Click);
             // 
             // miSaveAs
             // 
             this.miSaveAs.Name = "miSaveAs";
-            this.miSaveAs.Size = new System.Drawing.Size(155, 22);
+            this.miSaveAs.Size = new System.Drawing.Size(182, 22);
             this.miSaveAs.Text = "Save &As...";
             this.miSaveAs.Click += new System.EventHandler(this.miSaveAs_Click);
             // 
             // miRecentFiles
             // 
             this.miRecentFiles.Name = "miRecentFiles";
-            this.miRecentFiles.Size = new System.Drawing.Size(155, 22);
+            this.miRecentFiles.Size = new System.Drawing.Size(182, 22);
             this.miRecentFiles.Text = "Recent Files";
             // 
             // viewToolStripMenuItem
@@ -1089,25 +1112,6 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
-            // lblDefaultPose
-            // 
-            this.lblDefaultPose.AutoSize = true;
-            this.lblDefaultPose.Location = new System.Drawing.Point(6, 116);
-            this.lblDefaultPose.Name = "lblDefaultPose";
-            this.lblDefaultPose.Size = new System.Drawing.Size(68, 13);
-            this.lblDefaultPose.TabIndex = 17;
-            this.lblDefaultPose.Text = "Default Pose";
-            // 
-            // cbDefaultPose
-            // 
-            this.cbDefaultPose.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDefaultPose.FormattingEnabled = true;
-            this.cbDefaultPose.Location = new System.Drawing.Point(9, 132);
-            this.cbDefaultPose.Name = "cbDefaultPose";
-            this.cbDefaultPose.Size = new System.Drawing.Size(211, 21);
-            this.cbDefaultPose.TabIndex = 18;
-            this.cbDefaultPose.SelectedIndexChanged += new System.EventHandler(this.cbDefaultPose_SelectedIndexChanged);
-            // 
             // pnlSprite
             // 
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1116,6 +1120,21 @@
             this.pnlSprite.Size = new System.Drawing.Size(750, 665);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
+            // 
+            // fswUpdatedImageWatcher
+            // 
+            this.fswUpdatedImageWatcher.EnableRaisingEvents = true;
+            this.fswUpdatedImageWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
+            this.fswUpdatedImageWatcher.SynchronizingObject = this;
+            this.fswUpdatedImageWatcher.Changed += new System.IO.FileSystemEventHandler(this.fswUpdatedImageWatcher_Changed);
+            // 
+            // miAutoReload
+            // 
+            this.miAutoReload.CheckOnClick = true;
+            this.miAutoReload.Name = "miAutoReload";
+            this.miAutoReload.Size = new System.Drawing.Size(182, 22);
+            this.miAutoReload.Text = "Auto-Reload Images";
+            this.miAutoReload.CheckedChanged += new System.EventHandler(this.miAutoReload_CheckedChanged);
             // 
             // FrmSprite
             // 
@@ -1148,6 +1167,7 @@
             this.mnuMain.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fswUpdatedImageWatcher)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1263,6 +1283,8 @@
         private System.Windows.Forms.CheckBox chkRequireCompletion;
         private System.Windows.Forms.ComboBox cbDefaultPose;
         private System.Windows.Forms.Label lblDefaultPose;
+        private System.IO.FileSystemWatcher fswUpdatedImageWatcher;
+        private System.Windows.Forms.ToolStripMenuItem miAutoReload;
     }
 }
 

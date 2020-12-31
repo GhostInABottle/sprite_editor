@@ -75,7 +75,7 @@ namespace SpriteEditor
             var children = new List<object>();
             if (!string.IsNullOrEmpty(Image))
             {
-                children.Add(new XAttribute("Image", Image));
+                children.Add(new XAttribute("Image", Image.Replace("\\", "/")));
             }
 
             if (!string.IsNullOrEmpty(TransparentColor))

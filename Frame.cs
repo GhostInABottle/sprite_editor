@@ -102,7 +102,7 @@ namespace SpriteEditor
 
             if (!string.IsNullOrEmpty(Image))
             {
-                children.Add(new XAttribute("Image", Image));
+                children.Add(new XAttribute("Image", Image.Replace("\\", "/")));
             }
 
             if (!string.IsNullOrEmpty(TransparentColor))
@@ -112,7 +112,7 @@ namespace SpriteEditor
 
             if (!string.IsNullOrEmpty(Sound))
             {
-                children.Add(new XAttribute("Sound", Sound));
+                children.Add(new XAttribute("Sound", Sound.Replace("\\", "/")));
             }
 
             return new XElement("Frame", children.ToArray());

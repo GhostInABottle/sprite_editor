@@ -72,6 +72,7 @@ namespace SpriteEditor
             miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
             miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
             miShowGrid.Checked = Settings.Default.ShowGrid;
+            miAutoReload.Checked = Settings.Default.AutoReloadImages;
             zoom(Settings.Default.ZoomLevel);
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
@@ -113,11 +114,12 @@ namespace SpriteEditor
                 return;
             }
 
-            var image = spriteLogic.Image;
             if (spriteLogic.Image != lastImageName)
             {
                 lastImageName = spriteLogic.Image;
                 lastBitmap = openBitmap(lastImageName);
+                fswUpdatedImageWatcher.Path = Path.GetDirectoryName(spriteLogic.ResolvePath(lastImageName));
+                fswUpdatedImageWatcher.Filter = Path.GetFileName(lastImageName);
             }
 
             if (lastBitmap == null)
@@ -1424,6 +1426,18 @@ namespace SpriteEditor
             if (string.IsNullOrEmpty(selected)) return;
 
             spriteLogic.SpriteData.DefaultPose = selected;
+        }
+
+        private void fswUpdatedImageWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            stlMessage.Text = $"Image {e.Name} changed outside the application.";
+            if (!Settings.Default.AutoReloadImages) return;
+            lastImageName = null;
+        }
+
+        private void miAutoReload_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.AutoReloadImages = miAutoReload.Checked;
         }
     }
 }
