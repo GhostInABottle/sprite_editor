@@ -221,10 +221,10 @@ namespace SpriteEditor
                 var nextFrame = CurrentPose.Frames[frameIndex + 1];
                 float alpha = (float)(currentTime - oldTime) / (frameTime == 0 ? 1 : frameTime);
                 alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
-                CurrentFrame.Magnification.X = lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
-                CurrentFrame.Magnification.Y = lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
-                CurrentFrame.Angle = (int)lerp(prevFrame.Angle, nextFrame.Angle, alpha);
-                CurrentFrame.Opacity = lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
+                CurrentFrame.Magnification.X = Lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
+                CurrentFrame.Magnification.Y = Lerp(prevFrame.Magnification.Y, nextFrame.Magnification.Y, alpha);
+                CurrentFrame.Angle = (int)Lerp(prevFrame.Angle, nextFrame.Angle, alpha);
+                CurrentFrame.Opacity = Lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
             }
         }
 
@@ -298,7 +298,7 @@ namespace SpriteEditor
         /// @param alpha Current time.
         /// @return Linearly interpolated value at time alpha.
         /// </summary>
-        private float lerp(float start, float end, float alpha)
+        private float Lerp(float start, float end, float alpha)
         {
             return (1.0f - alpha) * start + alpha * end;
         }

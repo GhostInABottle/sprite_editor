@@ -19,6 +19,9 @@ namespace SpriteEditor
         private static readonly Brush SourceRectBrush =
             new SolidBrush(Color.FromArgb(150, Color.DarkGray));
 
+        private static readonly Brush SelectedRectBrush =
+            new SolidBrush(Color.FromArgb(150, Color.YellowGreen));
+
         private SpriteLogic spriteLogic;
         private Pose selectedPose;
         private Frame selectedFrame;
@@ -29,6 +32,7 @@ namespace SpriteEditor
         private string lastImageName;
         private Bitmap lastBitmap;
         private readonly float[] scales = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 16.0f };
+        private float dpiX, dpiY;
         private int scaleIndex = 1;
 
         public FrmSprite()
@@ -40,7 +44,7 @@ namespace SpriteEditor
         public void AddFrames(List<Frame> newFrames)
         {
             selectedPose.Frames.AddRange(newFrames);
-            populatePose(selectedPose);
+            PopulatePose(selectedPose);
             changeSelectedFrame(selectedPose.Frames.Count - 1);
             spriteLogic.Reset(Environment.TickCount);
         }
@@ -68,19 +72,20 @@ namespace SpriteEditor
 
         private void frmSprite_Load(object sender, EventArgs e)
         {
-            setViewChecked(Settings.Default.DisplayMode);
+            SetViewChecked(Settings.Default.DisplayMode);
             miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
             miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
             miShowGrid.Checked = Settings.Default.ShowGrid;
             miAutoReload.Checked = Settings.Default.AutoReloadImages;
-            zoom(Settings.Default.ZoomLevel);
+            miGridSelection.Checked = Settings.Default.UseGridSelection;
+            Zoom(Settings.Default.ZoomLevel);
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
             bool opened = false;
-            populateRecentFiles();
+            PopulateRecentFiles();
             if (args.Length > 1 && File.Exists(args[1]))
             {
-                opened = openSprite(args[1]);
+                opened = OpenSprite(args[1]);
             }
 
             if (!opened)
@@ -89,7 +94,7 @@ namespace SpriteEditor
             }
         }
 
-        private void populateRecentFiles()
+        private void PopulateRecentFiles()
         {
             miRecentFiles.DropDownItems.Clear();
             foreach (var file in Settings.Default.RecentFiles)
@@ -102,6 +107,14 @@ namespace SpriteEditor
                 miRecentFiles.DropDownItems.Add(miRecentFile);
             }
         }
+
+
+        private float Magnification => scales[scaleIndex];
+        private float ScalingX => dpiX / lastBitmap.HorizontalResolution * Magnification;
+        private float ScalingY => dpiY / lastBitmap.VerticalResolution * Magnification;
+        private int ScaledWidth => lastBitmap != null ? (int)(lastBitmap.Width * ScalingX) : 0;
+        private int ScaledHeight => lastBitmap != null ? (int)(lastBitmap.Height * ScalingY) : 0;
+
 
         private void pnlSprite_Paint(object sender, PaintEventArgs e)
         {
@@ -117,7 +130,7 @@ namespace SpriteEditor
             if (spriteLogic.Image != lastImageName)
             {
                 lastImageName = spriteLogic.Image;
-                lastBitmap = openBitmap(lastImageName);
+                lastBitmap = OpenBitmap(lastImageName);
                 fswUpdatedImageWatcher.Path = Path.GetDirectoryName(spriteLogic.ResolvePath(lastImageName));
                 fswUpdatedImageWatcher.Filter = Path.GetFileName(lastImageName);
             }
@@ -128,15 +141,12 @@ namespace SpriteEditor
             }
 
             // Default values (for full sprite view)
-            float magnification = scales[scaleIndex];
-            float scalingX = e.Graphics.DpiX / lastBitmap.HorizontalResolution * magnification;
-            float scalingY = e.Graphics.DpiY / lastBitmap.VerticalResolution * magnification;
-            int scaledWidth = (int)(lastBitmap.Width * scalingX);
-            int scaledHeight = (int)(lastBitmap.Height * scalingY);
-            var midX = Math.Max(0, pnlSprite.Width / 2 - scaledWidth / 2);
-            var midY = Math.Max(0, pnlSprite.Height / 2 - scaledHeight / 2);
+            dpiX = e.Graphics.DpiX;
+            dpiY = e.Graphics.DpiY;
+            var midX = Math.Max(0, pnlSprite.Width / 2 - ScaledWidth / 2);
+            var midY = Math.Max(0, pnlSprite.Height / 2 - ScaledHeight / 2);
             var source = new Rectangle(0, 0, lastBitmap.Width, lastBitmap.Height);
-            var dest = new Rectangle(midX, midY, scaledWidth, scaledHeight);
+            var dest = new Rectangle(midX, midY, ScaledWidth, ScaledHeight);
 
             var transform = new Matrix();
 
@@ -149,8 +159,8 @@ namespace SpriteEditor
                 }
 
                 source = (Rectangle)currentFrame.Rectangle;
-                var magnifiedWidth = (int)(source.Width * scalingX * currentFrame.Magnification.X);
-                var magnifiedHeight = (int)(source.Height * scalingY * currentFrame.Magnification.Y);
+                var magnifiedWidth = (int)(source.Width * ScalingX * currentFrame.Magnification.X);
+                var magnifiedHeight = (int)(source.Height * ScalingY * currentFrame.Magnification.Y);
                 midX = Math.Max(0, pnlSprite.Width / 2 - magnifiedWidth / 2);
                 midY = Math.Max(0, pnlSprite.Height / 2 - magnifiedHeight / 2);
                 dest = new Rectangle(midX, midY, magnifiedWidth, magnifiedHeight);
@@ -191,11 +201,11 @@ namespace SpriteEditor
                                     attributes);
 
             // Draw the grid
+            var gridWidth = (int)(Settings.Default.GridWidth * ScalingX);
+            var gridHeight = (int)(Settings.Default.GridHeight * ScalingY);
             if (Settings.Default.ShowGrid)
             {
                 var pen = new Pen(Settings.Default.GridColor);
-                var gridWidth = (int)(Settings.Default.GridWidth * scalingX);
-                var gridHeight = (int)(Settings.Default.GridHeight * scalingY);
                 for (int y = dest.Y; y <= dest.Y + dest.Height; y += gridHeight)
                 {
                     for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
@@ -228,7 +238,7 @@ namespace SpriteEditor
                 }
                 else
                 {
-                    box.Width = (int)(box.Width * scalingX);
+                    box.Width = (int)(box.Width * ScalingX);
                 }
 
                 if (box.Height == -1)
@@ -237,32 +247,72 @@ namespace SpriteEditor
                 }
                 else
                 {
-                    box.Height = (int)(box.Height * scalingY);
+                    box.Height = (int)(box.Height * ScalingY);
                 }
 
-                box.X = (int)(box.X * scalingX) + midX;
-                box.Y = (int)(box.Y * scalingY) + midY;
+                box.X = (int)(box.X * ScalingX) + midX;
+                box.Y = (int)(box.Y * ScalingY) + midY;
 
                 e.Graphics.DrawRectangle(new Pen(Color.Black), box);
             }
 
-            // Draw source rect in full sprite view
-            if (Settings.Default.ShowSrcRect &&
-                miFull.Checked && selectedFrame != null)
+            // Draw source rect and selected rect in full sprite view
+            if (miFull.Checked)
             {
-                var currentRect = (Rectangle)selectedFrame.Rectangle;
-                currentRect.X = (int)(currentRect.X * scalingX) + midX;
-                currentRect.Y = (int)(currentRect.Y * scalingY) + midY;
-                currentRect.Width = (int)(currentRect.Width * scalingX);
-                currentRect.Height = (int)(currentRect.Height * scalingY);
-                e.Graphics.FillRectangle(SourceRectBrush, currentRect);
-                e.Graphics.DrawRectangle(new Pen(Color.Blue), currentRect);
+                if (Settings.Default.ShowSrcRect && selectedFrame != null)
+                {
+                    var currentRect = (Rectangle)selectedFrame.Rectangle;
+                    currentRect.X = (int)(currentRect.X * ScalingX) + midX;
+                    currentRect.Y = (int)(currentRect.Y * ScalingY) + midY;
+                    currentRect.Width = (int)(currentRect.Width * ScalingX);
+                    currentRect.Height = (int)(currentRect.Height * ScalingY);
+                    e.Graphics.FillRectangle(SourceRectBrush, currentRect);
+                    e.Graphics.DrawRectangle(new Pen(Color.Blue), currentRect);
+                }
+
+                if (Settings.Default.UseGridSelection)
+                {
+                    var panelCursorPos = pnlSprite.PointToClient(Cursor.Position);
+                    var bitmapCursorPos = MouseToBitmapPosition(panelCursorPos);
+
+                    if (MouseWithinBitmapBounds(bitmapCursorPos))
+                    {
+                        var selectRect = new Rectangle
+                        {
+                            X = gridWidth * (int)(ScalingX * bitmapCursorPos.X / gridWidth) + midX,
+                            Y = gridHeight * (int)(ScalingY * bitmapCursorPos.Y / gridHeight) + midY,
+                            Width = gridWidth,
+                            Height = gridHeight
+                        };
+                        e.Graphics.FillRectangle(SelectedRectBrush, selectRect);
+                    }
+                }
+
             }
 
             e.Graphics.ResetTransform();
         }
 
-        private Bitmap openBitmap(string filename)
+        private Point MouseToBitmapPosition(Point mousePos)
+        {
+            var midX = Math.Max(0, pnlSprite.Width / 2 - ScaledWidth / 2);
+            var midY = Math.Max(0, pnlSprite.Height / 2 - ScaledHeight / 2);
+            return new Point
+            {
+                X = (int)((mousePos.X - midX - pnlSprite.AutoScrollPosition.X) / ScalingX),
+                Y = (int)((mousePos.Y - midY - pnlSprite.AutoScrollPosition.Y) / ScalingY),
+            };
+        }
+
+        private bool MouseWithinBitmapBounds(Point bitmapCursorPos)
+        {
+            if (lastBitmap == null) return false;
+            var withinBoundsX = bitmapCursorPos.X >= 0 && bitmapCursorPos.X < lastBitmap.Width;
+            var withinBoundsY = bitmapCursorPos.Y >= 0 && bitmapCursorPos.Y < lastBitmap.Height;
+            return withinBoundsX && withinBoundsY;
+        }
+
+        private Bitmap OpenBitmap(string filename)
         {
             if (string.IsNullOrEmpty(filename))
             {
@@ -283,7 +333,7 @@ namespace SpriteEditor
             }
         }
 
-        private bool validateFrames(List<Frame> frames)
+        private bool ValidateFrames(List<Frame> frames)
         {
             for (var i = 0; i < frames.Count; ++i)
             {
@@ -302,7 +352,7 @@ namespace SpriteEditor
         {
             if (spriteLogic?.CurrentPose == null ||
                 spriteLogic.CurrentFrame == null ||
-                !validateFrames(spriteLogic.CurrentPose.Frames))
+                !ValidateFrames(spriteLogic.CurrentPose.Frames))
             {
                 return;
             }
@@ -323,7 +373,7 @@ namespace SpriteEditor
             pnlSprite.Invalidate();
         }
 
-        private void populateSprite(SpriteData spriteData)
+        private void PopulateSprite(SpriteData spriteData)
         {
             if (spriteData == null)
             {
@@ -352,11 +402,11 @@ namespace SpriteEditor
             }
         }
 
-        private void populatePose(Pose pose)
+        private void PopulatePose(Pose pose)
         {
             if (pose == null)
             {
-                clearPose();
+                ClearPose();
                 return;
             }
 
@@ -394,7 +444,7 @@ namespace SpriteEditor
             lstFrames.Items.AddRange(frameIndices.ToArray());
         }
 
-        private void clearPose()
+        private void ClearPose()
         {
             txtPoseName.Text = "";
             txtDuration.Text = "";
@@ -406,11 +456,11 @@ namespace SpriteEditor
             lstFrames.Items.Clear();
         }
 
-        private void populateFrame(Frame frame)
+        private void PopulateFrame(Frame frame)
         {
             if (frame == null)
             {
-                clearFrame();
+                ClearFrame();
                 return;
             }
 
@@ -432,7 +482,7 @@ namespace SpriteEditor
             btnFrameTransColor.BackColor = transColor;
         }
 
-        private void clearFrame()
+        private void ClearFrame()
         {
             txtFrameDuration.Text = "";
             txtMagnification.Text = "";
@@ -451,7 +501,7 @@ namespace SpriteEditor
 
             var poses = spriteLogic.SpriteData.Poses;
             selectedPose = poses[lstPoses.SelectedIndex];
-            populatePose(selectedPose);
+            PopulatePose(selectedPose);
             spriteLogic.SetPose(selectedPose.NameWithTags(), Environment.TickCount);
             if (lstFrames.Items.Count > 0)
             {
@@ -459,7 +509,7 @@ namespace SpriteEditor
             }
             else
             {
-                populateFrame(null);
+                PopulateFrame(null);
             }
         }
 
@@ -489,7 +539,7 @@ namespace SpriteEditor
                 if (lstFrames.SelectedIndex != -1)
                 {
                     changeSelectedFrame(lstFrames.SelectedIndex);
-                    populateFrame(selectedFrame);
+                    PopulateFrame(selectedFrame);
                 }
             }
         }
@@ -528,13 +578,13 @@ namespace SpriteEditor
             }
 
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename, "sprite");
+            SetImage(fullFilename, "sprite");
         }
 
-        private void setImage(string path, string type)
+        private void SetImage(string path, string type)
         {
             var filename = Path.GetFileName(path);
-            var bmp = openBitmap(path);
+            var bmp = OpenBitmap(path);
             if (bmp != null)
             {
                 var baseDir = spriteLogic.ResolveBaseDir();
@@ -587,7 +637,7 @@ namespace SpriteEditor
 
             if (tbcSprite.SelectedTab == tabPose)
             {
-                populateSprite(spriteLogic.SpriteData);
+                PopulateSprite(spriteLogic.SpriteData);
             }
         }
 
@@ -693,8 +743,8 @@ namespace SpriteEditor
                 }
             };
             poses.Add(pose);
-            populateSprite(spriteLogic.SpriteData);
-            populateFrame(null);
+            PopulateSprite(spriteLogic.SpriteData);
+            PopulateFrame(null);
             lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
         }
 
@@ -707,14 +757,14 @@ namespace SpriteEditor
 
             var poses = spriteLogic.SpriteData.Poses;
             poses.RemoveAt(lstPoses.SelectedIndex);
-            populateSprite(spriteLogic.SpriteData);
+            PopulateSprite(spriteLogic.SpriteData);
             if (lstPoses.Items.Count > 0)
             {
                 lstPoses.SelectedIndex = 0;
             }
             else
             {
-                clearPose();
+                ClearPose();
             }
         }
 
@@ -734,7 +784,7 @@ namespace SpriteEditor
                 newFrameIndex < selectedPose.Frames.Count)
             {
                 selectedFrame = selectedPose.Frames[newFrameIndex];
-                populateFrame(selectedFrame);
+                PopulateFrame(selectedFrame);
                 lstFrames.SelectedIndex = newFrameIndex;
             }
         }
@@ -758,14 +808,14 @@ namespace SpriteEditor
 
             var frames = selectedPose.Frames;
             var rect = new Rect(0, 0, 0, 0);
-            var bmp = openBitmap(spriteLogic.Image);
+            var bmp = OpenBitmap(spriteLogic.Image);
             if (bmp != null)
             {
                 rect = new Rect(0, 0, bmp.Width, bmp.Height);
             }
 
             frames.Add(new Frame() { Rectangle = rect });
-            populatePose(selectedPose);
+            PopulatePose(selectedPose);
             changeSelectedFrame(frames.Count - 1);
             spriteLogic.Reset(Environment.TickCount);
         }
@@ -779,14 +829,14 @@ namespace SpriteEditor
 
             var frames = selectedPose.Frames;
             frames.RemoveAt(lstFrames.SelectedIndex);
-            populatePose(selectedPose);
+            PopulatePose(selectedPose);
             if (lstFrames.Items.Count > 0)
             {
                 changeSelectedFrame(0);
             }
             else
             {
-                clearFrame();
+                ClearFrame();
             }
 
             spriteLogic.Reset(Environment.TickCount);
@@ -799,8 +849,8 @@ namespace SpriteEditor
                 return;
             }
             selectedPose.Frames.Clear();
-            populatePose(selectedPose);
-            clearFrame();
+            PopulatePose(selectedPose);
+            ClearFrame();
             spriteLogic.Reset(Environment.TickCount);
         }
 
@@ -818,7 +868,7 @@ namespace SpriteEditor
             }
 
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename, "frame");
+            SetImage(fullFilename, "frame");
         }
 
         private void btnFrameTransColor_Click(object sender, EventArgs e)
@@ -876,7 +926,7 @@ namespace SpriteEditor
             }
         }
 
-        private void setViewChecked(string view)
+        private void SetViewChecked(string view)
         {
             miFull.Checked = view == "full";
             miPreview.Checked = view == "preview";
@@ -886,17 +936,17 @@ namespace SpriteEditor
 
         private void miFull_Click(object sender, EventArgs e)
         {
-            setViewChecked("full");
+            SetViewChecked("full");
         }
 
         private void miPreview_Click(object sender, EventArgs e)
         {
-            setViewChecked("preview");
+            SetViewChecked("preview");
         }
 
         private void miAnimated_Click(object sender, EventArgs e)
         {
-            setViewChecked("animated");
+            SetViewChecked("animated");
         }
 
         private void miNew_Click(object sender, EventArgs e)
@@ -908,7 +958,7 @@ namespace SpriteEditor
             var poses = new List<Pose>();
             var spriteData = new SpriteData() { Image = "", Poses = poses };
             spriteLogic = new SpriteLogic(spriteData, null);
-            populateSprite(spriteData);
+            PopulateSprite(spriteData);
             miAdd_Click(sender, e);
             miAddFrame_Click(sender, e);
             pnlSprite.Invalidate();
@@ -922,10 +972,10 @@ namespace SpriteEditor
                 return;
             }
 
-            openSprite(ofdSprite.FileName);
+            OpenSprite(ofdSprite.FileName);
         }
 
-        private bool openSprite(string path)
+        private bool OpenSprite(string path)
         {
             stlMessage.Text = "";
             try
@@ -941,7 +991,7 @@ namespace SpriteEditor
                 lastImageName = null;
                 lastBitmap = null;
                 spriteLogic = new SpriteLogic(spriteData, path);
-                populateSprite(spriteData);
+                PopulateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
                 {
                     spriteLogic.SetPose(spriteData.Poses[0].NameWithTags(), Environment.TickCount);
@@ -955,7 +1005,7 @@ namespace SpriteEditor
 
                 pnlSprite.Invalidate();
 
-                addRecentFile(path);
+                AddRecentFile(path);
             }
             catch (Exception ex)
             {
@@ -966,7 +1016,7 @@ namespace SpriteEditor
             return true;
         }
 
-        private void addRecentFile(string path)
+        private void AddRecentFile(string path)
         {
             var fileSet = new HashSet<string>();
             var fileList = new List<string>();
@@ -985,7 +1035,7 @@ namespace SpriteEditor
             {
                 Settings.Default.RecentFiles.Add(file);
             }
-            populateRecentFiles();
+            PopulateRecentFiles();
         }
 
         private void miSave_Click(object sender, EventArgs e)
@@ -995,10 +1045,10 @@ namespace SpriteEditor
                 miSaveAs_Click(sender, e);
             }
 
-            saveSprite(spriteLogic.OpenedFileName);
+            SaveSprite(spriteLogic.OpenedFileName);
         }
 
-        private bool saveSprite(string filename)
+        private bool SaveSprite(string filename)
         {
             stlMessage.Text = "";
             try
@@ -1022,7 +1072,7 @@ namespace SpriteEditor
                 return;
             }
 
-            if (saveSprite(sfdSprite.FileName))
+            if (SaveSprite(sfdSprite.FileName))
             {
                 spriteLogic.OpenedFileName = sfdSprite.FileName;
                 Text = $"Sprite Editor - {Path.GetFileName(spriteLogic.OpenedFileName)}";
@@ -1062,7 +1112,7 @@ namespace SpriteEditor
             }
 
             changeSelectedFrame(lstFrames.SelectedIndex);
-            populateFrame(selectedFrame);
+            PopulateFrame(selectedFrame);
         }
 
         private void mnuFrame_Opening(object sender, CancelEventArgs e)
@@ -1089,8 +1139,14 @@ namespace SpriteEditor
                 return;
             }
 
+            AddExistingFrame(ObjectCopier.Clone(copiedFrame));
             selectedPose.Frames.Add(ObjectCopier.Clone(copiedFrame));
-            populatePose(selectedPose);
+        }
+
+        private void AddExistingFrame(Frame frameToAdd)
+        {
+            selectedPose.Frames.Add(frameToAdd);
+            PopulatePose(selectedPose);
             changeSelectedFrame(lstFrames.Items.Count - 1);
             spriteLogic.Reset(Environment.TickCount);
         }
@@ -1121,8 +1177,8 @@ namespace SpriteEditor
             }
 
             poses.Add(poseClone);
-            populateSprite(spriteLogic.SpriteData);
-            populateFrame(null);
+            PopulateSprite(spriteLogic.SpriteData);
+            PopulateFrame(null);
             lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
         }
 
@@ -1158,7 +1214,7 @@ namespace SpriteEditor
             txtBase.Text = selectedPath;
             if (!string.IsNullOrEmpty(spriteLogic.SpriteData.Image))
             {
-                setImage(spriteLogic.SpriteData.Image, "sprite");
+                SetImage(spriteLogic.SpriteData.Image, "sprite");
             }
         }
 
@@ -1194,11 +1250,11 @@ namespace SpriteEditor
 
             if (tbcSprite.SelectedTab == tabPose)
             {
-                populateSprite(spriteLogic.SpriteData);
+                PopulateSprite(spriteLogic.SpriteData);
             }
         }
 
-        private void changeState(string newState)
+        private void ChangeState(string newState)
         {
             if (newState == "")
             {
@@ -1211,7 +1267,7 @@ namespace SpriteEditor
 
             if (tbcSprite.SelectedTab == tabPose)
             {
-                populateSprite(spriteLogic.SpriteData);
+                PopulateSprite(spriteLogic.SpriteData);
             }
         }
 
@@ -1222,12 +1278,12 @@ namespace SpriteEditor
                 return;
             }
 
-            changeState((string)cbState.SelectedItem);
+            ChangeState((string)cbState.SelectedItem);
         }
 
         private void cbState_TextChanged(object sender, EventArgs e)
         {
-            changeState(cbState.Text);
+            ChangeState(cbState.Text);
         }
 
         private void miAddMultiple_Click(object sender, EventArgs e)
@@ -1239,7 +1295,7 @@ namespace SpriteEditor
 
             var img = string.IsNullOrEmpty(selectedPose.Image) ?
                 spriteLogic.SpriteData.Image : selectedPose.Image;
-            var bmp = openBitmap(img);
+            var bmp = OpenBitmap(img);
             if (bmp == null)
             {
                 stlMessage.Text = $"Error: Couldn't load bitmap {img}";
@@ -1262,7 +1318,7 @@ namespace SpriteEditor
             }
 
             var fullFilename = ofdImage.FileName;
-            setImage(fullFilename, "pose");
+            SetImage(fullFilename, "pose");
         }
 
         private void btnPoseTransColor_Click(object sender, EventArgs e)
@@ -1303,7 +1359,7 @@ namespace SpriteEditor
             selectedFrame.Sound = path;
         }
 
-        private void FrmSprite_KeyDown(object sender, KeyEventArgs e)
+        private void frmSprite_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers != Keys.Control)
             {
@@ -1314,20 +1370,20 @@ namespace SpriteEditor
             {
                 case Keys.Add:
                 case Keys.Oemplus:
-                    zoom(scaleIndex + 1);
+                    Zoom(scaleIndex + 1);
                     break;
                 case Keys.Subtract:
                 case Keys.OemMinus:
-                    zoom(scaleIndex - 1);
+                    Zoom(scaleIndex - 1);
                     break;
                 case Keys.D0:
                 case Keys.NumPad0:
-                    zoom(1);
+                    Zoom(1);
                     break;
             }
         }
 
-        private void zoom(int newIndex)
+        private void Zoom(int newIndex)
         {
             if (newIndex != scaleIndex && newIndex >= 0 && newIndex <= 5)
             {
@@ -1335,50 +1391,50 @@ namespace SpriteEditor
                 pnlSprite.Invalidate();
                 Settings.Default.ZoomLevel = scaleIndex;
             }
-            checkMagnificationMenuItem();
+            CheckMagnificationMenuItem();
         }
 
         private void miMagnification50_Click(object sender, EventArgs e)
         {
-            zoom(0);
+            Zoom(0);
         }
 
         private void miMagnification100_Click(object sender, EventArgs e)
         {
-            zoom(1);
+            Zoom(1);
         }
 
         private void miMagnification200_Click(object sender, EventArgs e)
         {
-            zoom(2);
+            Zoom(2);
         }
 
         private void miMagnification400_Click(object sender, EventArgs e)
         {
-            zoom(3);
+            Zoom(3);
         }
 
         private void miMagnification800_Click(object sender, EventArgs e)
         {
-            zoom(4);
+            Zoom(4);
         }
 
         private void miMagnification1600_Click(object sender, EventArgs e)
         {
-            zoom(5);
+            Zoom(5);
         }
 
         private void miMagnificationZoomIn_Click(object sender, EventArgs e)
         {
-            zoom(scaleIndex + 1);
+            Zoom(scaleIndex + 1);
         }
 
         private void miMagnificationZoomOut_Click(object sender, EventArgs e)
         {
-            zoom(scaleIndex - 1);
+            Zoom(scaleIndex - 1);
         }
 
-        private void checkMagnificationMenuItem()
+        private void CheckMagnificationMenuItem()
         {
             miMagnification50.Checked = scaleIndex == 0;
             miMagnification100.Checked = scaleIndex == 1;
@@ -1391,10 +1447,10 @@ namespace SpriteEditor
         private void miRecentFile_Click(object sender, EventArgs e)
         {
             var mi = sender as ToolStripMenuItem;
-            openSprite(mi.Text);
+            OpenSprite(mi.Text);
         }
 
-        private void LstFrames_KeyUp(object sender, KeyEventArgs e)
+        private void lstFrames_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -1402,7 +1458,7 @@ namespace SpriteEditor
             }
         }
 
-        private void LstPoses_KeyUp(object sender, KeyEventArgs e)
+        private void lstPoses_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -1438,6 +1494,31 @@ namespace SpriteEditor
         private void miAutoReload_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.AutoReloadImages = miAutoReload.Checked;
+        }
+
+        private void miGridSelection_CheckedChanged(object sender, EventArgs e)
+        {
+            if (miGridSelection.Checked)
+            {
+                SetViewChecked("full");
+            }
+            Settings.Default.UseGridSelection = miGridSelection.Checked;
+        }
+
+        private void pnlSprite_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left || selectedPose == null || !miFull.Checked) return;
+            var bitmapPos = MouseToBitmapPosition(e.Location);
+            if (!MouseWithinBitmapBounds(bitmapPos)) return;
+
+            var newFrame = selectedFrame == null ? new Frame() : ObjectCopier.Clone(selectedPose.Frames[lstFrames.SelectedIndex]);
+            var gridWidth = Settings.Default.GridWidth;
+            var gridHeight = Settings.Default.GridHeight;
+            newFrame.Rectangle.X = gridWidth * (int)(bitmapPos.X / (float)gridWidth);
+            newFrame.Rectangle.Y = gridHeight * (int)(bitmapPos.Y / (float)gridHeight);
+            newFrame.Rectangle.Width = gridWidth;
+            newFrame.Rectangle.Height = gridHeight;
+            AddExistingFrame(newFrame);
         }
     }
 }

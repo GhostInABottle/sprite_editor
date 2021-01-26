@@ -95,6 +95,7 @@
             this.miOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAutoReload = new System.Windows.Forms.ToolStripMenuItem();
             this.miRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miFull = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,6 +105,7 @@
             this.miShowSrcRect = new System.Windows.Forms.ToolStripMenuItem();
             this.miShowBoundingBox = new System.Windows.Forms.ToolStripMenuItem();
             this.miShowGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.miGridSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.miGridSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.miMagnification = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,9 +125,8 @@
             this.cdTransparentColor = new System.Windows.Forms.ColorDialog();
             this.fbdBase = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
-            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.fswUpdatedImageWatcher = new System.IO.FileSystemWatcher();
-            this.miAutoReload = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnlSprite = new SpriteEditor.FlickerFreePanel();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -260,7 +261,7 @@
             this.lstPoses.Size = new System.Drawing.Size(214, 459);
             this.lstPoses.TabIndex = 5;
             this.lstPoses.SelectedIndexChanged += new System.EventHandler(this.lstPoses_SelectedIndexChanged);
-            this.lstPoses.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LstPoses_KeyUp);
+            this.lstPoses.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lstPoses_KeyUp);
             // 
             // mnuPose
             // 
@@ -492,7 +493,7 @@
             this.lstFrames.SelectedIndexChanged += new System.EventHandler(this.lstFrames_SelectedIndexChanged);
             this.lstFrames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragDrop);
             this.lstFrames.DragOver += new System.Windows.Forms.DragEventHandler(this.lstFrames_DragOver);
-            this.lstFrames.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LstFrames_KeyUp);
+            this.lstFrames.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lstFrames_KeyUp);
             this.lstFrames.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstFrames_MouseDown);
             // 
             // mnuFrame
@@ -907,6 +908,14 @@
             this.miSaveAs.Text = "Save &As...";
             this.miSaveAs.Click += new System.EventHandler(this.miSaveAs_Click);
             // 
+            // miAutoReload
+            // 
+            this.miAutoReload.CheckOnClick = true;
+            this.miAutoReload.Name = "miAutoReload";
+            this.miAutoReload.Size = new System.Drawing.Size(182, 22);
+            this.miAutoReload.Text = "Auto-Reload Images";
+            this.miAutoReload.CheckedChanged += new System.EventHandler(this.miAutoReload_CheckedChanged);
+            // 
             // miRecentFiles
             // 
             this.miRecentFiles.Name = "miRecentFiles";
@@ -923,6 +932,7 @@
             this.miShowSrcRect,
             this.miShowBoundingBox,
             this.miShowGrid,
+            this.miGridSelection,
             this.miGridSettings,
             this.toolStripSeparator2,
             this.miMagnification});
@@ -987,6 +997,14 @@
             this.miShowGrid.Size = new System.Drawing.Size(223, 22);
             this.miShowGrid.Text = "Show Grid";
             this.miShowGrid.CheckedChanged += new System.EventHandler(this.miShowGrid_CheckChanged);
+            // 
+            // miGridSelection
+            // 
+            this.miGridSelection.CheckOnClick = true;
+            this.miGridSelection.Name = "miGridSelection";
+            this.miGridSelection.Size = new System.Drawing.Size(223, 22);
+            this.miGridSelection.Text = "Grid Selection";
+            this.miGridSelection.CheckedChanged += new System.EventHandler(this.miGridSelection_CheckedChanged);
             // 
             // miGridSettings
             // 
@@ -1112,6 +1130,13 @@
             this.ofdSound.Filter = "Sound files|*.wav;*.ogg;*.mp3";
             this.ofdSound.Title = "Select sprite image";
             // 
+            // fswUpdatedImageWatcher
+            // 
+            this.fswUpdatedImageWatcher.EnableRaisingEvents = true;
+            this.fswUpdatedImageWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
+            this.fswUpdatedImageWatcher.SynchronizingObject = this;
+            this.fswUpdatedImageWatcher.Changed += new System.IO.FileSystemEventHandler(this.fswUpdatedImageWatcher_Changed);
+            // 
             // pnlSprite
             // 
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1120,21 +1145,7 @@
             this.pnlSprite.Size = new System.Drawing.Size(750, 665);
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
-            // 
-            // fswUpdatedImageWatcher
-            // 
-            this.fswUpdatedImageWatcher.EnableRaisingEvents = true;
-            this.fswUpdatedImageWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
-            this.fswUpdatedImageWatcher.SynchronizingObject = this;
-            this.fswUpdatedImageWatcher.Changed += new System.IO.FileSystemEventHandler(this.fswUpdatedImageWatcher_Changed);
-            // 
-            // miAutoReload
-            // 
-            this.miAutoReload.CheckOnClick = true;
-            this.miAutoReload.Name = "miAutoReload";
-            this.miAutoReload.Size = new System.Drawing.Size(182, 22);
-            this.miAutoReload.Text = "Auto-Reload Images";
-            this.miAutoReload.CheckedChanged += new System.EventHandler(this.miAutoReload_CheckedChanged);
+            this.pnlSprite.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnlSprite_MouseClick);
             // 
             // FrmSprite
             // 
@@ -1153,7 +1164,7 @@
             this.Text = "Sprite Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSprite_FormClosed);
             this.Load += new System.EventHandler(this.frmSprite_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmSprite_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmSprite_KeyDown);
             this.tbcSprite.ResumeLayout(false);
             this.tabSprite.ResumeLayout(false);
             this.tabSprite.PerformLayout();
@@ -1285,6 +1296,7 @@
         private System.Windows.Forms.Label lblDefaultPose;
         private System.IO.FileSystemWatcher fswUpdatedImageWatcher;
         private System.Windows.Forms.ToolStripMenuItem miAutoReload;
+        private System.Windows.Forms.ToolStripMenuItem miGridSelection;
     }
 }
 

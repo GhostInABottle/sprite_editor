@@ -144,5 +144,17 @@ namespace SpriteEditor.Properties {
                 this["AutoReloadImages"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseGridSelection {
+            get {
+                return ((bool)(this["UseGridSelection"]));
+            }
+            set {
+                this["UseGridSelection"] = value;
+            }
+        }
     }
 }
