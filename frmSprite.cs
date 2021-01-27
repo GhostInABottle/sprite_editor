@@ -122,7 +122,7 @@ namespace SpriteEditor
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             var currentPose = spriteLogic.CurrentPose;
             var currentFrame = spriteLogic.CurrentFrame;
-            if (currentPose == null || currentFrame == null)
+            if (currentPose == null || (currentFrame == null && !miFull.Checked))
             {
                 return;
             }
@@ -178,7 +178,7 @@ namespace SpriteEditor
 
             // Set alpha
             var attributes = new ImageAttributes();
-            if (!Utilities.CheckClose(currentFrame.Opacity, 1.0f, 0.01f))
+            if (currentFrame != null && !Utilities.CheckClose(currentFrame.Opacity, 1.0f, 0.01f))
             {
                 var matrix = new ColorMatrix
                 {
@@ -351,7 +351,6 @@ namespace SpriteEditor
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
             if (spriteLogic?.CurrentPose == null ||
-                spriteLogic.CurrentFrame == null ||
                 !ValidateFrames(spriteLogic.CurrentPose.Frames))
             {
                 return;
@@ -364,10 +363,6 @@ namespace SpriteEditor
             else if (lstFrames.SelectedIndex != -1)
             {
                 spriteLogic.SetFrame(lstFrames.SelectedIndex);
-            }
-            else
-            {
-                return;
             }
 
             pnlSprite.Invalidate();
@@ -1511,7 +1506,7 @@ namespace SpriteEditor
             var bitmapPos = MouseToBitmapPosition(e.Location);
             if (!MouseWithinBitmapBounds(bitmapPos)) return;
 
-            var newFrame = selectedFrame == null ? new Frame() : ObjectCopier.Clone(selectedPose.Frames[lstFrames.SelectedIndex]);
+            var newFrame = new Frame();
             var gridWidth = Settings.Default.GridWidth;
             var gridHeight = Settings.Default.GridHeight;
             newFrame.Rectangle.X = gridWidth * (int)(bitmapPos.X / (float)gridWidth);
