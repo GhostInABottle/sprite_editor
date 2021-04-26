@@ -45,6 +45,7 @@
             this.chkRectangular = new System.Windows.Forms.CheckBox();
             this.lblPattern = new System.Windows.Forms.Label();
             this.txtPattern = new System.Windows.Forms.TextBox();
+            this.chkFourDirections = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblStartingX
@@ -86,7 +87,7 @@
             // lblFrameCount
             // 
             this.lblFrameCount.AutoSize = true;
-            this.lblFrameCount.Location = new System.Drawing.Point(137, 69);
+            this.lblFrameCount.Location = new System.Drawing.Point(10, 69);
             this.lblFrameCount.Name = "lblFrameCount";
             this.lblFrameCount.Size = new System.Drawing.Size(67, 13);
             this.lblFrameCount.TabIndex = 4;
@@ -95,7 +96,7 @@
             // btnAdd
             // 
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(83, 144);
+            this.btnAdd.Location = new System.Drawing.Point(83, 145);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(107, 32);
             this.btnAdd.TabIndex = 6;
@@ -133,7 +134,7 @@
             // 
             // txtFrameCount
             // 
-            this.txtFrameCount.Location = new System.Drawing.Point(213, 66);
+            this.txtFrameCount.Location = new System.Drawing.Point(83, 66);
             this.txtFrameCount.Name = "txtFrameCount";
             this.txtFrameCount.Size = new System.Drawing.Size(45, 20);
             this.txtFrameCount.TabIndex = 11;
@@ -141,7 +142,7 @@
             // txtPerRow
             // 
             this.txtPerRow.Enabled = false;
-            this.txtPerRow.Location = new System.Drawing.Point(213, 92);
+            this.txtPerRow.Location = new System.Drawing.Point(213, 66);
             this.txtPerRow.Name = "txtPerRow";
             this.txtPerRow.Size = new System.Drawing.Size(45, 20);
             this.txtPerRow.TabIndex = 14;
@@ -149,7 +150,7 @@
             // lblPerRow
             // 
             this.lblPerRow.AutoSize = true;
-            this.lblPerRow.Location = new System.Drawing.Point(137, 95);
+            this.lblPerRow.Location = new System.Drawing.Point(134, 69);
             this.lblPerRow.Name = "lblPerRow";
             this.lblPerRow.Size = new System.Drawing.Size(76, 13);
             this.lblPerRow.TabIndex = 13;
@@ -158,17 +159,17 @@
             // chkVertical
             // 
             this.chkVertical.AutoSize = true;
-            this.chkVertical.Location = new System.Drawing.Point(13, 66);
+            this.chkVertical.Location = new System.Drawing.Point(12, 96);
             this.chkVertical.Name = "chkVertical";
-            this.chkVertical.Size = new System.Drawing.Size(106, 17);
+            this.chkVertical.Size = new System.Drawing.Size(61, 17);
             this.chkVertical.TabIndex = 12;
-            this.chkVertical.Text = "Vertical Direction";
+            this.chkVertical.Text = "Vertical";
             this.chkVertical.UseVisualStyleBackColor = true;
             // 
             // chkRectangular
             // 
             this.chkRectangular.AutoSize = true;
-            this.chkRectangular.Location = new System.Drawing.Point(13, 89);
+            this.chkRectangular.Location = new System.Drawing.Point(79, 96);
             this.chkRectangular.Name = "chkRectangular";
             this.chkRectangular.Size = new System.Drawing.Size(84, 17);
             this.chkRectangular.TabIndex = 15;
@@ -179,7 +180,7 @@
             // lblPattern
             // 
             this.lblPattern.AutoSize = true;
-            this.lblPattern.Location = new System.Drawing.Point(10, 121);
+            this.lblPattern.Location = new System.Drawing.Point(9, 122);
             this.lblPattern.Name = "lblPattern";
             this.lblPattern.Size = new System.Drawing.Size(41, 13);
             this.lblPattern.TabIndex = 16;
@@ -187,16 +188,28 @@
             // 
             // txtPattern
             // 
-            this.txtPattern.Location = new System.Drawing.Point(57, 118);
+            this.txtPattern.Location = new System.Drawing.Point(57, 119);
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(201, 20);
             this.txtPattern.TabIndex = 17;
+            // 
+            // chkFourDirections
+            // 
+            this.chkFourDirections.AutoSize = true;
+            this.chkFourDirections.Location = new System.Drawing.Point(169, 96);
+            this.chkFourDirections.Name = "chkFourDirections";
+            this.chkFourDirections.Size = new System.Drawing.Size(82, 17);
+            this.chkFourDirections.TabIndex = 18;
+            this.chkFourDirections.Text = "4 Directions";
+            this.chkFourDirections.UseVisualStyleBackColor = true;
+            this.chkFourDirections.CheckedChanged += new System.EventHandler(this.chkFourDirections_CheckedChanged);
             // 
             // frmAddFrames
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 184);
+            this.ClientSize = new System.Drawing.Size(273, 183);
+            this.Controls.Add(this.chkFourDirections);
             this.Controls.Add(this.txtPattern);
             this.Controls.Add(this.lblPattern);
             this.Controls.Add(this.chkRectangular);
@@ -241,5 +254,6 @@
         private System.Windows.Forms.CheckBox chkRectangular;
         private System.Windows.Forms.Label lblPattern;
         private System.Windows.Forms.TextBox txtPattern;
+        private System.Windows.Forms.CheckBox chkFourDirections;
     }
 }

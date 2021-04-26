@@ -18,6 +18,12 @@ namespace SpriteEditor
             Y = y;
         }
 
+        public Vec2(Vec2 other)
+        {
+            X = other.X;
+            Y = other.Y;
+        }
+
         public float X { get; set; }
 
         public float Y { get; set; }
@@ -30,7 +36,8 @@ namespace SpriteEditor
         public static Vec2 FromString(string input)
         {
             Vec2 result = null;
-            const string pattern = @"^\(\s*(-?(\d+.)?\d+)\s*,\s*(-?(\d+.)?\d+)\s*\)$";
+            // Matches strings like (12.5, -3.6) or (3, 5)
+            const string pattern = @"^\(\s*(-?(\d+\.)?\d+)\s*,\s*(-?(\d+\.)?\d+)\s*\)$";
             var match = Regex.Match(input, pattern);
             if (match.Success)
             {
@@ -42,11 +49,6 @@ namespace SpriteEditor
             }
 
             return result;
-        }
-
-        public bool Equals(int x, int y)
-        {
-            return Utilities.CheckClose(X, x) && Utilities.CheckClose(Y, y);
         }
 
         public override string ToString()

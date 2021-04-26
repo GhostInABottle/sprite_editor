@@ -21,6 +21,14 @@ namespace SpriteEditor
             Height = h;
         }
 
+        public Rect(Rect other)
+        {
+            X = other.X;
+            Y = other.Y;
+            Width = other.Width;
+            Height = other.Height;
+        }
+
         public int X { get; set; }
 
         public int Y { get; set; }
@@ -37,6 +45,7 @@ namespace SpriteEditor
         public static Rect FromString(string input)
         {
             Rect result = null;
+            // Matches patterns like (-33, 2, 4, 12)
             const string pattern = @"^\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\)$";
             var match = Regex.Match(input, pattern);
             if (match.Success)

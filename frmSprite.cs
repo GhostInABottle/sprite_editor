@@ -41,6 +41,27 @@ namespace SpriteEditor
             InitializeComponent();
         }
 
+        public void AddPoses(List<Pose> newPoses)
+        {
+            if (!newPoses.Any())
+            {
+                return;
+            }
+            if (selectedPose != null)
+            {
+                foreach (var pose in newPoses)
+                {
+                    pose.BoundingBox = new Rect(selectedPose.BoundingBox);
+                    pose.DefaultDuration = selectedPose.DefaultDuration;
+                }
+            }
+            spriteLogic.SpriteData.Poses.AddRange(newPoses);
+            PopulateSprite(spriteLogic.SpriteData);
+            PopulateFrame(null);
+            lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
+            spriteLogic.Reset(Environment.TickCount);
+        }
+
         public void AddFrames(List<Frame> newFrames)
         {
             selectedPose.Frames.AddRange(newFrames);

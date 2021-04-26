@@ -105,6 +105,7 @@
     <Compile Include="SpriteData.cs" />
     <Compile Include="SpriteLogic.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="IntVec2.cs" />
     <Compile Include="Vec2.cs" />
     <EmbeddedResource Include="frmAddFrames.resx">
       <DependentUpon>frmAddFrames.cs</DependentUpon>
