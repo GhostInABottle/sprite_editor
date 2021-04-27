@@ -34,7 +34,7 @@ namespace SpriteEditor
             txtPattern.ForeColor = Color.Black;
             try
             {
-                if (chkFourDirections.Checked)
+                if (chkDirectional.Checked)
                 {
                     var poses = getPoses();
                     if (poses.Count == 0)
@@ -76,38 +76,60 @@ namespace SpriteEditor
                 return poses;
             }
 
-            var validDirectins = new[] { "Up", "Right", "Down", "Left" };
             var start = new IntVec2(startX, startY);
             var frameSize = new IntVec2(frameWidth, frameHeight);
-            // Generates a frane pattern like 2,3,4,1
-            var range = Enumerable.Range(1, frameCount);
-            var defaultFramePattern = frameCount == 1 ? "" : string.Join(",", range.Skip(1).Concat(range.Take(1)));
 
-            var pattern = "Up,Right,Down,Left";
-            if (!string.IsNullOrEmpty(txtPattern.Text))
+            string framePattern = txtPattern.Text;
+
+            if (string.IsNullOrEmpty(framePattern) && frameCount > 1)
             {
-                pattern = txtPattern.Text;
+                // Generates a frane pattern like 2,3,4,1
+                var range = Enumerable.Range(1, frameCount);
+                framePattern = string.Join(",", range.Skip(1).Concat(range.Take(1)));
             }
-            var parts = pattern.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
-            // Validate the pattern
-            foreach (var validDirection in validDirectins)
+
+            var comparer = StringComparer.OrdinalIgnoreCase;
+            var directionMap = new Dictionary<string, string>(comparer)
             {
-                if (!parts.Contains(validDirection))
+                { "Up", "Up" },
+                { "Right", "Right" },
+                { "Down", "Down" },
+                { "Left", "Left" },
+                { "Up|Left", "Up|Left" },
+                { "Up|Right", "Up|Right" },
+                { "Down|Left", "Down|Left" },
+                { "Down|Right", "Down|Right" },
+                { "U", "Up" },
+                { "R", "Right" },
+                { "D", "Down" },
+                { "L", "Left" },
+                { "UL", "Up|Left" },
+                { "UR", "Up|Right" },
+                { "DL", "Down|Left" },
+                { "DR", "Down|Right" },
+            };
+
+            // Handle patterns like Up,Right,Down,Left or U,R,D,L
+            string directionPattern = !string.IsNullOrEmpty(txtDirectionPattern.Text)
+                ? txtDirectionPattern.Text : "Up,Right,Down,Left";
+            var parts = directionPattern.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+
+            foreach (var direction in parts)
+            {
+                if (!directionMap.ContainsKey(direction))
                 {
                     txtPattern.ForeColor = Color.Red;
                     txtPattern.Focus();
                     return new List<Pose>();
                 }
-            }
-            foreach (var direction in parts)
-            {
+
                 var facePose = new Pose
                 {
                     Tags = new Dictionary<string, string>()
                     {
                         { "Name", defaultPoseName },
                         { "State", "Face" },
-                        { "Direction", direction }
+                        { "Direction", directionMap[direction] }
                     },
                     Frames = getFrames(start, frameSize, 1)
                 };
@@ -119,12 +141,12 @@ namespace SpriteEditor
                     {
                         { "Name", defaultPoseName },
                         { "State", "Walk" },
-                        { "Direction", direction }
+                        { "Direction", directionMap[direction] }
                     },
-                    Frames = getFrames(start, frameSize, frameCount, pattern: defaultFramePattern)
+                    Frames = getFrames(start, frameSize, frameCount, pattern: framePattern)
                 };
                 poses.Add(walkPose);
-                start.Y = start.Y + frameSize.Y;
+                start.Y += frameSize.Y;
             }
 
             return poses;
@@ -240,11 +262,12 @@ namespace SpriteEditor
             txtPerRow.Enabled = chkRectangular.Checked;
         }
 
-        private void chkFourDirections_CheckedChanged(object sender, EventArgs e)
+        private void chkDirectional_CheckedChanged(object sender, EventArgs e)
         {
-            chkRectangular.Enabled = !chkFourDirections.Checked;
-            chkVertical.Enabled = !chkFourDirections.Checked;
-            txtPerRow.Enabled = !chkFourDirections.Checked && chkRectangular.Checked;
+            chkRectangular.Enabled = !chkDirectional.Checked;
+            chkVertical.Enabled = !chkDirectional.Checked;
+            txtPerRow.Enabled = !chkDirectional.Checked && chkRectangular.Checked;
+            txtDirectionPattern.Enabled = chkDirectional.Checked;
         }
 
         private class PatternException : ArgumentException

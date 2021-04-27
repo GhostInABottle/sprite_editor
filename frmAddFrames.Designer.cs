@@ -45,7 +45,9 @@
             this.chkRectangular = new System.Windows.Forms.CheckBox();
             this.lblPattern = new System.Windows.Forms.Label();
             this.txtPattern = new System.Windows.Forms.TextBox();
-            this.chkFourDirections = new System.Windows.Forms.CheckBox();
+            this.chkDirectional = new System.Windows.Forms.CheckBox();
+            this.lblDirPattern = new System.Windows.Forms.Label();
+            this.txtDirectionPattern = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblStartingX
@@ -96,7 +98,7 @@
             // btnAdd
             // 
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(83, 145);
+            this.btnAdd.Location = new System.Drawing.Point(83, 170);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(107, 32);
             this.btnAdd.TabIndex = 6;
@@ -182,34 +184,53 @@
             this.lblPattern.AutoSize = true;
             this.lblPattern.Location = new System.Drawing.Point(9, 122);
             this.lblPattern.Name = "lblPattern";
-            this.lblPattern.Size = new System.Drawing.Size(41, 13);
+            this.lblPattern.Size = new System.Drawing.Size(73, 13);
             this.lblPattern.TabIndex = 16;
-            this.lblPattern.Text = "Pattern";
+            this.lblPattern.Text = "Frame Pattern";
             // 
             // txtPattern
             // 
-            this.txtPattern.Location = new System.Drawing.Point(57, 119);
+            this.txtPattern.Location = new System.Drawing.Point(83, 119);
             this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(201, 20);
+            this.txtPattern.Size = new System.Drawing.Size(175, 20);
             this.txtPattern.TabIndex = 17;
             // 
-            // chkFourDirections
+            // chkDirectional
             // 
-            this.chkFourDirections.AutoSize = true;
-            this.chkFourDirections.Location = new System.Drawing.Point(169, 96);
-            this.chkFourDirections.Name = "chkFourDirections";
-            this.chkFourDirections.Size = new System.Drawing.Size(82, 17);
-            this.chkFourDirections.TabIndex = 18;
-            this.chkFourDirections.Text = "4 Directions";
-            this.chkFourDirections.UseVisualStyleBackColor = true;
-            this.chkFourDirections.CheckedChanged += new System.EventHandler(this.chkFourDirections_CheckedChanged);
+            this.chkDirectional.AutoSize = true;
+            this.chkDirectional.Location = new System.Drawing.Point(169, 96);
+            this.chkDirectional.Name = "chkDirectional";
+            this.chkDirectional.Size = new System.Drawing.Size(76, 17);
+            this.chkDirectional.TabIndex = 18;
+            this.chkDirectional.Text = "Directional";
+            this.chkDirectional.UseVisualStyleBackColor = true;
+            this.chkDirectional.CheckedChanged += new System.EventHandler(this.chkDirectional_CheckedChanged);
+            // 
+            // lblDirPattern
+            // 
+            this.lblDirPattern.AutoSize = true;
+            this.lblDirPattern.Location = new System.Drawing.Point(10, 146);
+            this.lblDirPattern.Name = "lblDirPattern";
+            this.lblDirPattern.Size = new System.Drawing.Size(60, 13);
+            this.lblDirPattern.TabIndex = 19;
+            this.lblDirPattern.Text = "Dir. Pattern";
+            // 
+            // txtDirectionPattern
+            // 
+            this.txtDirectionPattern.Enabled = false;
+            this.txtDirectionPattern.Location = new System.Drawing.Point(83, 143);
+            this.txtDirectionPattern.Name = "txtDirectionPattern";
+            this.txtDirectionPattern.Size = new System.Drawing.Size(175, 20);
+            this.txtDirectionPattern.TabIndex = 20;
             // 
             // frmAddFrames
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 183);
-            this.Controls.Add(this.chkFourDirections);
+            this.ClientSize = new System.Drawing.Size(273, 214);
+            this.Controls.Add(this.txtDirectionPattern);
+            this.Controls.Add(this.lblDirPattern);
+            this.Controls.Add(this.chkDirectional);
             this.Controls.Add(this.txtPattern);
             this.Controls.Add(this.lblPattern);
             this.Controls.Add(this.chkRectangular);
@@ -254,6 +275,8 @@
         private System.Windows.Forms.CheckBox chkRectangular;
         private System.Windows.Forms.Label lblPattern;
         private System.Windows.Forms.TextBox txtPattern;
-        private System.Windows.Forms.CheckBox chkFourDirections;
+        private System.Windows.Forms.CheckBox chkDirectional;
+        private System.Windows.Forms.Label lblDirPattern;
+        private System.Windows.Forms.TextBox txtDirectionPattern;
     }
 }

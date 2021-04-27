@@ -57,9 +57,6 @@ namespace SpriteEditor
             }
             spriteLogic.SpriteData.Poses.AddRange(newPoses);
             PopulateSprite(spriteLogic.SpriteData);
-            PopulateFrame(null);
-            lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
-            spriteLogic.Reset(Environment.TickCount);
         }
 
         public void AddFrames(List<Frame> newFrames)

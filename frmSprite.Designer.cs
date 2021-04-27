@@ -465,7 +465,11 @@
             "Up",
             "Right",
             "Down",
-            "Left"});
+            "Left",
+            "Up|Right",
+            "Up|Left",
+            "Down|Right",
+            "Down|Left"});
             this.cbDirection.Location = new System.Drawing.Point(9, 214);
             this.cbDirection.Name = "cbDirection";
             this.cbDirection.Size = new System.Drawing.Size(214, 21);
