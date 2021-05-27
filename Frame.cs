@@ -7,7 +7,6 @@ namespace SpriteEditor
     /// <summary>
     /// A single frame in a pose.
     /// </summary>
-    [Serializable]
     public class Frame
     {
         public Frame()
@@ -18,6 +17,19 @@ namespace SpriteEditor
             Opacity = 1.0f;
             IsTweenFrame = false;
             Rectangle = new Rect(0, 0, 0, 0);
+        }
+
+        public Frame(Frame other)
+        {
+            Duration = other.Duration;
+            Rectangle = new Rect(other.Rectangle);
+            Magnification = new Vec2(other.Magnification);
+            Angle = other.Angle;
+            Opacity = other.Opacity;
+            IsTweenFrame = other.IsTweenFrame;
+            Image = other.Image;
+            TransparentColor = other.TransparentColor;
+            Sound = other.Sound;
         }
 
         /// <summary>

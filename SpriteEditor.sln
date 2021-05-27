@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEditor", "SpriteEditor.csproj", "{44D80014-D8D7-43A5-9168-6CCC0A35680A}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpriteEditor", "SpriteEditor.csproj", "{44D80014-D8D7-43A5-9168-6CCC0A35680A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,12 +15,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|x86.ActiveCfg = Debug|x86
 		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Debug|x86.Build.0 = Debug|x86
-		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|Any CPU.ActiveCfg = Release|x86
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{44D80014-D8D7-43A5-9168-6CCC0A35680A}.Release|x86.ActiveCfg = Release|x86
@@ -26,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2877C78-C82D-44E9-85A9-C56640A8B4EC}
 	EndGlobalSection
 EndGlobal

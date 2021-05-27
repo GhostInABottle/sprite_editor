@@ -10,7 +10,6 @@ namespace SpriteEditor
     /// A container of poses. SpriteData only contains data read from XML files and
     /// not any actual logic, which is represented by SpriteLogic.
     /// </summary>
-    [Serializable]
     public class SpriteData
     {
         public SpriteData()

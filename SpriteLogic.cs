@@ -39,7 +39,7 @@ namespace SpriteEditor
         /// <summary>
         /// For playing sound effects
         /// </summary>
-        private SoundPlayer player = new SoundPlayer();
+        private SoundPlayer player = OperatingSystem.IsWindows() ? new SoundPlayer() : null;
 
         /// <summary>
         /// Last frame where sound was played
@@ -176,8 +176,11 @@ namespace SpriteEditor
             // If animation is still not finished...
             if (!string.IsNullOrEmpty(CurrentFrame.Sound) && lastSoundFrame != frameIndex)
             {
-                player.SoundLocation = ResolvePath(CurrentFrame.Sound);
-                player.Play();
+                if (OperatingSystem.IsWindows())
+                {
+                    player.SoundLocation = ResolvePath(CurrentFrame.Sound);
+                    player.Play();
+                }
                 lastSoundFrame = frameIndex;
             }
 
@@ -298,7 +301,7 @@ namespace SpriteEditor
         /// @param alpha Current time.
         /// @return Linearly interpolated value at time alpha.
         /// </summary>
-        private float Lerp(float start, float end, float alpha)
+        private static float Lerp(float start, float end, float alpha)
         {
             return (1.0f - alpha) * start + alpha * end;
         }

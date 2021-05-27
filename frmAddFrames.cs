@@ -8,7 +8,7 @@ namespace SpriteEditor
 {
     public partial class frmAddFrames : Form
     {
-        private FrmSprite mainForm;
+        private readonly FrmSprite mainForm;
         private Bitmap bitmap;
         private const string defaultPoseName = "Normal";
 
@@ -225,7 +225,7 @@ namespace SpriteEditor
                 {
                     throw new PatternException();
                 }
-                indexedFrames.Add(ObjectCopier.Clone(newFrames[index - 1]));
+                indexedFrames.Add(new Frame(newFrames[index - 1]));
             }
             return indexedFrames;
         }

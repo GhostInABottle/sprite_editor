@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SpriteEditor
@@ -7,7 +8,6 @@ namespace SpriteEditor
     /// <summary>
     /// A single pose in a sprite.
     /// </summary>
-    [Serializable]
     public class Pose
     {
         /// <summary>
@@ -22,6 +22,23 @@ namespace SpriteEditor
             Origin = new Vec2(0.0f, 0.0f);
             Tags = new Dictionary<string, string>();
             Frames = new List<Frame>();
+        }
+
+        public Pose(Pose other)
+        {
+            BoundingBox = new Rect(other.BoundingBox);
+            DefaultDuration = other.DefaultDuration;
+            Repeats = other.Repeats;
+            RequireCompletion = other.RequireCompletion;
+            Origin = new Vec2(other.Origin);
+            Image = other.Image;
+            TransparentColor = other.TransparentColor;
+            Tags = new Dictionary<string, string>();
+            foreach (var (key, value) in other.Tags)
+            {
+                Tags[key] = value;
+            }
+            Frames = other.Frames.Select(x => new Frame(x)).ToList();
         }
 
         /// <summary>

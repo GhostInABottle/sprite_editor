@@ -23,7 +23,7 @@ namespace SpriteEditor
         {
             if (colorString == null)
             {
-                throw new ArgumentNullException("colorString");
+                throw new ArgumentNullException(nameof(colorString));
             }
 
             var match = hexRegex.Match(colorString);
