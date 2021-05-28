@@ -27,7 +27,7 @@ namespace SpriteEditor
         private Frame selectedFrame;
         private Pose copiedPose;
         private Frame copiedFrame;
-        private readonly frmGridSize gridSizeForm = new frmGridSize();
+        private readonly frmGridSize gridSizeForm = new();
         private readonly frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
@@ -88,17 +88,12 @@ namespace SpriteEditor
         private void frmSprite_Load(object sender, EventArgs e)
         {
             SetViewChecked(Settings.Default.DisplayMode);
-            miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
-            miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
-            miShowGrid.Checked = Settings.Default.ShowGrid;
-            miAutoReload.Checked = Settings.Default.AutoReloadImages;
-            miGridSelection.Checked = Settings.Default.UseGridSelection;
-            miTransparent.Checked = Settings.Default.UseTransparentColor;
+            InitializeMenuItems();
             Zoom(Settings.Default.ZoomLevel);
+            PopulateRecentFiles();
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
             bool opened = false;
-            PopulateRecentFiles();
             if (args.Length > 1 && File.Exists(args[1]))
             {
                 opened = OpenSprite(args[1]);
@@ -108,6 +103,16 @@ namespace SpriteEditor
             {
                 miNew_Click(sender, e);
             }
+        }
+
+        private void InitializeMenuItems()
+        {
+            miShowSrcRect.Checked = Settings.Default.ShowSrcRect;
+            miShowBoundingBox.Checked = Settings.Default.ShowBoundingBox;
+            miShowGrid.Checked = Settings.Default.ShowGrid;
+            miAutoReload.Checked = Settings.Default.AutoReloadImages;
+            miGridSelection.Checked = Settings.Default.UseGridSelection;
+            miTransparent.Checked = Settings.Default.UseTransparentColor;
         }
 
         private void PopulateRecentFiles()
@@ -182,6 +187,56 @@ namespace SpriteEditor
 
             e.Graphics.TranslateTransform(pnlSprite.AutoScrollPosition.X, pnlSprite.AutoScrollPosition.Y);
             e.Graphics.MultiplyTransform(transform);
+            ImageAttributes attributes = GetImageAttributes(currentPose, currentFrame);
+
+            // Draw the sprite
+            e.Graphics.FillRectangle(BackgroundBrush, dest);
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.DrawImage(
+                                    lastBitmap,
+                                    dest,
+                                    source.X,
+                                    source.Y,
+                                    source.Width,
+                                    source.Height,
+                                    GraphicsUnit.Pixel,
+                                    attributes);
+
+            // Draw the grid
+            var gridWidth = (int)(Settings.Default.GridWidth * ScalingX);
+            var gridHeight = (int)(Settings.Default.GridHeight * ScalingY);
+            if (Settings.Default.ShowGrid)
+            {
+                DrawGrid(e, dest, gridWidth, gridHeight);
+            }
+
+            // Draw bounding box in animated and non-animated views
+            if (Settings.Default.ShowBoundingBox &&
+                !miFull.Checked && selectedPose != null)
+            {
+                DrawBoundingBox(e, midX, midY, dest);
+            }
+
+            // Draw source rect and selected rect in full sprite view
+            if (miFull.Checked)
+            {
+                if (Settings.Default.ShowSrcRect && selectedFrame != null)
+                {
+                    DrawSourceRect(e, midX, midY);
+                }
+
+                if (Settings.Default.UseGridSelection)
+                {
+                    DrawSelectedRect(e, midX, midY, gridWidth, gridHeight);
+                }
+
+            }
+
+            e.Graphics.ResetTransform();
+        }
+
+        private ImageAttributes GetImageAttributes(Pose currentPose, Frame currentFrame)
+        {
 
             // Set alpha
             var attributes = new ImageAttributes();
@@ -205,111 +260,88 @@ namespace SpriteEditor
                     attributes.SetColorKey(transparentColor, transparentColor);
                 }
             }
- 
-            // Draw the sprite
-            e.Graphics.FillRectangle(BackgroundBrush, dest);
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.DrawImage(
-                                    lastBitmap,
-                                    dest,
-                                    source.X,
-                                    source.Y,
-                                    source.Width,
-                                    source.Height,
-                                    GraphicsUnit.Pixel,
-                                    attributes);
 
-            // Draw the grid
-            var gridWidth = (int)(Settings.Default.GridWidth * ScalingX);
-            var gridHeight = (int)(Settings.Default.GridHeight * ScalingY);
-            if (Settings.Default.ShowGrid)
+            return attributes;
+        }
+
+        private void DrawSelectedRect(PaintEventArgs e, int midX, int midY, int gridWidth, int gridHeight)
+        {
+            var panelCursorPos = pnlSprite.PointToClient(Cursor.Position);
+            var bitmapCursorPos = MouseToBitmapPosition(panelCursorPos);
+
+            if (MouseWithinBitmapBounds(bitmapCursorPos))
             {
-                var pen = new Pen(Settings.Default.GridColor);
-                for (int y = dest.Y; y <= dest.Y + dest.Height; y += gridHeight)
+                var selectRect = new Rectangle
                 {
-                    for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
-                    {
-                        e.Graphics.DrawLine(pen, x, dest.Y, x, dest.Y + dest.Height);
-                    }
+                    X = gridWidth * (int)(ScalingX * bitmapCursorPos.X / gridWidth) + midX,
+                    Y = gridHeight * (int)(ScalingY * bitmapCursorPos.Y / gridHeight) + midY,
+                    Width = gridWidth,
+                    Height = gridHeight
+                };
+                e.Graphics.FillRectangle(SelectedRectBrush, selectRect);
+            }
+        }
 
-                    e.Graphics.DrawLine(pen, dest.X, y, dest.X + dest.Width, y);
-                }
+        private void DrawSourceRect(PaintEventArgs e, int midX, int midY)
+        {
+            var currentRect = (Rectangle)selectedFrame.Rectangle;
+            currentRect.X = (int)(currentRect.X * ScalingX) + midX;
+            currentRect.Y = (int)(currentRect.Y * ScalingY) + midY;
+            currentRect.Width = (int)(currentRect.Width * ScalingX);
+            currentRect.Height = (int)(currentRect.Height * ScalingY);
+            e.Graphics.FillRectangle(SourceRectBrush, currentRect);
+            e.Graphics.DrawRectangle(new Pen(Color.Blue), currentRect);
+        }
+
+        private void DrawBoundingBox(PaintEventArgs e, int midX, int midY, Rectangle dest)
+        {
+            var box = (Rectangle)selectedPose.BoundingBox;
+            if (box.X == -1)
+            {
+                box.X = 0;
             }
 
-            // Draw bounding box in animated and non-animated views
-            if (Settings.Default.ShowBoundingBox &&
-                !miFull.Checked && selectedPose != null)
+            if (box.Y == -1)
             {
-                var box = (Rectangle)selectedPose.BoundingBox;
-                if (box.X == -1)
-                {
-                    box.X = 0;
-                }
-
-                if (box.Y == -1)
-                {
-                    box.Y = 0;
-                }
-
-                if (box.Width == -1)
-                {
-                    box.Width = dest.Width;
-                }
-                else
-                {
-                    box.Width = (int)(box.Width * ScalingX);
-                }
-
-                if (box.Height == -1)
-                {
-                    box.Height = dest.Height;
-                }
-                else
-                {
-                    box.Height = (int)(box.Height * ScalingY);
-                }
-
-                box.X = (int)(box.X * ScalingX) + midX;
-                box.Y = (int)(box.Y * ScalingY) + midY;
-
-                e.Graphics.DrawRectangle(new Pen(Color.Black), box);
+                box.Y = 0;
             }
 
-            // Draw source rect and selected rect in full sprite view
-            if (miFull.Checked)
+            if (box.Width == -1)
             {
-                if (Settings.Default.ShowSrcRect && selectedFrame != null)
-                {
-                    var currentRect = (Rectangle)selectedFrame.Rectangle;
-                    currentRect.X = (int)(currentRect.X * ScalingX) + midX;
-                    currentRect.Y = (int)(currentRect.Y * ScalingY) + midY;
-                    currentRect.Width = (int)(currentRect.Width * ScalingX);
-                    currentRect.Height = (int)(currentRect.Height * ScalingY);
-                    e.Graphics.FillRectangle(SourceRectBrush, currentRect);
-                    e.Graphics.DrawRectangle(new Pen(Color.Blue), currentRect);
-                }
-
-                if (Settings.Default.UseGridSelection)
-                {
-                    var panelCursorPos = pnlSprite.PointToClient(Cursor.Position);
-                    var bitmapCursorPos = MouseToBitmapPosition(panelCursorPos);
-
-                    if (MouseWithinBitmapBounds(bitmapCursorPos))
-                    {
-                        var selectRect = new Rectangle
-                        {
-                            X = gridWidth * (int)(ScalingX * bitmapCursorPos.X / gridWidth) + midX,
-                            Y = gridHeight * (int)(ScalingY * bitmapCursorPos.Y / gridHeight) + midY,
-                            Width = gridWidth,
-                            Height = gridHeight
-                        };
-                        e.Graphics.FillRectangle(SelectedRectBrush, selectRect);
-                    }
-                }
-
+                box.Width = dest.Width;
+            }
+            else
+            {
+                box.Width = (int)(box.Width * ScalingX);
             }
 
-            e.Graphics.ResetTransform();
+            if (box.Height == -1)
+            {
+                box.Height = dest.Height;
+            }
+            else
+            {
+                box.Height = (int)(box.Height * ScalingY);
+            }
+
+            box.X = (int)(box.X * ScalingX) + midX;
+            box.Y = (int)(box.Y * ScalingY) + midY;
+
+            e.Graphics.DrawRectangle(new Pen(Color.Black), box);
+        }
+
+        private static void DrawGrid(PaintEventArgs e, Rectangle dest, int gridWidth, int gridHeight)
+        {
+            var pen = new Pen(Settings.Default.GridColor);
+            for (int y = dest.Y; y <= dest.Y + dest.Height; y += gridHeight)
+            {
+                for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
+                {
+                    e.Graphics.DrawLine(pen, x, dest.Y, x, dest.Y + dest.Height);
+                }
+
+                e.Graphics.DrawLine(pen, dest.X, y, dest.X + dest.Width, y);
+            }
         }
 
         private Point MouseToBitmapPosition(Point mousePos)

@@ -149,10 +149,12 @@
             // 
             // tbcSprite
             // 
+            this.tbcSprite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbcSprite.Controls.Add(this.tabSprite);
             this.tbcSprite.Controls.Add(this.tabPose);
             this.tbcSprite.Controls.Add(this.tabFrame);
-            this.tbcSprite.Location = new System.Drawing.Point(882, 31);
+            this.tbcSprite.Location = new System.Drawing.Point(883, 31);
             this.tbcSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tbcSprite.Multiline = true;
             this.tbcSprite.Name = "tbcSprite";
@@ -267,6 +269,7 @@
             // 
             // lstPoses
             // 
+            this.lstPoses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lstPoses.ContextMenuStrip = this.mnuPose;
             this.lstPoses.FormattingEnabled = true;
             this.lstPoses.ItemHeight = 15;
@@ -519,6 +522,7 @@
             // lstFrames
             // 
             this.lstFrames.AllowDrop = true;
+            this.lstFrames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.lstFrames.ContextMenuStrip = this.mnuFrame;
             this.lstFrames.FormattingEnabled = true;
             this.lstFrames.ItemHeight = 15;
@@ -1235,6 +1239,9 @@
             // 
             // pnlSprite
             // 
+            this.pnlSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlSprite.Location = new System.Drawing.Point(0, 31);
             this.pnlSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -1254,10 +1261,8 @@
             this.Controls.Add(this.pnlSprite);
             this.Controls.Add(this.tbcSprite);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
             this.Name = "FrmSprite";
             this.Text = "Sprite Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSprite_FormClosed);
@@ -1286,7 +1291,6 @@
 
         private FlickerFreePanel pnlSprite;
         private System.Windows.Forms.Timer tmrUpdate;
-        private System.Windows.Forms.TabControl tbcSprite;
         private System.Windows.Forms.TabPage tabSprite;
         private System.Windows.Forms.TabPage tabPose;
         private System.Windows.Forms.TabPage tabFrame;
@@ -1398,6 +1402,7 @@
         private System.Windows.Forms.Label lblFrameNumber;
         private System.Windows.Forms.ToolStripMenuItem miTransparent;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.TabControl tbcSprite;
     }
 }
 

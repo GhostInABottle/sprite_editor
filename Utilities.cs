@@ -8,7 +8,7 @@ namespace SpriteEditor
 {
     public static class Utilities
     {
-        private static readonly Regex hexRegex = new Regex(
+        private static readonly Regex hexRegex = new(
                 @"^#((?'R'[0-9a-f]{2})(?'G'[0-9a-f]{2})(?'B'[0-9a-f]{2}))"
                 + @"|((?'R'[0-9a-f])(?'G'[0-9a-f])(?'B'[0-9a-f]))$",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);

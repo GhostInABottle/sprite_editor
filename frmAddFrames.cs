@@ -232,7 +232,7 @@ namespace SpriteEditor
 
         private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn)
         {
-            List<Frame> newFrames = new List<Frame>();
+            List<Frame> newFrames = new();
             int counter = 1;
             for (int row = 0; row < maxRow; row++)
             {
@@ -245,7 +245,7 @@ namespace SpriteEditor
                         throw new ArgumentException("Error: Invalid frame positions " + row + ", " + column);
                     }
 
-                    Rect rect = new Rect(x, y, frameSize.X, frameSize.Y);
+                    Rect rect = new(x, y, frameSize.X, frameSize.Y);
                     newFrames.Add(new Frame() { Rectangle = rect });
 
                     if (++counter > frameCount)
