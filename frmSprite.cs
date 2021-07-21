@@ -418,6 +418,7 @@ namespace SpriteEditor
         {
             if (spriteData == null) return;
 
+            txtBase.Text = spriteData.BaseDirectory;
             txtImage.Text = spriteData.Image;
 
             var transColor = cdTransparentColor.Color;
