@@ -178,8 +178,15 @@ namespace SpriteEditor
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    player.SoundLocation = ResolvePath(CurrentFrame.Sound);
-                    player.Play();
+                    try
+                    {
+                        player.SoundLocation = ResolvePath(CurrentFrame.Sound);
+                        player.Play();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Ignore playback errors (e.g. ogg files aren't supported)
+                    }
                 }
                 lastSoundFrame = frameIndex;
             }
