@@ -39,6 +39,7 @@ namespace SpriteEditor
         {
             addFramesForm = new frmAddFrames(this);
             InitializeComponent();
+            pnlSprite.MouseWheel += pnlSprite_MouseWheel;
         }
 
         public void AddPoses(List<Pose> newPoses)
@@ -1363,6 +1364,28 @@ namespace SpriteEditor
         private void miMagnificationZoomOut_Click(object sender, EventArgs e)
         {
             Zoom(scaleIndex - 1);
+        }
+
+        private void pnlSprite_MouseHover(object sender, EventArgs e)
+        {
+            pnlSprite.Focus();
+        }
+
+        private void pnlSprite_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if ((ModifierKeys & Keys.Control) != Keys.Control)
+            {
+                return;
+            }
+
+            if (e.Delta > 0)
+            {
+                Zoom(scaleIndex + 1);
+            }
+            else if (e.Delta < 0)
+            {
+                Zoom(scaleIndex - 1);
+            }
         }
 
         private void CheckMagnificationMenuItem()

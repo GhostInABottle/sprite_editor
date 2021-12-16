@@ -1250,6 +1250,7 @@
             this.pnlSprite.TabIndex = 0;
             this.pnlSprite.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSprite_Paint);
             this.pnlSprite.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnlSprite_MouseClick);
+            this.pnlSprite.MouseHover += new System.EventHandler(this.pnlSprite_MouseHover);
             // 
             // FrmSprite
             // 
