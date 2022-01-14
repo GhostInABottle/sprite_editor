@@ -1305,6 +1305,8 @@ namespace SpriteEditor
             selectedFrame.Sound.Filename = path;
             txtPitch.Enabled = true;
             txtVolume.Enabled = true;
+
+            spriteLogic.PlaySound(selectedFrame.Sound);
         }
 
         private void frmSprite_KeyDown(object sender, KeyEventArgs e)
@@ -1482,6 +1484,7 @@ namespace SpriteEditor
             if (float.TryParse(txtPitch.Text, out float pitch))
             {
                 selectedFrame.Sound.Pitch = pitch;
+                spriteLogic.PlaySound(selectedFrame.Sound);
             }
             else
             {
@@ -1496,6 +1499,7 @@ namespace SpriteEditor
             if (float.TryParse(txtVolume.Text, out float volume))
             {
                 selectedFrame.Sound.Volume = volume;
+                spriteLogic.PlaySound(selectedFrame.Sound);
             }
             else
             {

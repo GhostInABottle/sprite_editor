@@ -203,17 +203,7 @@ namespace SpriteEditor
             {
                 try
                 {
-                    var sound = soundData.LoadFmodSound(fmodSystem.Value, ResolvePath(soundData.Filename));
-                    Channel channel = fmodSystem.Value.PlaySound(sound.Value, paused: true);
-                    if (soundData.Pitch.HasValue)
-                    {
-                        channel.Pitch = soundData.Pitch.Value;
-                    }
-                    if (soundData.Volume.HasValue)
-                    {
-                        channel.Volume = soundData.Volume.Value;
-                    }
-                    channel.Paused = false;
+                    PlaySound(soundData);
                 }
                 catch (Exception)
                 {
@@ -267,6 +257,21 @@ namespace SpriteEditor
                 CurrentFrame.Angle = (int)Lerp(prevFrame.Angle, nextFrame.Angle, alpha);
                 CurrentFrame.Opacity = Lerp(prevFrame.Opacity, nextFrame.Opacity, alpha);
             }
+        }
+
+        public void PlaySound(Models.Sound soundData)
+        {
+            var sound = soundData.LoadFmodSound(fmodSystem.Value, ResolvePath(soundData.Filename));
+            Channel channel = fmodSystem.Value.PlaySound(sound.Value, paused: true);
+            if (soundData.Pitch.HasValue)
+            {
+                channel.Pitch = soundData.Pitch.Value;
+            }
+            if (soundData.Volume.HasValue)
+            {
+                channel.Volume = soundData.Volume.Value;
+            }
+            channel.Paused = false;
         }
 
         /// <summary>
