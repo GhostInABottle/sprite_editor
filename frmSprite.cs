@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using SpriteEditor.Models;
 using SpriteEditor.Properties;
 
 namespace SpriteEditor
@@ -510,7 +511,11 @@ namespace SpriteEditor
             txtOpacity.Text = frame.Opacity.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
-            txtSound.Text = frame.Sound;
+            txtSound.Text = frame.Sound.Filename;
+            txtPitch.Text = frame.Sound.Pitch.ToString();
+            txtPitch.Enabled = frame.Sound.Filename != null;
+            txtVolume.Text = frame.Sound.Volume.ToString();
+            txtVolume.Enabled = frame.Sound.Filename != null;
             txtFrameImage.Text = frame.Image;
             var transColor = cdTransparentColor.Color;
             if (!string.IsNullOrEmpty(frame.TransparentColor))
@@ -529,6 +534,12 @@ namespace SpriteEditor
             txtAngle.Text = "";
             txtOpacity.Text = "";
             txtRectangle.Text = "";
+            txtSound.Text = "";
+            txtPitch.Text = "";
+            txtPitch.Enabled = false;
+            txtVolume.Text = "";
+            txtVolume.Enabled = false;
+            txtFrameImage.Text = "";
             chkTween.Checked = false;
         }
 
@@ -1291,7 +1302,9 @@ namespace SpriteEditor
             }
 
             txtSound.Text = filename;
-            selectedFrame.Sound = path;
+            selectedFrame.Sound.Filename = path;
+            txtPitch.Enabled = true;
+            txtVolume.Enabled = true;
         }
 
         private void frmSprite_KeyDown(object sender, KeyEventArgs e)
@@ -1460,6 +1473,46 @@ namespace SpriteEditor
         {
             Settings.Default.UseTransparentColor = miTransparent.Checked;
             pnlSprite.Invalidate();
+        }
+
+        private void txtPitch_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedFrame == null) return;
+
+            if (float.TryParse(txtPitch.Text, out float pitch))
+            {
+                selectedFrame.Sound.Pitch = pitch;
+            }
+            else
+            {
+                selectedFrame.Sound.Pitch = null;
+            }
+        }
+
+        private void txtVolume_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedFrame == null) return;
+
+            if (float.TryParse(txtVolume.Text, out float volume))
+            {
+                selectedFrame.Sound.Volume = volume;
+            }
+            else
+            {
+                selectedFrame.Sound.Volume = null;
+            }
+        }
+
+        private void btnRemoveSound_Click(object sender, EventArgs e)
+        {
+            if (selectedFrame == null) return;
+
+            txtSound.Text = "";
+            txtPitch.Text = "";
+            txtPitch.Enabled = false;
+            txtVolume.Text = "";
+            txtVolume.Enabled = false;
+            selectedFrame.Sound = new Sound();
         }
 
         private void pnlSprite_MouseClick(object sender, MouseEventArgs e)

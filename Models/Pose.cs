@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace SpriteEditor
+namespace SpriteEditor.Models
 {
     /// <summary>
     /// A single pose in a sprite.

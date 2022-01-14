@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace SpriteEditor
+namespace SpriteEditor.Models
 {
     /// <summary>
     /// A single frame in a pose.
@@ -17,6 +16,7 @@ namespace SpriteEditor
             Opacity = 1.0f;
             IsTweenFrame = false;
             Rectangle = new Rect(0, 0, 0, 0);
+            Sound = new Sound();
         }
 
         public Frame(Frame other)
@@ -75,7 +75,7 @@ namespace SpriteEditor
         /// <summary>
         /// Sound effect to play
         /// </summary>
-        public string Sound { get; set; }
+        public Sound Sound { get; set; }
 
         public XElement ToXml()
         {
@@ -122,9 +122,9 @@ namespace SpriteEditor
                 children.Add(new XAttribute("Transparent-Color", TransparentColor));
             }
 
-            if (!string.IsNullOrEmpty(Sound))
+            if (!string.IsNullOrEmpty(Sound?.Filename))
             {
-                children.Add(new XAttribute("Sound", Sound.Replace("\\", "/")));
+                children.Add(Sound.ToXml());
             }
 
             return new XElement("Frame", children.ToArray());

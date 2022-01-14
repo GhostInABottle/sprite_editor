@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace SpriteEditor
+namespace SpriteEditor.Models
 {
     /// <summary>
     /// A container of poses. SpriteData only contains data read from XML files and
@@ -127,7 +127,7 @@ namespace SpriteEditor
                                        (int)box.Attribute("X"),
                                        (int)box.Attribute("Y"),
                                        (int)box.Attribute("Width"),
-                                       (int)box.Attribute("Height"))).DefaultIfEmpty(new Rect()).First(),
+                                       (int)box.Attribute("Height"))).DefaultIfEmpty(new Rect()).Single(),
                               Image = (string)pose.Attribute("Image"),
                               TransparentColor = (string)pose.Attribute("Transparent-Color"),
                               Tags =
@@ -154,10 +154,19 @@ namespace SpriteEditor
                                                 (int)rect.Attribute("X"),
                                                 (int)rect.Attribute("Y"),
                                                 (int)rect.Attribute("Width"),
-                                                (int)rect.Attribute("Height"))).DefaultIfEmpty(new Rect(0, 0, 0, 0)).First(),
+                                                (int)rect.Attribute("Height"))).DefaultIfEmpty(new Rect(0, 0, 0, 0)).Single(),
                                        Image = (string)frame.Attribute("Image"),
                                        TransparentColor = (string)frame.Attribute("Transparent-Color"),
-                                       Sound = (string)frame.Attribute("Sound"),
+                                       Sound = (from sound in frame.Descendants("Sound")
+                                                select new Sound
+                                                {
+                                                    Filename = (string)sound.Attribute("Filename"),
+                                                    Pitch = (float?)sound.Attribute("Pitch"),
+                                                    Volume = (float?)sound.Attribute("Volume")
+                                                }).DefaultIfEmpty(new Sound
+                                                {
+                                                    Filename = (string)frame.Attribute("Sound"),
+                                                }).Single(),
                                    }).ToList()
                           }).ToList()
                  }).FirstOrDefault();

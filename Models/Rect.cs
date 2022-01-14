@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace SpriteEditor
+namespace SpriteEditor.Models
 {
     [Serializable]
     public class Rect

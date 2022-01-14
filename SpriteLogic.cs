@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using SpriteEditor.Models;
 
 namespace SpriteEditor
 {
@@ -174,13 +175,13 @@ namespace SpriteEditor
             }
 
             // If animation is still not finished...
-            if (!string.IsNullOrEmpty(CurrentFrame.Sound) && lastSoundFrame != frameIndex)
+            if (!string.IsNullOrEmpty(CurrentFrame.Sound?.Filename) && lastSoundFrame != frameIndex)
             {
                 if (OperatingSystem.IsWindows())
                 {
                     try
                     {
-                        player.SoundLocation = ResolvePath(CurrentFrame.Sound);
+                        player.SoundLocation = ResolvePath(CurrentFrame.Sound.Filename);
                         player.Play();
                     }
                     catch (InvalidOperationException)

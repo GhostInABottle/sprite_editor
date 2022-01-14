@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
 
-namespace SpriteEditor
+namespace SpriteEditor.Models
 {
     [Serializable]
     public class Vec2

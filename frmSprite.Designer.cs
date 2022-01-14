@@ -67,6 +67,11 @@
             this.txtPoseName = new System.Windows.Forms.TextBox();
             this.lblPoseName = new System.Windows.Forms.Label();
             this.tabFrame = new System.Windows.Forms.TabPage();
+            this.txtRemoveSound = new System.Windows.Forms.Button();
+            this.txtVolume = new System.Windows.Forms.TextBox();
+            this.lblVolume = new System.Windows.Forms.Label();
+            this.txtPitch = new System.Windows.Forms.TextBox();
+            this.lblPitch = new System.Windows.Forms.Label();
             this.lblFrameNumber = new System.Windows.Forms.Label();
             this.btnBrowseSound = new System.Windows.Forms.Button();
             this.lblSound = new System.Windows.Forms.Label();
@@ -683,6 +688,11 @@
             // tabFrame
             // 
             this.tabFrame.BackColor = System.Drawing.Color.Transparent;
+            this.tabFrame.Controls.Add(this.txtRemoveSound);
+            this.tabFrame.Controls.Add(this.txtVolume);
+            this.tabFrame.Controls.Add(this.lblVolume);
+            this.tabFrame.Controls.Add(this.txtPitch);
+            this.tabFrame.Controls.Add(this.lblPitch);
             this.tabFrame.Controls.Add(this.lblFrameNumber);
             this.tabFrame.Controls.Add(this.btnBrowseSound);
             this.tabFrame.Controls.Add(this.lblSound);
@@ -712,10 +722,61 @@
             this.tabFrame.TabIndex = 2;
             this.tabFrame.Text = "Frame";
             // 
+            // txtRemoveSound
+            // 
+            this.txtRemoveSound.Location = new System.Drawing.Point(223, 305);
+            this.txtRemoveSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.txtRemoveSound.Name = "txtRemoveSound";
+            this.txtRemoveSound.Size = new System.Drawing.Size(36, 23);
+            this.txtRemoveSound.TabIndex = 32;
+            this.txtRemoveSound.Text = "X";
+            this.txtRemoveSound.UseVisualStyleBackColor = true;
+            this.txtRemoveSound.Click += new System.EventHandler(this.btnRemoveSound_Click);
+            // 
+            // txtVolume
+            // 
+            this.txtVolume.Enabled = false;
+            this.txtVolume.Location = new System.Drawing.Point(163, 305);
+            this.txtVolume.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.txtVolume.Name = "txtVolume";
+            this.txtVolume.Size = new System.Drawing.Size(51, 23);
+            this.txtVolume.TabIndex = 31;
+            this.txtVolume.TextChanged += new System.EventHandler(this.txtVolume_TextChanged);
+            // 
+            // lblVolume
+            // 
+            this.lblVolume.AutoSize = true;
+            this.lblVolume.Location = new System.Drawing.Point(108, 308);
+            this.lblVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVolume.Name = "lblVolume";
+            this.lblVolume.Size = new System.Drawing.Size(47, 15);
+            this.lblVolume.TabIndex = 30;
+            this.lblVolume.Text = "Volume";
+            // 
+            // txtPitch
+            // 
+            this.txtPitch.Enabled = false;
+            this.txtPitch.Location = new System.Drawing.Point(49, 305);
+            this.txtPitch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.txtPitch.Name = "txtPitch";
+            this.txtPitch.Size = new System.Drawing.Size(51, 23);
+            this.txtPitch.TabIndex = 29;
+            this.txtPitch.TextChanged += new System.EventHandler(this.txtPitch_TextChanged);
+            // 
+            // lblPitch
+            // 
+            this.lblPitch.AutoSize = true;
+            this.lblPitch.Location = new System.Drawing.Point(7, 308);
+            this.lblPitch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPitch.Name = "lblPitch";
+            this.lblPitch.Size = new System.Drawing.Size(34, 15);
+            this.lblPitch.TabIndex = 28;
+            this.lblPitch.Text = "Pitch";
+            // 
             // lblFrameNumber
             // 
             this.lblFrameNumber.AutoSize = true;
-            this.lblFrameNumber.Location = new System.Drawing.Point(126, 402);
+            this.lblFrameNumber.Location = new System.Drawing.Point(126, 421);
             this.lblFrameNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFrameNumber.Name = "lblFrameNumber";
             this.lblFrameNumber.Size = new System.Drawing.Size(14, 15);
@@ -773,7 +834,7 @@
             // 
             // btnFrameTransColor
             // 
-            this.btnFrameTransColor.Location = new System.Drawing.Point(120, 354);
+            this.btnFrameTransColor.Location = new System.Drawing.Point(118, 377);
             this.btnFrameTransColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnFrameTransColor.Name = "btnFrameTransColor";
             this.btnFrameTransColor.Size = new System.Drawing.Size(22, 21);
@@ -784,7 +845,7 @@
             // lblFrameColor
             // 
             this.lblFrameColor.AutoSize = true;
-            this.lblFrameColor.Location = new System.Drawing.Point(7, 360);
+            this.lblFrameColor.Location = new System.Drawing.Point(10, 380);
             this.lblFrameColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFrameColor.Name = "lblFrameColor";
             this.lblFrameColor.Size = new System.Drawing.Size(100, 15);
@@ -793,7 +854,7 @@
             // 
             // btnBrowseFrameImage
             // 
-            this.btnBrowseFrameImage.Location = new System.Drawing.Point(224, 324);
+            this.btnBrowseFrameImage.Location = new System.Drawing.Point(224, 347);
             this.btnBrowseFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnBrowseFrameImage.Name = "btnBrowseFrameImage";
             this.btnBrowseFrameImage.Size = new System.Drawing.Size(36, 23);
@@ -805,7 +866,7 @@
             // lblFrameImage
             // 
             this.lblFrameImage.AutoSize = true;
-            this.lblFrameImage.Location = new System.Drawing.Point(7, 306);
+            this.lblFrameImage.Location = new System.Drawing.Point(8, 330);
             this.lblFrameImage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFrameImage.Name = "lblFrameImage";
             this.lblFrameImage.Size = new System.Drawing.Size(40, 15);
@@ -815,7 +876,7 @@
             // txtFrameImage
             // 
             this.txtFrameImage.Enabled = false;
-            this.txtFrameImage.Location = new System.Drawing.Point(10, 324);
+            this.txtFrameImage.Location = new System.Drawing.Point(10, 348);
             this.txtFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtFrameImage.Name = "txtFrameImage";
             this.txtFrameImage.Size = new System.Drawing.Size(206, 23);
@@ -823,7 +884,7 @@
             // 
             // btnNextFrame
             // 
-            this.btnNextFrame.Location = new System.Drawing.Point(158, 396);
+            this.btnNextFrame.Location = new System.Drawing.Point(153, 415);
             this.btnNextFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnNextFrame.Name = "btnNextFrame";
             this.btnNextFrame.Size = new System.Drawing.Size(103, 27);
@@ -834,7 +895,7 @@
             // 
             // btnPrevFrame
             // 
-            this.btnPrevFrame.Location = new System.Drawing.Point(13, 396);
+            this.btnPrevFrame.Location = new System.Drawing.Point(7, 415);
             this.btnPrevFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnPrevFrame.Name = "btnPrevFrame";
             this.btnPrevFrame.Size = new System.Drawing.Size(103, 27);
@@ -1404,6 +1465,11 @@
         private System.Windows.Forms.ToolStripMenuItem miTransparent;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.TabControl tbcSprite;
+        private System.Windows.Forms.Button txtRemoveSound;
+        private System.Windows.Forms.TextBox txtVolume;
+        private System.Windows.Forms.Label lblVolume;
+        private System.Windows.Forms.TextBox txtPitch;
+        private System.Windows.Forms.Label lblPitch;
     }
 }
 
