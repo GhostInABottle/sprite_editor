@@ -8,7 +8,7 @@ namespace SpriteEditor.Models
     /// <summary>
     /// A single pose in a sprite.
     /// </summary>
-    public class Pose
+    public class Pose : IDisposable
     {
         /// <summary>
         /// Default constructor.
@@ -162,6 +162,21 @@ namespace SpriteEditor.Models
             }
 
             return new XElement("Pose", children.ToArray());
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            foreach (var frame in Frames)
+            {
+                frame.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

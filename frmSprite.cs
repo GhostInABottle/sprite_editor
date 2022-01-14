@@ -81,9 +81,9 @@ namespace SpriteEditor
             if (disposing)
             {
                 components?.Dispose();
+                spriteLogic.Dispose();
             }
 
-            spriteLogic.Dispose();
             base.Dispose(disposing);
         }
 
@@ -949,7 +949,7 @@ namespace SpriteEditor
             lastBitmap = null;
             var poses = new List<Pose>();
             var spriteData = new SpriteData() { Image = "", Poses = poses };
-            spriteLogic = new SpriteLogic(spriteData, null);
+            spriteLogic = new SpriteLogic(spriteData, null, Settings.Default.SoundPlayback);
             PopulateSprite(spriteData);
             miAdd_Click(sender, e);
             miAddFrame_Click(sender, e);
@@ -979,7 +979,7 @@ namespace SpriteEditor
 
                 lastImageName = null;
                 lastBitmap = null;
-                spriteLogic = new SpriteLogic(spriteData, path);
+                spriteLogic = new SpriteLogic(spriteData, path, Settings.Default.SoundPlayback);
                 PopulateSprite(spriteData);
                 if (spriteData.Poses.Count > 0)
                 {

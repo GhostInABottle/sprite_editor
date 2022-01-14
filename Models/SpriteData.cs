@@ -10,7 +10,7 @@ namespace SpriteEditor.Models
     /// A container of poses. SpriteData only contains data read from XML files and
     /// not any actual logic, which is represented by SpriteLogic.
     /// </summary>
-    public class SpriteData
+    public class SpriteData : IDisposable
     {
         public SpriteData()
         {
@@ -158,15 +158,11 @@ namespace SpriteEditor.Models
                                        Image = (string)frame.Attribute("Image"),
                                        TransparentColor = (string)frame.Attribute("Transparent-Color"),
                                        Sound = (from sound in frame.Descendants("Sound")
-                                                select new Sound
-                                                {
-                                                    Filename = (string)sound.Attribute("Filename"),
-                                                    Pitch = (float?)sound.Attribute("Pitch"),
-                                                    Volume = (float?)sound.Attribute("Volume")
-                                                }).DefaultIfEmpty(new Sound
-                                                {
-                                                    Filename = (string)frame.Attribute("Sound"),
-                                                }).Single(),
+                                                select new Sound(
+                                                    (string)sound.Attribute("Filename"),
+                                                    (float?)sound.Attribute("Pitch"),
+                                                    (float?)sound.Attribute("Volume")
+                                                )).DefaultIfEmpty(new Sound((string)frame.Attribute("Sound"))).Single(),
                                    }).ToList()
                           }).ToList()
                  }).FirstOrDefault();
@@ -220,6 +216,21 @@ namespace SpriteEditor.Models
                 poses.Add(pose.GetName());
             }
             return poses;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            foreach (var pose in Poses)
+            {
+                pose.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

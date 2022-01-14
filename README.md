@@ -1,10 +1,21 @@
 ## About
 
-A Windows Forms application to create and edit sprites and save them in XML format. Sprites are containers of poses (animations), and each pose contains a number of animation frames. It was originally created for [Technobabel](https://bitbucket.org/firas_assaad/technobabel/) but is now used for [Octopus City Blues](https://www.octopuscityblues.com).
+A Windows Forms application to create and edit sprites and save them in XML format.
+
+Sprites are containers of poses (animations), and each pose contains a number of animation frames.
+
+It was originally created for [Technobabel](https://bitbucket.org/firas_assaad/technobabel/) but is now used for [Octopus City Blues](https://www.octopuscityblues.com).
+
+## Build
+
+This is a .NET 5 application and can be built with a simple `dotnet build` command.
+
+[FMOD library](https://www.fmod.com) is used to play frame sound effects. The FMOD DLL should be placed in executable path.
+You can disable that functionality setting the SoundPlayback application setting to `False`.
 
 ## License
 
-Copyright (c) 2011, Firas Assaad
+Copyright (c) 2011-2022, Firas Assaad
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

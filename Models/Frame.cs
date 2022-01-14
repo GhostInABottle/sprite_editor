@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -6,7 +7,7 @@ namespace SpriteEditor.Models
     /// <summary>
     /// A single frame in a pose.
     /// </summary>
-    public class Frame
+    public class Frame : IDisposable
     {
         public Frame()
         {
@@ -128,6 +129,18 @@ namespace SpriteEditor.Models
             }
 
             return new XElement("Frame", children.ToArray());
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            Sound.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

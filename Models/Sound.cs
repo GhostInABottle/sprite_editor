@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FmodAudio;
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace SpriteEditor.Models
@@ -6,10 +8,16 @@ namespace SpriteEditor.Models
     /// <summary>
     /// Sound to be played in a frame
     /// </summary>
-    public class Sound
+    public class Sound : IDisposable
     {
-        public Sound()
+        private bool isDisposed;
+        private string lastLoadedFilename;
+
+        public Sound(string filename = null, float? pitch = null, float? volume = null)
         {
+            Filename = filename;
+            Pitch = pitch;
+            Volume = volume;
         }
 
         public Sound(Sound other)
@@ -17,6 +25,11 @@ namespace SpriteEditor.Models
             Filename = other.Filename;
             Pitch = other.Pitch;
             Volume = other.Volume;
+        }
+
+        ~Sound()
+        {
+            Dispose(disposing: false);
         }
 
         /// <summary>
@@ -31,6 +44,20 @@ namespace SpriteEditor.Models
         /// Sound volume percentage (1 is 100%)
         /// </summary>
         public float? Volume { get; set; }
+        /// <summary>
+        /// The FMOD sound handle
+        /// </summary>
+        public FmodAudio.Sound? FmodSound { get; set; }
+
+        public FmodAudio.Sound? LoadFmodSound(FmodSystem system, string fullPath)
+        {
+            if (FmodSound != null && lastLoadedFilename == fullPath) return FmodSound;
+
+            FmodSound = system.CreateSound(fullPath, Mode._2D | Mode.Loop_Off);
+            lastLoadedFilename = fullPath;
+
+            return FmodSound;
+        }
 
         public XObject ToXml()
         {
@@ -56,6 +83,23 @@ namespace SpriteEditor.Models
             }
 
             return new XElement("Sound", children.ToArray());
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed)
+            {
+                return;
+            }
+
+            FmodSound?.Dispose();
+            isDisposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

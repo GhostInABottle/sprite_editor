@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Media;
 using SpriteEditor.Models;
+using FmodAudio;
+using System.Windows.Forms;
 
 namespace SpriteEditor
 {
@@ -38,25 +39,45 @@ namespace SpriteEditor
         private bool tweening;
 
         /// <summary>
-        /// For playing sound effects
-        /// </summary>
-        private SoundPlayer player = OperatingSystem.IsWindows() ? new SoundPlayer() : null;
-
-        /// <summary>
         /// Last frame where sound was played
         /// </summary>
         private int lastSoundFrame;
+        /// <summary>
+        /// FMOD system
+        /// </summary>
+        private FmodSystem? fmodSystem;
+        /// <summary>
+        /// Resource disposal status
+        /// </summary>
+        private bool isDisposed;
 
-        public SpriteLogic()
+        public SpriteLogic(bool soundPlayback)
         {
             SrcRect = new Rectangle(-1, -1, -1, -1);
             lastSoundFrame = -1;
+            if (!soundPlayback) return;
+
+            try
+            {
+                fmodSystem = Fmod.CreateSystem();
+                fmodSystem.Value.Init(10);
+            }
+            catch (Exception ex)
+            {
+                fmodSystem = null;
+                MessageBox.Show("Failed to load FMOD sound system - make sure the correct DLL is in the executable folder - " + ex.Message);
+            }
         }
 
-        public SpriteLogic(SpriteData spriteData, string path) : this()
+        public SpriteLogic(SpriteData spriteData, string path, bool soundPlayback) : this(soundPlayback)
         {
             SpriteData = spriteData;
             OpenedFileName = path;
+        }
+
+        ~SpriteLogic()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -158,6 +179,8 @@ namespace SpriteEditor
         /// </summary>
         public void Update(int currentTime)
         {
+            fmodSystem?.Update();
+
             if (CurrentPose == null || frameCount == 0)
             {
                 return;
@@ -175,19 +198,26 @@ namespace SpriteEditor
             }
 
             // If animation is still not finished...
-            if (!string.IsNullOrEmpty(CurrentFrame.Sound?.Filename) && lastSoundFrame != frameIndex)
+            var soundData = CurrentFrame.Sound;
+            if (fmodSystem != null && !string.IsNullOrEmpty(soundData?.Filename) && lastSoundFrame != frameIndex)
             {
-                if (OperatingSystem.IsWindows())
+                try
                 {
-                    try
+                    var sound = soundData.LoadFmodSound(fmodSystem.Value, ResolvePath(soundData.Filename));
+                    Channel channel = fmodSystem.Value.PlaySound(sound.Value, paused: true);
+                    if (soundData.Pitch.HasValue)
                     {
-                        player.SoundLocation = ResolvePath(CurrentFrame.Sound.Filename);
-                        player.Play();
+                        channel.Pitch = soundData.Pitch.Value;
                     }
-                    catch (InvalidOperationException)
+                    if (soundData.Volume.HasValue)
                     {
-                        // Ignore playback errors (e.g. ogg files aren't supported)
+                        channel.Volume = soundData.Volume.Value;
                     }
+                    channel.Paused = false;
+                }
+                catch (Exception)
+                {
+                    // Ignore playback errors (e.g. ogg files aren't supported)
                 }
                 lastSoundFrame = frameIndex;
             }
@@ -289,19 +319,6 @@ namespace SpriteEditor
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing || player == null) return;
-            player.Dispose();
-            player = null;
-        }
-
         /// <summary>
         /// Linear interpolation between two floats.
         /// @param start Starting value.
@@ -317,6 +334,26 @@ namespace SpriteEditor
         private bool FinishedRepeating()
         {
             return CurrentPose.Repeats != -1 && repeatNumber >= CurrentPose.Repeats;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed) return;
+
+            if (disposing)
+            {
+                SpriteData?.Dispose();
+            }
+
+            fmodSystem?.Dispose();
+            isDisposed = true;
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
