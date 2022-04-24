@@ -180,7 +180,7 @@ namespace SpriteEditor
                 dest = new Rectangle(midX, midY, magnifiedWidth, magnifiedHeight);
                 var origin = new Point(
                                         (int)(midX + magnifiedWidth * currentPose.Origin.X),
-                                        (int)(midY + magnifiedWidth * currentPose.Origin.Y));
+                                        (int)(midY + magnifiedHeight * currentPose.Origin.Y));
                 transform = e.Graphics.Transform;
                 transform.RotateAt(currentFrame.Angle, origin);
             }
