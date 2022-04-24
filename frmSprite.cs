@@ -253,8 +253,8 @@ namespace SpriteEditor
 
             if (Settings.Default.UseTransparentColor)
             {
-                var transparentColorHex = currentFrame.TransparentColor
-                ?? currentPose.TransparentColor
+                var transparentColorHex = currentFrame?.TransparentColor
+                ?? currentPose?.TransparentColor
                 ?? spriteLogic.SpriteData.TransparentColor;
                 if (!string.IsNullOrEmpty(transparentColorHex))
                 {
