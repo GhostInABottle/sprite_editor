@@ -135,6 +135,7 @@
             this.ofdSound = new System.Windows.Forms.OpenFileDialog();
             this.fswUpdatedImageWatcher = new System.IO.FileSystemWatcher();
             this.pnlSprite = new SpriteEditor.FlickerFreePanel();
+            this.miPasteCsv = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcSprite.SuspendLayout();
             this.tabSprite.SuspendLayout();
             this.mnuPose.SuspendLayout();
@@ -292,15 +293,16 @@
             this.miAdd,
             this.miCopy,
             this.miPaste,
+            this.miPasteCsv,
             this.miRemove});
             this.mnuPose.Name = "mnuPose";
-            this.mnuPose.Size = new System.Drawing.Size(118, 92);
+            this.mnuPose.Size = new System.Drawing.Size(181, 136);
             this.mnuPose.Opening += new System.ComponentModel.CancelEventHandler(this.mnuPose_Opening);
             // 
             // miAdd
             // 
             this.miAdd.Name = "miAdd";
-            this.miAdd.Size = new System.Drawing.Size(117, 22);
+            this.miAdd.Size = new System.Drawing.Size(180, 22);
             this.miAdd.Text = "Add";
             this.miAdd.Click += new System.EventHandler(this.miAdd_Click);
             // 
@@ -308,7 +310,7 @@
             // 
             this.miCopy.Enabled = false;
             this.miCopy.Name = "miCopy";
-            this.miCopy.Size = new System.Drawing.Size(117, 22);
+            this.miCopy.Size = new System.Drawing.Size(180, 22);
             this.miCopy.Text = "Copy";
             this.miCopy.Click += new System.EventHandler(this.miCopy_Click);
             // 
@@ -316,14 +318,14 @@
             // 
             this.miPaste.Enabled = false;
             this.miPaste.Name = "miPaste";
-            this.miPaste.Size = new System.Drawing.Size(117, 22);
+            this.miPaste.Size = new System.Drawing.Size(180, 22);
             this.miPaste.Text = "Paste";
             this.miPaste.Click += new System.EventHandler(this.miPaste_Click);
             // 
             // miRemove
             // 
             this.miRemove.Name = "miRemove";
-            this.miRemove.Size = new System.Drawing.Size(117, 22);
+            this.miRemove.Size = new System.Drawing.Size(180, 22);
             this.miRemove.Text = "Remove";
             this.miRemove.Click += new System.EventHandler(this.miRemove_Click);
             // 
@@ -1313,6 +1315,13 @@
             this.pnlSprite.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnlSprite_MouseClick);
             this.pnlSprite.MouseHover += new System.EventHandler(this.pnlSprite_MouseHover);
             // 
+            // miPasteCsv
+            // 
+            this.miPasteCsv.Name = "miPasteCsv";
+            this.miPasteCsv.Size = new System.Drawing.Size(180, 22);
+            this.miPasteCsv.Text = "Paste CSV";
+            this.miPasteCsv.Click += new System.EventHandler(this.miPasteCsv_Click);
+            // 
             // FrmSprite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1470,6 +1479,7 @@
         private System.Windows.Forms.Label lblVolume;
         private System.Windows.Forms.TextBox txtPitch;
         private System.Windows.Forms.Label lblPitch;
+        private System.Windows.Forms.ToolStripMenuItem miPasteCsv;
     }
 }
 

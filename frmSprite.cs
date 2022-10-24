@@ -1519,6 +1519,75 @@ namespace SpriteEditor
             selectedFrame.Sound = new Sound();
         }
 
+        private void miPasteCsv_Click(object sender, EventArgs e)
+        {
+            if (!Clipboard.ContainsText())
+            {
+                stlMessage.Text = "Error: Clipboard didn't contain text for poses";
+                return;
+            }
+
+            var text = Clipboard.GetText();
+            var splitOptions = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
+            var lines = text.Split('\n', splitOptions);
+
+            foreach (var line in lines)
+            {
+                var parts = line.Split(',', splitOptions);
+                if (parts.Length != 5 && parts.Length != 7)
+                {
+                    stlMessage.Text = $"Error: Could not parse pose CSV in line: {line}";
+                    return;
+                }
+                var poseName = parts[0];
+
+                if (!int.TryParse(parts.Length == 7 ? parts[3] : parts[1], out int width) || width < 1)
+                {
+                    stlMessage.Text = $"Error: Invalid source width in line: {line}";
+                    return;
+                }
+
+                if (!int.TryParse(parts.Length == 7 ? parts[4] : parts[2], out int height) || height < 1)
+                {
+                    stlMessage.Text = $"Error: Invalid source height in line: {line}";
+                    return;
+                }
+
+                if (!int.TryParse(parts.Length == 7 ? parts[5] : parts[3], out int x) || x < 0)
+                {
+                    stlMessage.Text = $"Error: Invalid source X in line: {line}";
+                    return;
+                }
+
+                if (!int.TryParse(parts.Length == 7 ? parts[6] : parts[4], out int y) || y < 0)
+                {
+                    stlMessage.Text = $"Error: Invalid source Y in line: {line}";
+                    return;
+                }
+
+                var pose = new Pose
+                {
+                    Tags =
+                    {
+                        ["Name"] = poseName
+                    },
+                    BoundingBox = new Rect(0, 0, width, height),
+                    Frames = new List<Frame>
+                    {
+                        new Frame
+                        {
+                            Rectangle = new Rect(x, y, width, height),
+                        }
+                    }
+                };
+                spriteLogic.SpriteData.Poses.Add(pose);
+            }
+
+            PopulateSprite(spriteLogic.SpriteData);
+            PopulateFrame(null);
+            lstPoses.SelectedIndex = lstPoses.Items.Count - 1;
+        }
+
         private void pnlSprite_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left || selectedPose == null || !miFull.Checked) return;
