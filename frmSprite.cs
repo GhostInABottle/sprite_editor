@@ -6,12 +6,14 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using SpriteEditor.Models;
 using SpriteEditor.Properties;
 
 namespace SpriteEditor
 {
+    [SupportedOSPlatform("windows")]
     public partial class FrmSprite : Form
     {
         private static readonly Brush BackgroundBrush =
@@ -971,16 +973,15 @@ namespace SpriteEditor
             {
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path));
                 Text = "Sprite Editor - " + Path.GetFileName(path);
-                var spriteData = SpriteData.Load(path);
-                if (spriteData == null)
-                {
-                    throw new IOException("Error loading sprite data.");
-                }
 
                 lastImageName = null;
                 lastBitmap = null;
+
+                var spriteData = SpriteData.Load(path)
+                    ?? throw new IOException("Error loading sprite data.");
                 spriteLogic = new SpriteLogic(spriteData, path, Settings.Default.SoundPlayback);
                 PopulateSprite(spriteData);
+
                 if (spriteData.Poses.Count > 0)
                 {
                     spriteLogic.SetPose(spriteData.Poses[0].NameWithTags(), Environment.TickCount);
@@ -1528,60 +1529,14 @@ namespace SpriteEditor
             }
 
             var text = Clipboard.GetText();
-            var splitOptions = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
-            var lines = text.Split('\n', splitOptions);
-
-            foreach (var line in lines)
+            var (poses, error) = CsvPoseParser.ParseCsv(text);
+            if (error != null)
             {
-                var parts = line.Split(',', splitOptions);
-                if (parts.Length != 5 && parts.Length != 7)
-                {
-                    stlMessage.Text = $"Error: Could not parse pose CSV in line: {line}";
-                    return;
-                }
-                var poseName = parts[0];
-
-                if (!int.TryParse(parts.Length == 7 ? parts[3] : parts[1], out int width) || width < 1)
-                {
-                    stlMessage.Text = $"Error: Invalid source width in line: {line}";
-                    return;
-                }
-
-                if (!int.TryParse(parts.Length == 7 ? parts[4] : parts[2], out int height) || height < 1)
-                {
-                    stlMessage.Text = $"Error: Invalid source height in line: {line}";
-                    return;
-                }
-
-                if (!int.TryParse(parts.Length == 7 ? parts[5] : parts[3], out int x) || x < 0)
-                {
-                    stlMessage.Text = $"Error: Invalid source X in line: {line}";
-                    return;
-                }
-
-                if (!int.TryParse(parts.Length == 7 ? parts[6] : parts[4], out int y) || y < 0)
-                {
-                    stlMessage.Text = $"Error: Invalid source Y in line: {line}";
-                    return;
-                }
-
-                var pose = new Pose
-                {
-                    Tags =
-                    {
-                        ["Name"] = poseName
-                    },
-                    BoundingBox = new Rect(0, 0, width, height),
-                    Frames = new List<Frame>
-                    {
-                        new Frame
-                        {
-                            Rectangle = new Rect(x, y, width, height),
-                        }
-                    }
-                };
-                spriteLogic.SpriteData.Poses.Add(pose);
+                stlMessage.Text = error;
+                return;
             }
+
+            spriteLogic.SpriteData.Poses.AddRange(poses);
 
             PopulateSprite(spriteLogic.SpriteData);
             PopulateFrame(null);

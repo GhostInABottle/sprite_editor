@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Xml.Linq;
 
 namespace SpriteEditor.Models
@@ -53,19 +54,19 @@ namespace SpriteEditor.Models
 
         public static SpriteData Load(string filename)
         {
-            var extension = System.IO.Path.GetExtension(filename);
-            if (extension == null)
-            {
-                throw new ArgumentException($"Unknown extension for file {filename}", nameof(filename));
-            }
+            var extension = System.IO.Path.GetExtension(filename)
+                ?? throw new ArgumentException($"Unknown extension for file {filename}", nameof(filename));
+
             if (extension.Equals(".spr", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadSprite(filename);
             }
-            if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
+
+            if (OperatingSystem.IsWindows() && extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
             {
                 return LoadImage(filename);
             }
+
             throw new ArgumentException($"Trying to load a wrong file format {filename}", nameof(filename));
         }
 
@@ -169,6 +170,7 @@ namespace SpriteEditor.Models
             return spriteData;
         }
 
+        [SupportedOSPlatform("windows")]
         private static SpriteData LoadImage(string filename)
         {
             string transparentColor;

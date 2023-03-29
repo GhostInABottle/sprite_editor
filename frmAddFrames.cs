@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using SpriteEditor.Models;
 
 namespace SpriteEditor
 {
+    [SupportedOSPlatform("windows")]
     public partial class frmAddFrames : Form
     {
         private readonly FrmSprite mainForm;
