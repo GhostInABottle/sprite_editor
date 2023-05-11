@@ -128,6 +128,10 @@ namespace SpriteEditor
             }
         }
 
+        public string TransparentColorHex => CurrentFrame?.TransparentColor
+                ?? CurrentPose?.TransparentColor
+                ?? SpriteData.TransparentColor;
+
         /// <summary>
         /// Current frame in the current pose.
         /// </summary>

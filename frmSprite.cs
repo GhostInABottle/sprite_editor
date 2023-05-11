@@ -149,7 +149,7 @@ namespace SpriteEditor
             if (spriteLogic.Image != lastImageName)
             {
                 lastImageName = spriteLogic.Image;
-                lastBitmap = OpenBitmap(lastImageName);
+                lastBitmap = BitmapHelpers.OpenBitmap(spriteLogic, lastImageName);
                 fswUpdatedImageWatcher.Path = Path.GetDirectoryName(spriteLogic.ResolvePath(lastImageName));
                 fswUpdatedImageWatcher.Filter = Path.GetFileName(lastImageName);
             }
@@ -191,7 +191,7 @@ namespace SpriteEditor
 
             e.Graphics.TranslateTransform(pnlSprite.AutoScrollPosition.X, pnlSprite.AutoScrollPosition.Y);
             e.Graphics.MultiplyTransform(transform);
-            ImageAttributes attributes = GetImageAttributes(currentPose, currentFrame);
+            ImageAttributes attributes = GetImageAttributes(currentFrame);
 
             // Draw the sprite
             e.Graphics.FillRectangle(BackgroundBrush, dest);
@@ -239,7 +239,7 @@ namespace SpriteEditor
             e.Graphics.ResetTransform();
         }
 
-        private ImageAttributes GetImageAttributes(Pose currentPose, Frame currentFrame)
+        private ImageAttributes GetImageAttributes(Frame currentFrame)
         {
 
             // Set alpha
@@ -255,9 +255,7 @@ namespace SpriteEditor
 
             if (Settings.Default.UseTransparentColor)
             {
-                var transparentColorHex = currentFrame?.TransparentColor
-                ?? currentPose?.TransparentColor
-                ?? spriteLogic.SpriteData.TransparentColor;
+                var transparentColorHex = spriteLogic.TransparentColorHex;
                 if (!string.IsNullOrEmpty(transparentColorHex))
                 {
                     var transparentColor = Utilities.FromHex(transparentColorHex);
@@ -365,22 +363,6 @@ namespace SpriteEditor
             var withinBoundsX = bitmapCursorPos.X >= 0 && bitmapCursorPos.X < lastBitmap.Width;
             var withinBoundsY = bitmapCursorPos.Y >= 0 && bitmapCursorPos.Y < lastBitmap.Height;
             return withinBoundsX && withinBoundsY;
-        }
-
-        private Bitmap OpenBitmap(string filename)
-        {
-            if (string.IsNullOrEmpty(filename)) return null;
-
-            filename = spriteLogic.ResolvePath(filename);
-            try
-            {
-                using var tempBitmap = new Bitmap(filename);
-                return new Bitmap(tempBitmap);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
 
         private bool ValidateFrames(List<Frame> frames)
@@ -631,7 +613,7 @@ namespace SpriteEditor
         private void SetImage(string path, string type)
         {
             var filename = Path.GetFileName(path);
-            var bmp = OpenBitmap(path);
+            var bmp = BitmapHelpers.OpenBitmap(spriteLogic, path);
             if (bmp != null)
             {
                 var baseDir = spriteLogic.ResolveBaseDir();
@@ -823,7 +805,7 @@ namespace SpriteEditor
 
             var frames = selectedPose.Frames;
             var rect = new Rect(0, 0, 0, 0);
-            var bmp = OpenBitmap(spriteLogic.Image);
+            var bmp = BitmapHelpers.OpenBitmap(spriteLogic, spriteLogic.Image);
             if (bmp != null)
             {
                 rect = new Rect(0, 0, bmp.Width, bmp.Height);
@@ -1254,7 +1236,7 @@ namespace SpriteEditor
 
             var img = string.IsNullOrEmpty(selectedPose.Image) ?
                 spriteLogic.SpriteData.Image : selectedPose.Image;
-            var bmp = OpenBitmap(img);
+            var bmp = BitmapHelpers.OpenBitmap(spriteLogic, img);
             if (bmp == null)
             {
                 stlMessage.Text = $"Error: Couldn't load bitmap {img}";
@@ -1557,6 +1539,15 @@ namespace SpriteEditor
             newFrame.Rectangle.Width = gridWidth;
             newFrame.Rectangle.Height = gridHeight;
             AddExistingFrame(newFrame);
+        }
+
+        private void miCheckEdges_Click(object sender, EventArgs e)
+        {
+            var results = FrameEdgeChecker.Check(spriteLogic);
+            foreach (var (pi, fi, edge) in results)
+            {
+                lstPoses.Items[pi] = lstPoses.Items[pi] + $" <{fi}:{edge}>!";
+            }
         }
     }
 }
