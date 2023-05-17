@@ -52,6 +52,10 @@ namespace SpriteEditor
             {
                 foreach (var pose in newPoses)
                 {
+                    if (selectedPose.BoundingCircle != null)
+                    {
+                        pose.BoundingCircle = new Circle(selectedPose.BoundingCircle);
+                    }
                     pose.BoundingBox = new Rect(selectedPose.BoundingBox);
                     pose.DefaultDuration = selectedPose.DefaultDuration;
                 }
@@ -215,9 +219,13 @@ namespace SpriteEditor
             }
 
             // Draw bounding box in animated and non-animated views
-            if (Settings.Default.ShowBoundingBox &&
-                !miFull.Checked && selectedPose != null)
+            var showBoundingBox = Settings.Default.ShowBoundingBox &&
+                !miFull.Checked && selectedPose != null;
+            if (showBoundingBox && selectedPose.BoundingCircle != null)
             {
+                DrawBoundingCircle(e, midX, midY);
+            }
+            else if (showBoundingBox) {
                 DrawBoundingBox(e, midX, midY, dest);
             }
 
@@ -329,7 +337,21 @@ namespace SpriteEditor
             box.X = (int)(box.X * ScalingX) + midX;
             box.Y = (int)(box.Y * ScalingY) + midY;
 
-            e.Graphics.DrawRectangle(new Pen(Color.Black), box);
+            e.Graphics.DrawRectangle(new Pen(Color.Green), box);
+        }
+
+        private void DrawBoundingCircle(PaintEventArgs e, int midX, int midY)
+        {
+            var circle = selectedPose.BoundingCircle;
+            if (circle == null) return;
+
+            var box = (Rectangle)((Rect)circle);
+            box.X = (int)(box.X * ScalingX) + midX;
+            box.Y = (int)(box.Y * ScalingY) + midY;
+            box.Width = (int)(box.Width * ScalingX);
+            box.Height = (int)(box.Height * ScalingY);
+
+            e.Graphics.DrawEllipse(new Pen(Color.Green), box);
         }
 
         private static void DrawGrid(PaintEventArgs e, Rectangle dest, int gridWidth, int gridHeight)
@@ -441,7 +463,14 @@ namespace SpriteEditor
             txtRepeats.Text = pose.Repeats.ToString();
             chkRequireCompletion.Enabled = pose.Repeats == -1;
             chkRequireCompletion.Checked = pose.RequireCompletion;
-            txtBoundingBox.Text = pose.BoundingBox.ToString();
+            if (pose.BoundingCircle != null)
+            {
+                txtBoundingBox.Text = pose.BoundingCircle.ToString();
+            }
+            else
+            {
+                txtBoundingBox.Text = pose.BoundingBox.ToString();
+            }
             txtOrigin.Text = pose.Origin.ToString();
             if (pose.Tags.ContainsKey("Direction"))
             {
@@ -884,11 +913,19 @@ namespace SpriteEditor
         {
             if (selectedPose == null) return;
 
-            var rect = Rect.FromString(txtBoundingBox.Text);
-            if (rect != null)
+            var circle = Circle.FromString(txtBoundingBox.Text);
+            if (circle != null)
             {
-                selectedPose.BoundingBox = rect;
+                selectedPose.BoundingCircle = circle;
+                selectedPose.BoundingBox = (Rect)circle;
+                return;
             }
+
+
+            var rect = Rect.FromString(txtBoundingBox.Text);
+            if (rect == null) return;
+
+            selectedPose.BoundingBox = rect;
         }
 
         private void txtOrigin_TextChanged(object sender, EventArgs e)

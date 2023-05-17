@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace SpriteEditor.Models
 {
@@ -129,6 +130,33 @@ namespace SpriteEditor.Models
             }
 
             return new XElement("Frame", children.ToArray());
+        }
+
+        public static Frame FromXml(XElement frame)
+        {
+            return new Frame()
+            {
+                Duration = (int?)frame.Attribute("Duration") ?? -1,
+                Magnification = new Vec2(
+                    (float?)frame.Attribute("X-Mag") ?? 1.0f,
+                    (float?)frame.Attribute("Y-Mag") ?? 1.0f),
+                Angle = (int?)frame.Attribute("Angle") ?? 0,
+                Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
+                IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
+                Rectangle =
+                (from rect in frame.Descendants("Rectangle") select Rect.FromXml(rect))
+                    .DefaultIfEmpty(new Rect(0, 0, 0, 0)).Single(),
+                Image = (string)frame.Attribute("Image"),
+                TransparentColor = (string)frame.Attribute("Transparent-Color"),
+                Sound = (
+                    from sound in frame.Descendants("Sound")
+                    select new Sound(
+                        (string)sound.Attribute("Filename"),
+                        (float?)sound.Attribute("Pitch"),
+                        (float?)sound.Attribute("Volume")
+                    )
+                ).DefaultIfEmpty(new Sound((string)frame.Attribute("Sound"))).Single(),
+            };
         }
 
         protected virtual void Dispose(bool disposing)

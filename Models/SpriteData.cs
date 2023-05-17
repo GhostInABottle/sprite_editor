@@ -114,58 +114,7 @@ namespace SpriteEditor.Models
                      DefaultPose = (string)sprite.Attribute("Default-Pose"),
                      Poses =
                          (from pose in sprite.Descendants("Pose")
-                          select new Pose()
-                          {
-                              DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
-                              Repeats = (int?)pose.Attribute("Repeats") ?? -1,
-                              RequireCompletion = (bool?)pose.Attribute("Require-Completion") ?? false,
-                              Origin = new Vec2(
-                                                (float?)pose.Attribute("X-Origin") ?? 0.0f,
-                                                (float?)pose.Attribute("Y-Origin") ?? 0.0f),
-                              BoundingBox =
-                                  (from box in pose.Descendants("Bounding-Box")
-                                   select new Rect(
-                                       (int)box.Attribute("X"),
-                                       (int)box.Attribute("Y"),
-                                       (int)box.Attribute("Width"),
-                                       (int)box.Attribute("Height"))).DefaultIfEmpty(new Rect()).Single(),
-                              Image = (string)pose.Attribute("Image"),
-                              TransparentColor = (string)pose.Attribute("Transparent-Color"),
-                              Tags =
-                                  (from tag in pose.Descendants("Tag")
-                                   select new
-                                   {
-                                       Key = (string)tag.Attribute("Key"),
-                                       Value = (string)tag.Attribute("Value")
-                                   }).ToDictionary(tag => tag.Key, tag => tag.Value),
-                              Frames =
-                                  (from frame in pose.Descendants("Frame")
-                                   select new Frame()
-                                   {
-                                       Duration = (int?)frame.Attribute("Duration") ?? -1,
-                                       Magnification = new Vec2(
-                                                                (float?)frame.Attribute("X-Mag") ?? 1.0f,
-                                                                (float?)frame.Attribute("Y-Mag") ?? 1.0f),
-                                       Angle = (int?)frame.Attribute("Angle") ?? 0,
-                                       Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
-                                       IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
-                                       Rectangle =
-                                           (from rect in frame.Descendants("Rectangle")
-                                            select new Rect(
-                                                (int)rect.Attribute("X"),
-                                                (int)rect.Attribute("Y"),
-                                                (int)rect.Attribute("Width"),
-                                                (int)rect.Attribute("Height"))).DefaultIfEmpty(new Rect(0, 0, 0, 0)).Single(),
-                                       Image = (string)frame.Attribute("Image"),
-                                       TransparentColor = (string)frame.Attribute("Transparent-Color"),
-                                       Sound = (from sound in frame.Descendants("Sound")
-                                                select new Sound(
-                                                    (string)sound.Attribute("Filename"),
-                                                    (float?)sound.Attribute("Pitch"),
-                                                    (float?)sound.Attribute("Volume")
-                                                )).DefaultIfEmpty(new Sound((string)frame.Attribute("Sound"))).Single(),
-                                   }).ToList()
-                          }).ToList()
+                          select Pose.FromXml(pose)).ToList()
                  }).FirstOrDefault();
             return spriteData;
         }

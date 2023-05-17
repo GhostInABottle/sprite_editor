@@ -613,9 +613,9 @@
             lblBoundingBox.Location = new System.Drawing.Point(7, 138);
             lblBoundingBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblBoundingBox.Name = "lblBoundingBox";
-            lblBoundingBox.Size = new System.Drawing.Size(82, 15);
+            lblBoundingBox.Size = new System.Drawing.Size(94, 15);
             lblBoundingBox.TabIndex = 10;
-            lblBoundingBox.Text = "Bounding Box";
+            lblBoundingBox.Text = "Bounding Shape";
             // 
             // txtRepeats
             // 

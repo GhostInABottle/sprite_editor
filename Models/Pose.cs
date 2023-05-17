@@ -16,6 +16,7 @@ namespace SpriteEditor.Models
         public Pose()
         {
             BoundingBox = new Rect(-1, -1, -1, -1);
+            BoundingCircle = null;
             DefaultDuration = 100;
             Repeats = -1;
             RequireCompletion = false;
@@ -27,6 +28,7 @@ namespace SpriteEditor.Models
         public Pose(Pose other)
         {
             BoundingBox = new Rect(other.BoundingBox);
+            BoundingCircle = other.BoundingCircle ?? null;
             DefaultDuration = other.DefaultDuration;
             Repeats = other.Repeats;
             RequireCompletion = other.RequireCompletion;
@@ -45,6 +47,11 @@ namespace SpriteEditor.Models
         /// Collision bounding box.
         /// </summary>
         public Rect BoundingBox { get; set; }
+
+        /// <summary>
+        /// Optional collision bounding circle.
+        /// </summary>
+        public Circle BoundingCircle { get; set; }
 
         /// <summary>
         /// Total duration of one pose cycle in milliseconds.
@@ -111,7 +118,12 @@ namespace SpriteEditor.Models
         public XElement ToXml()
         {
             var children = new List<object>();
-            if (!BoundingBox.Equals(-1, -1, -1, -1))
+
+            if (BoundingCircle != null)
+            {
+                children.Add(BoundingCircle.ToXml("Bounding-Circle"));
+            }
+            else if (!BoundingBox.Equals(-1, -1, -1, -1))
             {
                 children.Add(BoundingBox.ToXml("Bounding-Box"));
             }
@@ -162,6 +174,44 @@ namespace SpriteEditor.Models
             }
 
             return new XElement("Pose", children.ToArray());
+        }
+
+        public static Pose FromXml(XElement pose)
+        {
+            var newPose = new Pose()
+            {
+                DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
+                Repeats = (int?)pose.Attribute("Repeats") ?? -1,
+                RequireCompletion = (bool?)pose.Attribute("Require-Completion") ?? false,
+                Origin = new Vec2(
+                    (float?)pose.Attribute("X-Origin") ?? 0.0f,
+                    (float?)pose.Attribute("Y-Origin") ?? 0.0f),
+                BoundingBox =
+                    (from box in pose.Descendants("Bounding-Box") select Rect.FromXml(box))
+                        .DefaultIfEmpty(new Rect()).Single(),
+                BoundingCircle =
+                    (from circle in pose.Descendants("Bounding-Circle") select Circle.FromXml(circle))
+                        .SingleOrDefault(),
+                Image = (string)pose.Attribute("Image"),
+                TransparentColor = (string)pose.Attribute("Transparent-Color"),
+                Tags =
+                (
+                    from tag in pose.Descendants("Tag")
+                    select new
+                    {
+                        Key = (string)tag.Attribute("Key"),
+                        Value = (string)tag.Attribute("Value")
+                    }
+                ).ToDictionary(tag => tag.Key, tag => tag.Value),
+                Frames = (from frame in pose.Descendants("Frame")
+                          select Frame.FromXml(frame)).ToList()
+            };
+
+            if (newPose.BoundingCircle != null)
+            {
+                newPose.BoundingBox = (Rect)newPose.BoundingCircle;
+            }
+            return newPose;
         }
 
         protected virtual void Dispose(bool disposing)

@@ -72,6 +72,15 @@ namespace SpriteEditor.Models
                 new XAttribute("Height", Height));
         }
 
+        public static Rect FromXml(XElement element)
+        {
+            return new Rect(
+                (int)element.Attribute("X"),
+                (int)element.Attribute("Y"),
+                (int)element.Attribute("Width"),
+                (int)element.Attribute("Height"));
+        }
+
         public bool Equals(int x, int y, int w, int h)
         {
             return X == x && Y == y && Width == w && Height == h;
