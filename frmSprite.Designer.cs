@@ -275,6 +275,7 @@
             // 
             // lstPoses
             // 
+            lstPoses.AllowDrop = true;
             lstPoses.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstPoses.ContextMenuStrip = mnuPose;
             lstPoses.FormattingEnabled = true;
@@ -284,8 +285,10 @@
             lstPoses.Name = "lstPoses";
             lstPoses.Size = new System.Drawing.Size(249, 529);
             lstPoses.TabIndex = 5;
-            lstPoses.SelectedIndexChanged += lstPoses_SelectedIndexChanged;
+            lstPoses.DragDrop += lstPoses_DragDrop;
+            lstPoses.DragOver += lstPoses_DragOver;
             lstPoses.KeyUp += lstPoses_KeyUp;
+            lstPoses.MouseDown += lstPoses_MouseDown;
             // 
             // mnuPose
             // 

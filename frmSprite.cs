@@ -225,7 +225,8 @@ namespace SpriteEditor
             {
                 DrawBoundingCircle(e, midX, midY);
             }
-            else if (showBoundingBox) {
+            else if (showBoundingBox)
+            {
                 DrawBoundingBox(e, midX, midY, dest);
             }
 
@@ -556,12 +557,12 @@ namespace SpriteEditor
             chkTween.Checked = false;
         }
 
-        private void lstPoses_SelectedIndexChanged(object sender, EventArgs e)
+        private void changeSelectedPose(int poseIndex)
         {
-            if (lstPoses.SelectedIndex == -1) return;
+            if (poseIndex == -1) return;
 
             var poses = spriteLogic.SpriteData.Poses;
-            selectedPose = poses[lstPoses.SelectedIndex];
+            selectedPose = poses[poseIndex];
             PopulatePose(selectedPose);
             spriteLogic.SetPose(selectedPose.NameWithTags(), Environment.TickCount);
             if (lstFrames.Items.Count > 0)
@@ -572,6 +573,51 @@ namespace SpriteEditor
             {
                 PopulateFrame(null);
             }
+        }
+
+        private void lstPoses_MouseDown(object sender, MouseEventArgs e)
+        {
+
+            if (lstPoses.SelectedItem == null || e.Button != MouseButtons.Left) return;
+
+            lstFrames.DoDragDrop(lstPoses.SelectedIndex, DragDropEffects.Move);
+            if (lstPoses.SelectedIndex != -1)
+            {
+                changeSelectedPose(lstPoses.SelectedIndex);
+            }
+        }
+
+        static private int ListDragDrop<T>(ListBox listBox, List<T> list, DragEventArgs e)
+        {
+            var point = listBox.PointToClient(new Point(e.X, e.Y));
+            int toIndex = listBox.IndexFromPoint(point);
+            if (toIndex < 0)
+            {
+                toIndex = listBox.Items.Count - 1;
+            }
+
+            int fromIndex = (int)e.Data.GetData(typeof(int));
+            var data = listBox.Items[fromIndex].ToString();
+            listBox.Items.RemoveAt(fromIndex);
+            listBox.Items.Insert(toIndex, data);
+
+            var temp = list[fromIndex];
+            list.RemoveAt(fromIndex);
+            list.Insert(toIndex, temp);
+
+            return toIndex;
+        }
+
+        private void lstPoses_DragDrop(object sender, DragEventArgs e)
+        {
+            var toIndex = ListDragDrop(lstPoses, spriteLogic.SpriteData.Poses, e);
+            changeSelectedPose(toIndex);
+            stlMessage.Text = "";
+        }
+
+        private void lstPoses_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
         }
 
         private void chkTween_CheckedChanged(object sender, EventArgs e)
@@ -589,35 +635,22 @@ namespace SpriteEditor
 
         private void lstFrames_MouseDown(object sender, MouseEventArgs e)
         {
-            if (selectedPose == null || lstFrames.SelectedItem == null) return;
+            var valid = selectedPose != null
+                && lstFrames.SelectedItem != null
+                && e.Button == MouseButtons.Left;
+            if (!valid) return;
 
-            if (e.Button == MouseButtons.Left)
+            lstFrames.DoDragDrop(lstFrames.SelectedIndex, DragDropEffects.Move);
+            if (lstFrames.SelectedIndex != -1)
             {
-                lstFrames.DoDragDrop(lstFrames.SelectedIndex, DragDropEffects.Move);
-                if (lstFrames.SelectedIndex != -1)
-                {
-                    changeSelectedFrame(lstFrames.SelectedIndex);
-                    PopulateFrame(selectedFrame);
-                }
+                changeSelectedFrame(lstFrames.SelectedIndex);
+                PopulateFrame(selectedFrame);
             }
         }
 
         private void lstFrames_DragDrop(object sender, DragEventArgs e)
         {
-            var point = lstFrames.PointToClient(new Point(e.X, e.Y));
-            int toIndex = lstFrames.IndexFromPoint(point);
-            if (toIndex < 0)
-            {
-                toIndex = lstFrames.Items.Count - 1;
-            }
-
-            int fromIndex = (int)e.Data.GetData(typeof(int));
-            var data = lstFrames.Items[fromIndex].ToString();
-            lstFrames.Items.RemoveAt(fromIndex);
-            lstFrames.Items.Insert(toIndex, data);
-            var tempFrame = selectedPose.Frames[fromIndex];
-            selectedPose.Frames.RemoveAt(fromIndex);
-            selectedPose.Frames.Insert(toIndex, tempFrame);
+            var toIndex = ListDragDrop(lstFrames, selectedPose.Frames, e);
             changeSelectedFrame(toIndex);
             stlMessage.Text = "";
         }
