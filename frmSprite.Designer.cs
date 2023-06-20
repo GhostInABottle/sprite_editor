@@ -285,6 +285,7 @@
             lstPoses.Name = "lstPoses";
             lstPoses.Size = new System.Drawing.Size(249, 529);
             lstPoses.TabIndex = 5;
+            lstPoses.SelectedIndexChanged += lstPoses_SelectedIndexChanged;
             lstPoses.DragDrop += lstPoses_DragDrop;
             lstPoses.DragOver += lstPoses_DragOver;
             lstPoses.KeyUp += lstPoses_KeyUp;

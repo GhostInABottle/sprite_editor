@@ -575,6 +575,11 @@ namespace SpriteEditor
             }
         }
 
+        private void lstPoses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            changeSelectedPose(lstPoses.SelectedIndex);
+        }
+
         private void lstPoses_MouseDown(object sender, MouseEventArgs e)
         {
 
@@ -611,7 +616,7 @@ namespace SpriteEditor
         private void lstPoses_DragDrop(object sender, DragEventArgs e)
         {
             var toIndex = ListDragDrop(lstPoses, spriteLogic.SpriteData.Poses, e);
-            changeSelectedPose(toIndex);
+            lstPoses.SelectedIndex = toIndex;
             stlMessage.Text = "";
         }
 
