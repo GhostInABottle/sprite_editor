@@ -24,6 +24,11 @@ namespace SpriteEditor
         private long oldTime;
 
         /// <summary>
+        /// The duration of the current frame
+        /// </summary>
+        private int? currentFrameTime;
+
+        /// <summary>
         /// Number of times animation repeated so far.
         /// </summary>
         private int repeatNumber;
@@ -144,6 +149,7 @@ namespace SpriteEditor
         {
             frameIndex = 0;
             oldTime = currentTime;
+            currentFrameTime = null;
             repeatNumber = 0;
             frameCount = CurrentPose.Frames.Count;
             IsFinished = false;
@@ -176,6 +182,20 @@ namespace SpriteEditor
             }
 
             Reset(currentTime);
+        }
+
+        private int GetFrameTime()
+        {
+            int frameDuration = CurrentFrame.Duration;
+            var frameTime = frameDuration == -1 ?
+                CurrentPose.DefaultDuration : frameDuration;
+            if (CurrentFrame.MaxDuration.HasValue)
+            {
+                frameTime = new Random()
+                    .Next(frameTime, CurrentFrame.MaxDuration.Value);
+            }
+
+            return frameTime;
         }
 
         /// <summary>
@@ -216,16 +236,15 @@ namespace SpriteEditor
                 lastSoundFrame = frameIndex;
             }
 
-            int frameDuration = CurrentFrame.Duration;
-            int frameTime = frameDuration == -1 ?
-                CurrentPose.DefaultDuration : frameDuration;
-            if (currentTime - oldTime >= frameTime)
+            if (!currentFrameTime.HasValue)
+            {
+                currentFrameTime = GetFrameTime();
+            }
+
+            if (currentTime - oldTime >= currentFrameTime)
             {
                 oldTime = currentTime;
-                if (tweening)
-                {
-                    tweening = false;
-                }
+                tweening = false;
 
                 frameIndex++;
                 if (frameIndex >= frameCount)
@@ -240,6 +259,7 @@ namespace SpriteEditor
                 }
 
                 frameIndex %= frameCount;
+                currentFrameTime = null;
             }
 
             if (!tweening && CurrentFrame.IsTweenFrame)
@@ -247,6 +267,7 @@ namespace SpriteEditor
                 var prevFrame = CurrentPose.Frames[frameIndex - 1];
                 CurrentFrame.Rectangle = prevFrame.Rectangle;
                 oldTime = currentTime;
+                currentFrameTime = GetFrameTime();
                 tweening = true;
             }
 
@@ -254,6 +275,7 @@ namespace SpriteEditor
             {
                 var prevFrame = CurrentPose.Frames[frameIndex - 1];
                 var nextFrame = CurrentPose.Frames[frameIndex + 1];
+                var frameTime = currentFrameTime.Value;
                 float alpha = (float)(currentTime - oldTime) / (frameTime == 0 ? 1 : frameTime);
                 alpha = Math.Min(Math.Max(alpha, 0.0f), 1.0f);
                 CurrentFrame.Magnification.X = Lerp(prevFrame.Magnification.X, nextFrame.Magnification.X, alpha);
@@ -285,14 +307,6 @@ namespace SpriteEditor
         public void SetFrame(int index)
         {
             frameIndex = index;
-        }
-
-        /// <summary>
-        /// Stop updating the pose.
-        /// </summary>
-        public void Stop()
-        {
-            IsFinished = true;
         }
 
         /// <summary>

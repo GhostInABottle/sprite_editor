@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SpriteEditor.Models;
 using SpriteEditor.Properties;
@@ -511,6 +512,35 @@ namespace SpriteEditor
             lstFrames.Items.Clear();
         }
 
+        private static (int?, int?) StringToDuration(string durationString)
+        {
+            // Matches patterns like 30-50
+            const string pattern = @"^\s*(-?\d+)(\s*-\s*(\d+))?\s*$";
+            var match = Regex.Match(durationString, pattern);
+            if (!match.Success) return (null, null);
+
+            var duration = int.Parse(match.Groups[1].Value);
+            var maxDuration = string.IsNullOrEmpty(match.Groups[3].Value)
+                ? (int?)null
+                : int.Parse(match.Groups[3].Value);
+            if (maxDuration < duration) maxDuration = null;
+
+            return new(
+                duration,
+                maxDuration
+            );
+        }
+
+        private static string DurationToString(Frame frame)
+        {
+            if (frame.Duration < 0 || !frame.MaxDuration.HasValue)
+            {
+                return frame.Duration.ToString();
+            }
+
+            return $"{frame.Duration}-{frame.MaxDuration}";
+        }
+
         private void PopulateFrame(Frame frame)
         {
             if (frame == null)
@@ -519,7 +549,7 @@ namespace SpriteEditor
                 return;
             }
 
-            txtFrameDuration.Text = frame.Duration.ToString();
+            txtFrameDuration.Text = DurationToString(frame);
             txtMagnification.Text = frame.Magnification.ToString();
             txtAngle.Text = frame.Angle.ToString();
             txtOpacity.Text = frame.Opacity.ToString();
@@ -764,11 +794,11 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            if (int.TryParse(txtFrameDuration.Text, out var duration))
-            {
-                selectedFrame.Duration = duration;
+            var (duration, maxDuration) = StringToDuration(txtFrameDuration.Text);
+            if (!duration.HasValue) return;
 
-            }
+            selectedFrame.Duration = duration.Value;
+            selectedFrame.MaxDuration = maxDuration;
         }
 
         private void txtMagnification_TextChanged(object sender, EventArgs e)

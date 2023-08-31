@@ -24,6 +24,7 @@ namespace SpriteEditor.Models
         public Frame(Frame other)
         {
             Duration = other.Duration;
+            MaxDuration = other.MaxDuration;
             Rectangle = new Rect(other.Rectangle);
             Magnification = new Vec2(other.Magnification);
             Angle = other.Angle;
@@ -35,9 +36,14 @@ namespace SpriteEditor.Models
         }
 
         /// <summary>
-        /// Frame duration in milliseconds.
+        /// Regular or min frame duration in milliseconds.
         /// </summary>
         public int Duration { get; set; }
+
+        /// <summary>
+        /// Max frame duration in milliseconds.
+        /// </summary>
+        public int? MaxDuration { get; set; }
 
         /// <summary>
         /// Source rectangle.
@@ -85,6 +91,10 @@ namespace SpriteEditor.Models
             if (Duration != -1)
             {
                 children.Add(new XAttribute("Duration", Duration));
+            }
+            if (MaxDuration.HasValue)
+            {
+                children.Add(new XAttribute("Max-Duration", MaxDuration));
             }
 
             children.Add(Rectangle.ToXml("Rectangle"));
@@ -137,6 +147,7 @@ namespace SpriteEditor.Models
             return new Frame()
             {
                 Duration = (int?)frame.Attribute("Duration") ?? -1,
+                MaxDuration = (int?)frame.Attribute("Max-Duration"),
                 Magnification = new Vec2(
                     (float?)frame.Attribute("X-Mag") ?? 1.0f,
                     (float?)frame.Attribute("Y-Mag") ?? 1.0f),
