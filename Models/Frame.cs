@@ -32,7 +32,7 @@ namespace SpriteEditor.Models
             IsTweenFrame = other.IsTweenFrame;
             Image = other.Image;
             TransparentColor = other.TransparentColor;
-            Sound = other.Sound;
+            Sound = new Sound(other.Sound);
         }
 
         /// <summary>

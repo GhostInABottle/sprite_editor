@@ -1234,6 +1234,9 @@ namespace SpriteEditor
                 poseClone.Tags["Name"] += " Copy";
             }
 
+            selectedPose = null;
+            selectedFrame = null;
+
             poses.Add(poseClone);
             PopulateSprite(spriteLogic.SpriteData);
             PopulateFrame(null);
