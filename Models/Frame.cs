@@ -99,22 +99,22 @@ namespace SpriteEditor.Models
 
             children.Add(Rectangle.ToXml("Rectangle"));
 
-            if (!Utilities.CheckClose(Magnification.X, 1.0f))
+            if (!IsTweenFrame && !Utilities.CheckClose(Magnification.X, 1.0f))
             {
                 children.Add(new XAttribute("X-Mag", Magnification.X));
             }
 
-            if (!Utilities.CheckClose(Magnification.Y, 1.0f))
+            if (!IsTweenFrame && !Utilities.CheckClose(Magnification.Y, 1.0f))
             {
                 children.Add(new XAttribute("Y-Mag", Magnification.Y));
             }
 
-            if (Angle != 0)
+            if (!IsTweenFrame && Angle != 0)
             {
                 children.Add(new XAttribute("Angle", Angle));
             }
 
-            if (!Utilities.CheckClose(Opacity, 1.0f, 0.01f))
+            if (!IsTweenFrame && !Utilities.CheckClose(Opacity, 1.0f, 0.01f))
             {
                 children.Add(new XAttribute("Opacity", Opacity));
             }

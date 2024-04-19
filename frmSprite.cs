@@ -550,9 +550,6 @@ namespace SpriteEditor
             }
 
             txtFrameDuration.Text = DurationToString(frame);
-            txtMagnification.Text = frame.Magnification.ToString();
-            txtAngle.Text = frame.Angle.ToString();
-            txtOpacity.Text = frame.Opacity.ToString();
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
             txtSound.Text = frame.Sound.Filename;
@@ -561,6 +558,20 @@ namespace SpriteEditor
             txtVolume.Text = frame.Sound.Volume.ToString();
             txtVolume.Enabled = frame.Sound.Filename != null;
             txtFrameImage.Text = frame.Image;
+
+            if (frame.IsTweenFrame)
+            {
+                txtMagnification.Text = "";
+                txtAngle.Text = "";
+                txtOpacity.Text = "";
+            }
+            else
+            {
+                txtMagnification.Text = frame.Magnification.ToString();
+                txtAngle.Text = frame.Angle.ToString();
+                txtOpacity.Text = frame.Opacity.ToString();
+            }
+
             var transColor = cdTransparentColor.Color;
             if (!string.IsNullOrEmpty(frame.TransparentColor))
             {
@@ -657,15 +668,30 @@ namespace SpriteEditor
 
         private void chkTween_CheckedChanged(object sender, EventArgs e)
         {
-            stlMessage.Text = "";
             txtMagnification.Enabled = !chkTween.Checked;
             txtAngle.Enabled = !chkTween.Checked;
             txtOpacity.Enabled = !chkTween.Checked;
-            if (selectedFrame != null)
+            stlMessage.Text = "";
+            if (chkTween.Checked)
             {
-                selectedFrame.IsTweenFrame = chkTween.Checked;
-                spriteLogic.Reset(Environment.TickCount);
+                txtMagnification.Text = "";
+                txtAngle.Text = "";
+                txtOpacity.Text = "";
             }
+            else
+            {
+                txtMagnification.Text = "(1, 1)";
+                txtAngle.Text = "0";
+                txtOpacity.Text = "1";
+            }
+
+            if (selectedFrame == null) return;
+
+            selectedFrame.IsTweenFrame = chkTween.Checked;
+            selectedFrame.Magnification = new Vec2(1, 1);
+            selectedFrame.Angle = 0;
+            selectedFrame.Opacity = 1;
+            spriteLogic.Reset(Environment.TickCount);
         }
 
         private void lstFrames_MouseDown(object sender, MouseEventArgs e)
