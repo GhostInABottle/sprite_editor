@@ -23,11 +23,17 @@ namespace SpriteEditor
             public int CoordsIndex { get; set; }
             public int? FrameCountIndex { get; set; }
         }
+        // Specifies how the CSV can look like. Destination coordinates are
+        // irrelevant for the sprite editor but are useful when setting up the CSVs
         private static readonly Dictionary<int, LineFormat> FormatByPartCount = new()
         {
+            // Name, Width, Height, Source X, Source Y
             { 5, new LineFormat(0, 1, 3) },
+            // Name, Width, Height, Source X, Source Y, Frame Count
             { 6, new LineFormat(0, 1, 3, 5) },
+            // Name, Destination X, Destination Y, Width, Height, Source X, Source Y
             { 7, new LineFormat(0, 3, 5) },
+            // Name, Destination X, Destination Y, Width, Height, Source X, Source Y, Frame Count
             { 8, new LineFormat(0, 3, 5, 7) },
         };
         private static (Pose pose, string error) ParseLine(string line)
@@ -63,19 +69,34 @@ namespace SpriteEditor
 
             var frames = new List<Frame>
             {
-                new Frame { Rectangle = new Rect(x, y, width, height) }
+                new() { Rectangle = new Rect(x, y, width, height) }
             };
 
             if (format.FrameCountIndex.HasValue)
             {
-                if (!int.TryParse(parts[format.FrameCountIndex.Value], out int count) || count < 2)
+                // 3V means 3 vertical frames, 3H or 3 means horizontal frames
+                var countString = parts[format.FrameCountIndex.Value].ToUpper();
+                var isVertical = countString.EndsWith("V");
+                if (isVertical || countString.EndsWith("H")) {
+                    countString = countString.Substring(0, countString.Length - 1);
+                }
+
+                if (!int.TryParse(countString, out int count) || count < 2)
                 {
                     return (null, $"Error: Invalid frame count in line: {line}");
                 }
 
                 for (var i = 0; i < count - 1; i++)
                 {
-                    x += width;
+                    if (isVertical)
+                    {
+                        y += height;
+                    }
+                    else
+                    {
+                        x += width;
+                    }
+
                     frames.Add(
                         new Frame {
                             Rectangle = new Rect(x, y, width, height)

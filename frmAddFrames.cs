@@ -86,7 +86,7 @@ namespace SpriteEditor
 
             if (string.IsNullOrEmpty(framePattern) && frameCount > 1)
             {
-                // Generates a frane pattern like 2,3,4,1
+                // Generates a frame pattern like 2,3,4,1
                 var range = Enumerable.Range(1, frameCount);
                 framePattern = string.Join(",", range.Skip(1).Concat(range.Take(1)));
             }
