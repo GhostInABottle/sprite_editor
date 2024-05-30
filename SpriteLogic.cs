@@ -287,6 +287,8 @@ namespace SpriteEditor
 
         public void PlaySound(Models.Sound soundData)
         {
+            if (string.IsNullOrEmpty(soundData.Filename)) return;
+
             var sound = soundData.LoadFmodSound(fmodSystem.Value, ResolvePath(soundData.Filename));
             Channel channel = fmodSystem.Value.PlaySound(sound.Value, paused: true);
             if (soundData.Pitch.HasValue)

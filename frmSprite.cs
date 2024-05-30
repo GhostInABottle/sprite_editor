@@ -541,6 +541,8 @@ namespace SpriteEditor
             return $"{frame.Duration}-{frame.MaxDuration}";
         }
 
+        private bool populatingFrame = false;
+
         private void PopulateFrame(Frame frame)
         {
             if (frame == null)
@@ -548,6 +550,8 @@ namespace SpriteEditor
                 ClearFrame();
                 return;
             }
+
+            populatingFrame = true;
 
             txtFrameDuration.Text = DurationToString(frame);
             txtRectangle.Text = frame.Rectangle.ToString();
@@ -580,6 +584,8 @@ namespace SpriteEditor
 
             cdTransparentColor.Color = transColor;
             btnFrameTransColor.BackColor = transColor;
+
+            populatingFrame = false;
         }
 
         private void ClearFrame()
@@ -903,9 +909,11 @@ namespace SpriteEditor
         private void changeSelectedFrame(int newFrameIndex)
         {
             if (selectedPose == null) return;
+
             btnPrevFrame.Enabled = newFrameIndex > 0;
             btnNextFrame.Enabled = newFrameIndex < selectedPose.Frames.Count - 1;
             if (newFrameIndex < 0 || newFrameIndex >= selectedPose.Frames.Count) return;
+
             selectedFrame = selectedPose.Frames[newFrameIndex];
             PopulateFrame(selectedFrame);
             lstFrames.SelectedIndex = newFrameIndex;
@@ -915,11 +923,13 @@ namespace SpriteEditor
         private void btnPrevFrame_Click(object sender, EventArgs e)
         {
             changeSelectedFrame(lstFrames.SelectedIndex - 1);
+            spriteLogic.PlaySound(selectedFrame.Sound);
         }
 
         private void btnNextFrame_Click(object sender, EventArgs e)
         {
             changeSelectedFrame(lstFrames.SelectedIndex + 1);
+            spriteLogic.PlaySound(selectedFrame.Sound);
         }
 
         private void miAddFrame_Click(object sender, EventArgs e)
@@ -1209,7 +1219,6 @@ namespace SpriteEditor
             if (lstFrames.SelectedIndex == -1) return;
 
             changeSelectedFrame(lstFrames.SelectedIndex);
-            PopulateFrame(selectedFrame);
         }
 
         private void mnuFrame_Opening(object sender, CancelEventArgs e)
@@ -1598,14 +1607,17 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            if (float.TryParse(txtPitch.Text, out float pitch))
-            {
-                selectedFrame.Sound.Pitch = pitch;
-                spriteLogic.PlaySound(selectedFrame.Sound);
-            }
-            else
+            var parsed = float.TryParse(txtPitch.Text, out float pitch);
+            if (!parsed)
             {
                 selectedFrame.Sound.Pitch = null;
+                return;
+            }
+
+            selectedFrame.Sound.Pitch = pitch;
+            if (!populatingFrame)
+            {
+                spriteLogic.PlaySound(selectedFrame.Sound);
             }
         }
 
@@ -1613,14 +1625,17 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            if (float.TryParse(txtVolume.Text, out float volume))
-            {
-                selectedFrame.Sound.Volume = volume;
-                spriteLogic.PlaySound(selectedFrame.Sound);
-            }
-            else
+            var parsed = float.TryParse(txtVolume.Text, out float volume);
+            if (!parsed)
             {
                 selectedFrame.Sound.Volume = null;
+                return;
+            }
+
+            selectedFrame.Sound.Volume = volume;
+            if (!populatingFrame)
+            {
+                spriteLogic.PlaySound(selectedFrame.Sound);
             }
         }
 
