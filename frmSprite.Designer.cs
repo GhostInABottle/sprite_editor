@@ -34,6 +34,7 @@
             miPaste = new System.Windows.Forms.ToolStripMenuItem();
             miPasteCsv = new System.Windows.Forms.ToolStripMenuItem();
             miRemove = new System.Windows.Forms.ToolStripMenuItem();
+            miOffsetFrames = new System.Windows.Forms.ToolStripMenuItem();
             lblPoses = new System.Windows.Forms.Label();
             lblImage = new System.Windows.Forms.Label();
             txtImage = new System.Windows.Forms.TextBox();
@@ -58,6 +59,7 @@
             miRemoveFrame = new System.Windows.Forms.ToolStripMenuItem();
             miClearFrames = new System.Windows.Forms.ToolStripMenuItem();
             miAddMultiple = new System.Windows.Forms.ToolStripMenuItem();
+            miOffsetFrame = new System.Windows.Forms.ToolStripMenuItem();
             lblFrames = new System.Windows.Forms.Label();
             txtBoundingBox = new System.Windows.Forms.TextBox();
             lblBoundingBox = new System.Windows.Forms.Label();
@@ -293,15 +295,15 @@
             // 
             // mnuPose
             // 
-            mnuPose.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAdd, miCopy, miPaste, miPasteCsv, miRemove });
+            mnuPose.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAdd, miCopy, miPaste, miPasteCsv, miRemove, miOffsetFrames });
             mnuPose.Name = "mnuPose";
-            mnuPose.Size = new System.Drawing.Size(127, 114);
+            mnuPose.Size = new System.Drawing.Size(157, 136);
             mnuPose.Opening += mnuPose_Opening;
             // 
             // miAdd
             // 
             miAdd.Name = "miAdd";
-            miAdd.Size = new System.Drawing.Size(126, 22);
+            miAdd.Size = new System.Drawing.Size(156, 22);
             miAdd.Text = "Add";
             miAdd.Click += miAdd_Click;
             // 
@@ -309,7 +311,7 @@
             // 
             miCopy.Enabled = false;
             miCopy.Name = "miCopy";
-            miCopy.Size = new System.Drawing.Size(126, 22);
+            miCopy.Size = new System.Drawing.Size(156, 22);
             miCopy.Text = "Copy";
             miCopy.Click += miCopy_Click;
             // 
@@ -317,23 +319,30 @@
             // 
             miPaste.Enabled = false;
             miPaste.Name = "miPaste";
-            miPaste.Size = new System.Drawing.Size(126, 22);
+            miPaste.Size = new System.Drawing.Size(156, 22);
             miPaste.Text = "Paste";
             miPaste.Click += miPaste_Click;
             // 
             // miPasteCsv
             // 
             miPasteCsv.Name = "miPasteCsv";
-            miPasteCsv.Size = new System.Drawing.Size(126, 22);
+            miPasteCsv.Size = new System.Drawing.Size(156, 22);
             miPasteCsv.Text = "Paste CSV";
             miPasteCsv.Click += miPasteCsv_Click;
             // 
             // miRemove
             // 
             miRemove.Name = "miRemove";
-            miRemove.Size = new System.Drawing.Size(126, 22);
+            miRemove.Size = new System.Drawing.Size(156, 22);
             miRemove.Text = "Remove";
             miRemove.Click += miRemove_Click;
+            // 
+            // miOffsetFrames
+            // 
+            miOffsetFrames.Name = "miOffsetFrames";
+            miOffsetFrames.Size = new System.Drawing.Size(156, 22);
+            miOffsetFrames.Text = "Offset Frames...";
+            miOffsetFrames.Click += miOffsetFrames_Click;
             // 
             // lblPoses
             // 
@@ -543,15 +552,15 @@
             // 
             // mnuFrame
             // 
-            mnuFrame.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAddFrame, miCopyFrame, miPasteFrame, miRemoveFrame, miClearFrames, miAddMultiple });
+            mnuFrame.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAddFrame, miCopyFrame, miPasteFrame, miRemoveFrame, miClearFrames, miAddMultiple, miOffsetFrame });
             mnuFrame.Name = "mnuPose";
-            mnuFrame.Size = new System.Drawing.Size(144, 136);
+            mnuFrame.Size = new System.Drawing.Size(181, 180);
             mnuFrame.Opening += mnuFrame_Opening;
             // 
             // miAddFrame
             // 
             miAddFrame.Name = "miAddFrame";
-            miAddFrame.Size = new System.Drawing.Size(143, 22);
+            miAddFrame.Size = new System.Drawing.Size(180, 22);
             miAddFrame.Text = "Add";
             miAddFrame.Click += miAddFrame_Click;
             // 
@@ -559,7 +568,7 @@
             // 
             miCopyFrame.Enabled = false;
             miCopyFrame.Name = "miCopyFrame";
-            miCopyFrame.Size = new System.Drawing.Size(143, 22);
+            miCopyFrame.Size = new System.Drawing.Size(180, 22);
             miCopyFrame.Text = "Copy";
             miCopyFrame.Click += miCopyFrame_Click;
             // 
@@ -567,30 +576,37 @@
             // 
             miPasteFrame.Enabled = false;
             miPasteFrame.Name = "miPasteFrame";
-            miPasteFrame.Size = new System.Drawing.Size(143, 22);
+            miPasteFrame.Size = new System.Drawing.Size(180, 22);
             miPasteFrame.Text = "Paste";
             miPasteFrame.Click += miPasteFrame_Click;
             // 
             // miRemoveFrame
             // 
             miRemoveFrame.Name = "miRemoveFrame";
-            miRemoveFrame.Size = new System.Drawing.Size(143, 22);
+            miRemoveFrame.Size = new System.Drawing.Size(180, 22);
             miRemoveFrame.Text = "Remove";
             miRemoveFrame.Click += miRemoveFrame_Click;
             // 
             // miClearFrames
             // 
             miClearFrames.Name = "miClearFrames";
-            miClearFrames.Size = new System.Drawing.Size(143, 22);
+            miClearFrames.Size = new System.Drawing.Size(180, 22);
             miClearFrames.Text = "Clear";
             miClearFrames.Click += miClearFrames_Click;
             // 
             // miAddMultiple
             // 
             miAddMultiple.Name = "miAddMultiple";
-            miAddMultiple.Size = new System.Drawing.Size(143, 22);
-            miAddMultiple.Text = "Add Multiple";
+            miAddMultiple.Size = new System.Drawing.Size(180, 22);
+            miAddMultiple.Text = "Add Multiple...";
             miAddMultiple.Click += miAddMultiple_Click;
+            // 
+            // miOffsetFrame
+            // 
+            miOffsetFrame.Name = "miOffsetFrame";
+            miOffsetFrame.Size = new System.Drawing.Size(180, 22);
+            miOffsetFrame.Text = "Offset...";
+            miOffsetFrame.Click += miOffsetFrame_Click;
             // 
             // lblFrames
             // 
@@ -1439,6 +1455,8 @@
         private System.Windows.Forms.Label lblPitch;
         private System.Windows.Forms.ToolStripMenuItem miPasteCsv;
         private System.Windows.Forms.ToolStripMenuItem miCheckEdges;
+        private System.Windows.Forms.ToolStripMenuItem miOffsetFrames;
+        private System.Windows.Forms.ToolStripMenuItem miOffsetFrame;
     }
 }
 

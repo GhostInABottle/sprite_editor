@@ -32,6 +32,7 @@ namespace SpriteEditor
         private Pose copiedPose;
         private Frame copiedFrame;
         private readonly frmGridSize gridSizeForm = new();
+        private readonly frmOffset offsetForm = new();
         private readonly frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
@@ -729,7 +730,7 @@ namespace SpriteEditor
 
         private void btnBrowseImage_Click(object sender, EventArgs e)
         {
-            var result = ofdImage.ShowDialog();
+            var result = ofdImage.ShowDialog(this);
             if (result != DialogResult.OK)
             {
                 return;
@@ -982,7 +983,7 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            var result = ofdImage.ShowDialog();
+            var result = ofdImage.ShowDialog(this);
             if (result != DialogResult.OK)
             {
                 return;
@@ -996,7 +997,7 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            cdTransparentColor.ShowDialog();
+            cdTransparentColor.ShowDialog(this);
             var hex = cdTransparentColor.Color.ToHex();
             selectedFrame.TransparentColor = hex;
             btnFrameTransColor.BackColor = cdTransparentColor.Color;
@@ -1083,7 +1084,7 @@ namespace SpriteEditor
 
         private void miOpen_Click(object sender, EventArgs e)
         {
-            var result = ofdSprite.ShowDialog();
+            var result = ofdSprite.ShowDialog(this);
             if (result != DialogResult.OK) return;
 
             OpenSprite(ofdSprite.FileName);
@@ -1179,7 +1180,7 @@ namespace SpriteEditor
 
         private void miSaveAs_Click(object sender, EventArgs e)
         {
-            var result = sfdSprite.ShowDialog();
+            var result = sfdSprite.ShowDialog(this);
             if (result != DialogResult.OK) return;
 
             if (SaveSprite(sfdSprite.FileName))
@@ -1206,7 +1207,7 @@ namespace SpriteEditor
 
         private void miGridSettings_Click(object sender, EventArgs e)
         {
-            gridSizeForm.ShowDialog();
+            gridSizeForm.ShowDialog(this);
         }
 
         private void frmSprite_FormClosed(object sender, FormClosedEventArgs e)
@@ -1280,7 +1281,7 @@ namespace SpriteEditor
 
         private void btnTransColor_Click(object sender, EventArgs e)
         {
-            cdTransparentColor.ShowDialog();
+            cdTransparentColor.ShowDialog(this);
             string hex = cdTransparentColor.Color.ToHex();
             spriteLogic.SpriteData.TransparentColor = hex;
             btnTransColor.BackColor = cdTransparentColor.Color;
@@ -1293,7 +1294,7 @@ namespace SpriteEditor
                 fbdBase.SelectedPath = Path.GetDirectoryName(spriteLogic.OpenedFileName);
             }
 
-            fbdBase.ShowDialog();
+            fbdBase.ShowDialog(this);
             var selectedPath = fbdBase.SelectedPath;
             if (string.IsNullOrEmpty(selectedPath)) return;
 
@@ -1385,14 +1386,14 @@ namespace SpriteEditor
                 stlMessage.Text = $"Error: Couldn't load bitmap {img}";
                 return;
             }
-            addFramesForm.ShowDialog(bmp);
+            addFramesForm.ShowDialog(bmp, this);
         }
 
         private void btnBrowsePoseImage_Click(object sender, EventArgs e)
         {
             if (selectedPose == null) return;
 
-            var result = ofdImage.ShowDialog();
+            var result = ofdImage.ShowDialog(this);
             if (result != DialogResult.OK) return;
 
             var fullFilename = ofdImage.FileName;
@@ -1403,7 +1404,7 @@ namespace SpriteEditor
         {
             if (selectedPose == null) return;
 
-            cdTransparentColor.ShowDialog();
+            cdTransparentColor.ShowDialog(this);
             var hex = cdTransparentColor.Color.ToHex();
             selectedPose.TransparentColor = hex;
             btnPoseTransColor.BackColor = cdTransparentColor.Color;
@@ -1413,7 +1414,7 @@ namespace SpriteEditor
         {
             if (selectedFrame == null) return;
 
-            var result = ofdSound.ShowDialog();
+            var result = ofdSound.ShowDialog(this);
             if (result != DialogResult.OK)
             {
                 return;
@@ -1696,6 +1697,29 @@ namespace SpriteEditor
             foreach (var (pi, fi, edge) in results)
             {
                 lstPoses.Items[pi] = lstPoses.Items[pi] + $" <{fi}:{edge}>!";
+            }
+        }
+
+        private void miOffsetFrame_Click(object sender, EventArgs e)
+        {
+            if (selectedFrame == null) return;
+
+            var result = offsetForm.ShowDialog(this);
+            if (result != DialogResult.OK) return;
+
+            selectedFrame.Offset(offsetForm.OffsetX, offsetForm.OffsetY);
+        }
+
+        private void miOffsetFrames_Click(object sender, EventArgs e)
+        {
+            if (selectedPose == null) return;
+
+            var result = offsetForm.ShowDialog(this);
+            if (result != DialogResult.OK) return;
+
+            foreach (var frame in selectedPose.Frames)
+            {
+                frame.Offset(offsetForm.OffsetX, offsetForm.OffsetY);
             }
         }
     }

@@ -28,122 +28,131 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nudGridWidth = new System.Windows.Forms.NumericUpDown();
-            this.lblGridWidth = new System.Windows.Forms.Label();
-            this.lblGridHeight = new System.Windows.Forms.Label();
-            this.nudGridHeight = new System.Windows.Forms.NumericUpDown();
-            this.lblGridColor = new System.Windows.Forms.Label();
-            this.cdGridColor = new System.Windows.Forms.ColorDialog();
-            this.btnGridColor = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.nudGridWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudGridHeight)).BeginInit();
-            this.SuspendLayout();
+            nudGridWidth = new System.Windows.Forms.NumericUpDown();
+            lblGridWidth = new System.Windows.Forms.Label();
+            lblGridHeight = new System.Windows.Forms.Label();
+            nudGridHeight = new System.Windows.Forms.NumericUpDown();
+            lblGridColor = new System.Windows.Forms.Label();
+            cdGridColor = new System.Windows.Forms.ColorDialog();
+            btnGridColor = new System.Windows.Forms.Button();
+            btnOK = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)nudGridWidth).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudGridHeight).BeginInit();
+            SuspendLayout();
             // 
             // nudGridWidth
             // 
-            this.nudGridWidth.Location = new System.Drawing.Point(75, 12);
-            this.nudGridWidth.Name = "nudGridWidth";
-            this.nudGridWidth.Size = new System.Drawing.Size(100, 20);
-            this.nudGridWidth.TabIndex = 0;
+            nudGridWidth.Location = new System.Drawing.Point(88, 14);
+            nudGridWidth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            nudGridWidth.Name = "nudGridWidth";
+            nudGridWidth.Size = new System.Drawing.Size(117, 23);
+            nudGridWidth.TabIndex = 0;
             // 
             // lblGridWidth
             // 
-            this.lblGridWidth.AutoSize = true;
-            this.lblGridWidth.Location = new System.Drawing.Point(12, 14);
-            this.lblGridWidth.Name = "lblGridWidth";
-            this.lblGridWidth.Size = new System.Drawing.Size(57, 13);
-            this.lblGridWidth.TabIndex = 1;
-            this.lblGridWidth.Text = "Grid Width";
+            lblGridWidth.AutoSize = true;
+            lblGridWidth.Location = new System.Drawing.Point(14, 16);
+            lblGridWidth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblGridWidth.Name = "lblGridWidth";
+            lblGridWidth.Size = new System.Drawing.Size(64, 15);
+            lblGridWidth.TabIndex = 1;
+            lblGridWidth.Text = "Grid Width";
             // 
             // lblGridHeight
             // 
-            this.lblGridHeight.AutoSize = true;
-            this.lblGridHeight.Location = new System.Drawing.Point(12, 40);
-            this.lblGridHeight.Name = "lblGridHeight";
-            this.lblGridHeight.Size = new System.Drawing.Size(60, 13);
-            this.lblGridHeight.TabIndex = 3;
-            this.lblGridHeight.Text = "Grid Height";
+            lblGridHeight.AutoSize = true;
+            lblGridHeight.Location = new System.Drawing.Point(14, 46);
+            lblGridHeight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblGridHeight.Name = "lblGridHeight";
+            lblGridHeight.Size = new System.Drawing.Size(68, 15);
+            lblGridHeight.TabIndex = 3;
+            lblGridHeight.Text = "Grid Height";
             // 
             // nudGridHeight
             // 
-            this.nudGridHeight.Location = new System.Drawing.Point(75, 38);
-            this.nudGridHeight.Name = "nudGridHeight";
-            this.nudGridHeight.Size = new System.Drawing.Size(100, 20);
-            this.nudGridHeight.TabIndex = 2;
+            nudGridHeight.Location = new System.Drawing.Point(88, 44);
+            nudGridHeight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            nudGridHeight.Name = "nudGridHeight";
+            nudGridHeight.Size = new System.Drawing.Size(117, 23);
+            nudGridHeight.TabIndex = 2;
             // 
             // lblGridColor
             // 
-            this.lblGridColor.AutoSize = true;
-            this.lblGridColor.Location = new System.Drawing.Point(12, 64);
-            this.lblGridColor.Name = "lblGridColor";
-            this.lblGridColor.Size = new System.Drawing.Size(53, 13);
-            this.lblGridColor.TabIndex = 4;
-            this.lblGridColor.Text = "Grid Color";
+            lblGridColor.AutoSize = true;
+            lblGridColor.Location = new System.Drawing.Point(14, 74);
+            lblGridColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblGridColor.Name = "lblGridColor";
+            lblGridColor.Size = new System.Drawing.Size(61, 15);
+            lblGridColor.TabIndex = 4;
+            lblGridColor.Text = "Grid Color";
             // 
             // cdGridColor
             // 
-            this.cdGridColor.Color = System.Drawing.Color.Green;
+            cdGridColor.Color = System.Drawing.Color.Green;
             // 
             // btnGridColor
             // 
-            this.btnGridColor.Location = new System.Drawing.Point(75, 64);
-            this.btnGridColor.Name = "btnGridColor";
-            this.btnGridColor.Size = new System.Drawing.Size(19, 18);
-            this.btnGridColor.TabIndex = 5;
-            this.btnGridColor.UseVisualStyleBackColor = false;
-            this.btnGridColor.Click += new System.EventHandler(this.btnGridColor_Click);
+            btnGridColor.Location = new System.Drawing.Point(88, 74);
+            btnGridColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnGridColor.Name = "btnGridColor";
+            btnGridColor.Size = new System.Drawing.Size(22, 21);
+            btnGridColor.TabIndex = 5;
+            btnGridColor.UseVisualStyleBackColor = false;
+            btnGridColor.Click += btnGridColor_Click;
             // 
             // btnOK
             // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(12, 102);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 6;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            btnOK.Location = new System.Drawing.Point(14, 118);
+            btnOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new System.Drawing.Size(88, 27);
+            btnOK.TabIndex = 6;
+            btnOK.Text = "OK";
+            btnOK.UseVisualStyleBackColor = true;
+            btnOK.Click += btnOK_Click;
             // 
             // btnCancel
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(97, 102);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            btnCancel.Location = new System.Drawing.Point(113, 118);
+            btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(88, 27);
+            btnCancel.TabIndex = 7;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // frmGridSize
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(184, 137);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnGridColor);
-            this.Controls.Add(this.lblGridColor);
-            this.Controls.Add(this.lblGridHeight);
-            this.Controls.Add(this.nudGridHeight);
-            this.Controls.Add(this.lblGridWidth);
-            this.Controls.Add(this.nudGridWidth);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmGridSize";
-            this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Grid Size";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.frmGridSize_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nudGridWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudGridHeight)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(215, 158);
+            Controls.Add(btnCancel);
+            Controls.Add(btnOK);
+            Controls.Add(btnGridColor);
+            Controls.Add(lblGridColor);
+            Controls.Add(lblGridHeight);
+            Controls.Add(nudGridHeight);
+            Controls.Add(lblGridWidth);
+            Controls.Add(nudGridWidth);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmGridSize";
+            ShowInTaskbar = false;
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Grid Size";
+            TopMost = true;
+            Load += frmGridSize_Load;
+            ((System.ComponentModel.ISupportInitialize)nudGridWidth).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudGridHeight).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

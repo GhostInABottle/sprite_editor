@@ -26,10 +26,10 @@ namespace SpriteEditor
             InitializeComponent();
         }
 
-        public void ShowDialog(Bitmap bitmap)
+        public void ShowDialog(Bitmap bitmap, IWin32Window owner = null)
         {
             this.bitmap = bitmap;
-            ShowDialog();
+            ShowDialog(owner);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

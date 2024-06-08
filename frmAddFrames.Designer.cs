@@ -28,232 +28,255 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblStartingX = new System.Windows.Forms.Label();
-            this.lblStartingY = new System.Windows.Forms.Label();
-            this.lblFrameWidth = new System.Windows.Forms.Label();
-            this.lblFrameHeight = new System.Windows.Forms.Label();
-            this.lblFrameCount = new System.Windows.Forms.Label();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.txtStartX = new System.Windows.Forms.TextBox();
-            this.txtStartY = new System.Windows.Forms.TextBox();
-            this.txtFrameWidth = new System.Windows.Forms.TextBox();
-            this.txtFrameHeight = new System.Windows.Forms.TextBox();
-            this.txtFrameCount = new System.Windows.Forms.TextBox();
-            this.txtPerRow = new System.Windows.Forms.TextBox();
-            this.lblPerRow = new System.Windows.Forms.Label();
-            this.chkVertical = new System.Windows.Forms.CheckBox();
-            this.chkRectangular = new System.Windows.Forms.CheckBox();
-            this.lblPattern = new System.Windows.Forms.Label();
-            this.txtPattern = new System.Windows.Forms.TextBox();
-            this.chkDirectional = new System.Windows.Forms.CheckBox();
-            this.lblDirPattern = new System.Windows.Forms.Label();
-            this.txtDirectionPattern = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
+            lblStartingX = new System.Windows.Forms.Label();
+            lblStartingY = new System.Windows.Forms.Label();
+            lblFrameWidth = new System.Windows.Forms.Label();
+            lblFrameHeight = new System.Windows.Forms.Label();
+            lblFrameCount = new System.Windows.Forms.Label();
+            btnAdd = new System.Windows.Forms.Button();
+            txtStartX = new System.Windows.Forms.TextBox();
+            txtStartY = new System.Windows.Forms.TextBox();
+            txtFrameWidth = new System.Windows.Forms.TextBox();
+            txtFrameHeight = new System.Windows.Forms.TextBox();
+            txtFrameCount = new System.Windows.Forms.TextBox();
+            txtPerRow = new System.Windows.Forms.TextBox();
+            lblPerRow = new System.Windows.Forms.Label();
+            chkVertical = new System.Windows.Forms.CheckBox();
+            chkRectangular = new System.Windows.Forms.CheckBox();
+            lblPattern = new System.Windows.Forms.Label();
+            txtPattern = new System.Windows.Forms.TextBox();
+            chkDirectional = new System.Windows.Forms.CheckBox();
+            lblDirPattern = new System.Windows.Forms.Label();
+            txtDirectionPattern = new System.Windows.Forms.TextBox();
+            SuspendLayout();
             // 
             // lblStartingX
             // 
-            this.lblStartingX.AutoSize = true;
-            this.lblStartingX.Location = new System.Drawing.Point(10, 17);
-            this.lblStartingX.Name = "lblStartingX";
-            this.lblStartingX.Size = new System.Drawing.Size(53, 13);
-            this.lblStartingX.TabIndex = 0;
-            this.lblStartingX.Text = "Starting X";
+            lblStartingX.AutoSize = true;
+            lblStartingX.Location = new System.Drawing.Point(12, 20);
+            lblStartingX.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblStartingX.Name = "lblStartingX";
+            lblStartingX.Size = new System.Drawing.Size(58, 15);
+            lblStartingX.TabIndex = 0;
+            lblStartingX.Text = "Starting X";
             // 
             // lblStartingY
             // 
-            this.lblStartingY.AutoSize = true;
-            this.lblStartingY.Location = new System.Drawing.Point(137, 17);
-            this.lblStartingY.Name = "lblStartingY";
-            this.lblStartingY.Size = new System.Drawing.Size(53, 13);
-            this.lblStartingY.TabIndex = 1;
-            this.lblStartingY.Text = "Starting Y";
+            lblStartingY.AutoSize = true;
+            lblStartingY.Location = new System.Drawing.Point(160, 20);
+            lblStartingY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblStartingY.Name = "lblStartingY";
+            lblStartingY.Size = new System.Drawing.Size(58, 15);
+            lblStartingY.TabIndex = 1;
+            lblStartingY.Text = "Starting Y";
             // 
             // lblFrameWidth
             // 
-            this.lblFrameWidth.AutoSize = true;
-            this.lblFrameWidth.Location = new System.Drawing.Point(10, 43);
-            this.lblFrameWidth.Name = "lblFrameWidth";
-            this.lblFrameWidth.Size = new System.Drawing.Size(67, 13);
-            this.lblFrameWidth.TabIndex = 2;
-            this.lblFrameWidth.Text = "Frame Width";
+            lblFrameWidth.AutoSize = true;
+            lblFrameWidth.Location = new System.Drawing.Point(12, 50);
+            lblFrameWidth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblFrameWidth.Name = "lblFrameWidth";
+            lblFrameWidth.Size = new System.Drawing.Size(75, 15);
+            lblFrameWidth.TabIndex = 2;
+            lblFrameWidth.Text = "Frame Width";
             // 
             // lblFrameHeight
             // 
-            this.lblFrameHeight.AutoSize = true;
-            this.lblFrameHeight.Location = new System.Drawing.Point(137, 43);
-            this.lblFrameHeight.Name = "lblFrameHeight";
-            this.lblFrameHeight.Size = new System.Drawing.Size(70, 13);
-            this.lblFrameHeight.TabIndex = 3;
-            this.lblFrameHeight.Text = "Frame Height";
+            lblFrameHeight.AutoSize = true;
+            lblFrameHeight.Location = new System.Drawing.Point(160, 50);
+            lblFrameHeight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblFrameHeight.Name = "lblFrameHeight";
+            lblFrameHeight.Size = new System.Drawing.Size(79, 15);
+            lblFrameHeight.TabIndex = 3;
+            lblFrameHeight.Text = "Frame Height";
             // 
             // lblFrameCount
             // 
-            this.lblFrameCount.AutoSize = true;
-            this.lblFrameCount.Location = new System.Drawing.Point(10, 69);
-            this.lblFrameCount.Name = "lblFrameCount";
-            this.lblFrameCount.Size = new System.Drawing.Size(67, 13);
-            this.lblFrameCount.TabIndex = 4;
-            this.lblFrameCount.Text = "Frame Count";
+            lblFrameCount.AutoSize = true;
+            lblFrameCount.Location = new System.Drawing.Point(12, 80);
+            lblFrameCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblFrameCount.Name = "lblFrameCount";
+            lblFrameCount.Size = new System.Drawing.Size(76, 15);
+            lblFrameCount.TabIndex = 4;
+            lblFrameCount.Text = "Frame Count";
             // 
             // btnAdd
             // 
-            this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(83, 170);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(107, 32);
-            this.btnAdd.TabIndex = 6;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
+            btnAdd.Location = new System.Drawing.Point(97, 196);
+            btnAdd.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new System.Drawing.Size(125, 37);
+            btnAdd.TabIndex = 6;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // txtStartX
             // 
-            this.txtStartX.Location = new System.Drawing.Point(83, 14);
-            this.txtStartX.Name = "txtStartX";
-            this.txtStartX.Size = new System.Drawing.Size(45, 20);
-            this.txtStartX.TabIndex = 7;
+            txtStartX.Location = new System.Drawing.Point(97, 16);
+            txtStartX.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtStartX.Name = "txtStartX";
+            txtStartX.Size = new System.Drawing.Size(52, 23);
+            txtStartX.TabIndex = 7;
+            txtStartX.Text = "0";
             // 
             // txtStartY
             // 
-            this.txtStartY.Location = new System.Drawing.Point(213, 14);
-            this.txtStartY.Name = "txtStartY";
-            this.txtStartY.Size = new System.Drawing.Size(45, 20);
-            this.txtStartY.TabIndex = 8;
+            txtStartY.Location = new System.Drawing.Point(248, 16);
+            txtStartY.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtStartY.Name = "txtStartY";
+            txtStartY.Size = new System.Drawing.Size(52, 23);
+            txtStartY.TabIndex = 8;
+            txtStartY.Text = "0";
             // 
             // txtFrameWidth
             // 
-            this.txtFrameWidth.Location = new System.Drawing.Point(83, 40);
-            this.txtFrameWidth.Name = "txtFrameWidth";
-            this.txtFrameWidth.Size = new System.Drawing.Size(45, 20);
-            this.txtFrameWidth.TabIndex = 9;
+            txtFrameWidth.Location = new System.Drawing.Point(97, 46);
+            txtFrameWidth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtFrameWidth.Name = "txtFrameWidth";
+            txtFrameWidth.Size = new System.Drawing.Size(52, 23);
+            txtFrameWidth.TabIndex = 9;
             // 
             // txtFrameHeight
             // 
-            this.txtFrameHeight.Location = new System.Drawing.Point(213, 40);
-            this.txtFrameHeight.Name = "txtFrameHeight";
-            this.txtFrameHeight.Size = new System.Drawing.Size(45, 20);
-            this.txtFrameHeight.TabIndex = 10;
+            txtFrameHeight.Location = new System.Drawing.Point(248, 46);
+            txtFrameHeight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtFrameHeight.Name = "txtFrameHeight";
+            txtFrameHeight.Size = new System.Drawing.Size(52, 23);
+            txtFrameHeight.TabIndex = 10;
             // 
             // txtFrameCount
             // 
-            this.txtFrameCount.Location = new System.Drawing.Point(83, 66);
-            this.txtFrameCount.Name = "txtFrameCount";
-            this.txtFrameCount.Size = new System.Drawing.Size(45, 20);
-            this.txtFrameCount.TabIndex = 11;
+            txtFrameCount.Location = new System.Drawing.Point(97, 76);
+            txtFrameCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtFrameCount.Name = "txtFrameCount";
+            txtFrameCount.Size = new System.Drawing.Size(52, 23);
+            txtFrameCount.TabIndex = 11;
             // 
             // txtPerRow
             // 
-            this.txtPerRow.Enabled = false;
-            this.txtPerRow.Location = new System.Drawing.Point(213, 66);
-            this.txtPerRow.Name = "txtPerRow";
-            this.txtPerRow.Size = new System.Drawing.Size(45, 20);
-            this.txtPerRow.TabIndex = 14;
+            txtPerRow.Enabled = false;
+            txtPerRow.Location = new System.Drawing.Point(248, 76);
+            txtPerRow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtPerRow.Name = "txtPerRow";
+            txtPerRow.Size = new System.Drawing.Size(52, 23);
+            txtPerRow.TabIndex = 14;
             // 
             // lblPerRow
             // 
-            this.lblPerRow.AutoSize = true;
-            this.lblPerRow.Location = new System.Drawing.Point(134, 69);
-            this.lblPerRow.Name = "lblPerRow";
-            this.lblPerRow.Size = new System.Drawing.Size(76, 13);
-            this.lblPerRow.TabIndex = 13;
-            this.lblPerRow.Text = "Per Row/Clmn";
+            lblPerRow.AutoSize = true;
+            lblPerRow.Location = new System.Drawing.Point(156, 80);
+            lblPerRow.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblPerRow.Name = "lblPerRow";
+            lblPerRow.Size = new System.Drawing.Size(84, 15);
+            lblPerRow.TabIndex = 13;
+            lblPerRow.Text = "Per Row/Clmn";
             // 
             // chkVertical
             // 
-            this.chkVertical.AutoSize = true;
-            this.chkVertical.Location = new System.Drawing.Point(12, 96);
-            this.chkVertical.Name = "chkVertical";
-            this.chkVertical.Size = new System.Drawing.Size(61, 17);
-            this.chkVertical.TabIndex = 12;
-            this.chkVertical.Text = "Vertical";
-            this.chkVertical.UseVisualStyleBackColor = true;
+            chkVertical.AutoSize = true;
+            chkVertical.Location = new System.Drawing.Point(14, 111);
+            chkVertical.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkVertical.Name = "chkVertical";
+            chkVertical.Size = new System.Drawing.Size(64, 19);
+            chkVertical.TabIndex = 12;
+            chkVertical.Text = "Vertical";
+            chkVertical.UseVisualStyleBackColor = true;
             // 
             // chkRectangular
             // 
-            this.chkRectangular.AutoSize = true;
-            this.chkRectangular.Location = new System.Drawing.Point(79, 96);
-            this.chkRectangular.Name = "chkRectangular";
-            this.chkRectangular.Size = new System.Drawing.Size(84, 17);
-            this.chkRectangular.TabIndex = 15;
-            this.chkRectangular.Text = "Rectangular";
-            this.chkRectangular.UseVisualStyleBackColor = true;
-            this.chkRectangular.CheckedChanged += new System.EventHandler(this.chkRectangular_CheckedChanged);
+            chkRectangular.AutoSize = true;
+            chkRectangular.Location = new System.Drawing.Point(92, 111);
+            chkRectangular.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkRectangular.Name = "chkRectangular";
+            chkRectangular.Size = new System.Drawing.Size(89, 19);
+            chkRectangular.TabIndex = 15;
+            chkRectangular.Text = "Rectangular";
+            chkRectangular.UseVisualStyleBackColor = true;
+            chkRectangular.CheckedChanged += chkRectangular_CheckedChanged;
             // 
             // lblPattern
             // 
-            this.lblPattern.AutoSize = true;
-            this.lblPattern.Location = new System.Drawing.Point(9, 122);
-            this.lblPattern.Name = "lblPattern";
-            this.lblPattern.Size = new System.Drawing.Size(73, 13);
-            this.lblPattern.TabIndex = 16;
-            this.lblPattern.Text = "Frame Pattern";
+            lblPattern.AutoSize = true;
+            lblPattern.Location = new System.Drawing.Point(10, 141);
+            lblPattern.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblPattern.Name = "lblPattern";
+            lblPattern.Size = new System.Drawing.Size(81, 15);
+            lblPattern.TabIndex = 16;
+            lblPattern.Text = "Frame Pattern";
             // 
             // txtPattern
             // 
-            this.txtPattern.Location = new System.Drawing.Point(83, 119);
-            this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(175, 20);
-            this.txtPattern.TabIndex = 17;
+            txtPattern.Location = new System.Drawing.Point(97, 137);
+            txtPattern.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtPattern.Name = "txtPattern";
+            txtPattern.Size = new System.Drawing.Size(204, 23);
+            txtPattern.TabIndex = 17;
             // 
             // chkDirectional
             // 
-            this.chkDirectional.AutoSize = true;
-            this.chkDirectional.Location = new System.Drawing.Point(169, 96);
-            this.chkDirectional.Name = "chkDirectional";
-            this.chkDirectional.Size = new System.Drawing.Size(76, 17);
-            this.chkDirectional.TabIndex = 18;
-            this.chkDirectional.Text = "Directional";
-            this.chkDirectional.UseVisualStyleBackColor = true;
-            this.chkDirectional.CheckedChanged += new System.EventHandler(this.chkDirectional_CheckedChanged);
+            chkDirectional.AutoSize = true;
+            chkDirectional.Location = new System.Drawing.Point(197, 111);
+            chkDirectional.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkDirectional.Name = "chkDirectional";
+            chkDirectional.Size = new System.Drawing.Size(83, 19);
+            chkDirectional.TabIndex = 18;
+            chkDirectional.Text = "Directional";
+            chkDirectional.UseVisualStyleBackColor = true;
+            chkDirectional.CheckedChanged += chkDirectional_CheckedChanged;
             // 
             // lblDirPattern
             // 
-            this.lblDirPattern.AutoSize = true;
-            this.lblDirPattern.Location = new System.Drawing.Point(10, 146);
-            this.lblDirPattern.Name = "lblDirPattern";
-            this.lblDirPattern.Size = new System.Drawing.Size(60, 13);
-            this.lblDirPattern.TabIndex = 19;
-            this.lblDirPattern.Text = "Dir. Pattern";
+            lblDirPattern.AutoSize = true;
+            lblDirPattern.Location = new System.Drawing.Point(12, 168);
+            lblDirPattern.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblDirPattern.Name = "lblDirPattern";
+            lblDirPattern.Size = new System.Drawing.Size(66, 15);
+            lblDirPattern.TabIndex = 19;
+            lblDirPattern.Text = "Dir. Pattern";
             // 
             // txtDirectionPattern
             // 
-            this.txtDirectionPattern.Enabled = false;
-            this.txtDirectionPattern.Location = new System.Drawing.Point(83, 143);
-            this.txtDirectionPattern.Name = "txtDirectionPattern";
-            this.txtDirectionPattern.Size = new System.Drawing.Size(175, 20);
-            this.txtDirectionPattern.TabIndex = 20;
+            txtDirectionPattern.Enabled = false;
+            txtDirectionPattern.Location = new System.Drawing.Point(97, 165);
+            txtDirectionPattern.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtDirectionPattern.Name = "txtDirectionPattern";
+            txtDirectionPattern.Size = new System.Drawing.Size(204, 23);
+            txtDirectionPattern.TabIndex = 20;
             // 
             // frmAddFrames
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 214);
-            this.Controls.Add(this.txtDirectionPattern);
-            this.Controls.Add(this.lblDirPattern);
-            this.Controls.Add(this.chkDirectional);
-            this.Controls.Add(this.txtPattern);
-            this.Controls.Add(this.lblPattern);
-            this.Controls.Add(this.chkRectangular);
-            this.Controls.Add(this.txtPerRow);
-            this.Controls.Add(this.lblPerRow);
-            this.Controls.Add(this.chkVertical);
-            this.Controls.Add(this.txtFrameCount);
-            this.Controls.Add(this.txtFrameHeight);
-            this.Controls.Add(this.txtFrameWidth);
-            this.Controls.Add(this.txtStartY);
-            this.Controls.Add(this.txtStartX);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.lblFrameCount);
-            this.Controls.Add(this.lblFrameHeight);
-            this.Controls.Add(this.lblFrameWidth);
-            this.Controls.Add(this.lblStartingY);
-            this.Controls.Add(this.lblStartingX);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "frmAddFrames";
-            this.Text = "Add Frames";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(318, 247);
+            Controls.Add(txtDirectionPattern);
+            Controls.Add(lblDirPattern);
+            Controls.Add(chkDirectional);
+            Controls.Add(txtPattern);
+            Controls.Add(lblPattern);
+            Controls.Add(chkRectangular);
+            Controls.Add(txtPerRow);
+            Controls.Add(lblPerRow);
+            Controls.Add(chkVertical);
+            Controls.Add(txtFrameCount);
+            Controls.Add(txtFrameHeight);
+            Controls.Add(txtFrameWidth);
+            Controls.Add(txtStartY);
+            Controls.Add(txtStartX);
+            Controls.Add(btnAdd);
+            Controls.Add(lblFrameCount);
+            Controls.Add(lblFrameHeight);
+            Controls.Add(lblFrameWidth);
+            Controls.Add(lblStartingY);
+            Controls.Add(lblStartingX);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "frmAddFrames";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Add Frames";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -170,6 +170,12 @@ namespace SpriteEditor.Models
             };
         }
 
+        public void Offset(int x, int y)
+        {
+            Rectangle.X += x;
+            Rectangle.Y += y;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing) return;
