@@ -1708,6 +1708,7 @@ namespace SpriteEditor
             if (result != DialogResult.OK) return;
 
             selectedFrame.Offset(offsetForm.OffsetX, offsetForm.OffsetY);
+            PopulateFrame(selectedFrame);
         }
 
         private void miOffsetFrames_Click(object sender, EventArgs e)
@@ -1721,6 +1722,8 @@ namespace SpriteEditor
             {
                 frame.Offset(offsetForm.OffsetX, offsetForm.OffsetY);
             }
+
+            PopulateFrame(selectedFrame);
         }
     }
 }
