@@ -124,6 +124,7 @@
             miMagnification50 = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification100 = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification200 = new System.Windows.Forms.ToolStripMenuItem();
+            miMagnification300 = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification400 = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification800 = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification1600 = new System.Windows.Forms.ToolStripMenuItem();
@@ -1176,7 +1177,7 @@
             // 
             // miMagnification
             // 
-            miMagnification.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miMagnification50, miMagnification100, miMagnification200, miMagnification400, miMagnification800, miMagnification1600, toolStripSeparator3, miMagnificationZoomIn, miMagnificationZoomOut });
+            miMagnification.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miMagnification50, miMagnification100, miMagnification200, miMagnification300, miMagnification400, miMagnification800, miMagnification1600, toolStripSeparator3, miMagnificationZoomIn, miMagnificationZoomOut });
             miMagnification.Name = "miMagnification";
             miMagnification.Size = new System.Drawing.Size(223, 22);
             miMagnification.Text = "Magnification";
@@ -1202,6 +1203,13 @@
             miMagnification200.Size = new System.Drawing.Size(168, 22);
             miMagnification200.Text = "200%";
             miMagnification200.Click += miMagnification200_Click;
+            // 
+            // miMagnification300
+            // 
+            miMagnification300.Name = "miMagnification300";
+            miMagnification300.Size = new System.Drawing.Size(168, 22);
+            miMagnification300.Text = "300%";
+            miMagnification300.Click += miMagnification300_Click;
             // 
             // miMagnification400
             // 
@@ -1430,6 +1438,7 @@
         private System.Windows.Forms.ToolStripMenuItem miMagnification50;
         private System.Windows.Forms.ToolStripMenuItem miMagnification100;
         private System.Windows.Forms.ToolStripMenuItem miMagnification200;
+        private System.Windows.Forms.ToolStripMenuItem miMagnification300;
         private System.Windows.Forms.ToolStripMenuItem miMagnification400;
         private System.Windows.Forms.ToolStripMenuItem miMagnification800;
         private System.Windows.Forms.ToolStripMenuItem miMagnification1600;

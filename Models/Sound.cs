@@ -92,7 +92,12 @@ namespace SpriteEditor.Models
                 return;
             }
 
-            FmodSound?.Dispose();
+            if (disposing)
+            {
+                FmodSound?.Dispose();
+                FmodSound = null;
+            }
+
             isDisposed = true;
         }
 

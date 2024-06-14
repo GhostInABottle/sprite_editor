@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SpriteEditor.Models;
+using SpriteEditor.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,8 +11,6 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using SpriteEditor.Models;
-using SpriteEditor.Properties;
 
 namespace SpriteEditor
 {
@@ -36,7 +36,7 @@ namespace SpriteEditor
         private readonly frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
-        private readonly float[] scales = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f, 16.0f };
+        private readonly float[] scales = { 0.5f, 1.0f, 2.0f, 3.0f, 4.0f, 8.0f, 16.0f };
         private float dpiX, dpiY;
         private int scaleIndex = 1;
 
@@ -1459,7 +1459,7 @@ namespace SpriteEditor
 
         private void Zoom(int newIndex)
         {
-            if (newIndex != scaleIndex && newIndex >= 0 && newIndex <= 5)
+            if (newIndex != scaleIndex && newIndex >= 0 && newIndex <= 6)
             {
                 scaleIndex = newIndex;
                 pnlSprite.Invalidate();
@@ -1483,19 +1483,24 @@ namespace SpriteEditor
             Zoom(2);
         }
 
-        private void miMagnification400_Click(object sender, EventArgs e)
+        private void miMagnification300_Click(object sender, EventArgs e)
         {
             Zoom(3);
         }
 
-        private void miMagnification800_Click(object sender, EventArgs e)
+        private void miMagnification400_Click(object sender, EventArgs e)
         {
             Zoom(4);
         }
 
-        private void miMagnification1600_Click(object sender, EventArgs e)
+        private void miMagnification800_Click(object sender, EventArgs e)
         {
             Zoom(5);
+        }
+
+        private void miMagnification1600_Click(object sender, EventArgs e)
+        {
+            Zoom(6);
         }
 
         private void miMagnificationZoomIn_Click(object sender, EventArgs e)
@@ -1535,9 +1540,10 @@ namespace SpriteEditor
             miMagnification50.Checked = scaleIndex == 0;
             miMagnification100.Checked = scaleIndex == 1;
             miMagnification200.Checked = scaleIndex == 2;
-            miMagnification400.Checked = scaleIndex == 3;
-            miMagnification800.Checked = scaleIndex == 4;
-            miMagnification1600.Checked = scaleIndex == 5;
+            miMagnification300.Checked = scaleIndex == 3;
+            miMagnification400.Checked = scaleIndex == 4;
+            miMagnification800.Checked = scaleIndex == 5;
+            miMagnification1600.Checked = scaleIndex == 6;
         }
 
         private void miRecentFile_Click(object sender, EventArgs e)
@@ -1693,11 +1699,10 @@ namespace SpriteEditor
 
         private void miCheckEdges_Click(object sender, EventArgs e)
         {
-            var results = FrameEdgeChecker.Check(spriteLogic);
-            foreach (var (pi, fi, edge) in results)
-            {
-                lstPoses.Items[pi] = lstPoses.Items[pi] + $" <{fi}:{edge}>!";
-            }
+            var oldSelected = lstPoses.SelectedIndex;
+            FrameEdgeChecker.Check(spriteLogic);
+            PopulateSprite(spriteLogic.SpriteData);
+            lstPoses.SelectedIndex = oldSelected;
         }
 
         private void miOffsetFrame_Click(object sender, EventArgs e)

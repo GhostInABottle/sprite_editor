@@ -1,6 +1,6 @@
 ﻿using SpriteEditor.Models;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace SpriteEditor
 {
@@ -77,7 +77,8 @@ namespace SpriteEditor
                 // 3V means 3 vertical frames, 3H or 3 means horizontal frames
                 var countString = parts[format.FrameCountIndex.Value].ToUpper();
                 var isVertical = countString.EndsWith("V");
-                if (isVertical || countString.EndsWith("H")) {
+                if (isVertical || countString.EndsWith("H"))
+                {
                     countString = countString.Substring(0, countString.Length - 1);
                 }
 
@@ -98,7 +99,8 @@ namespace SpriteEditor
                     }
 
                     frames.Add(
-                        new Frame {
+                        new Frame
+                        {
                             Rectangle = new Rect(x, y, width, height)
                         }
                     );

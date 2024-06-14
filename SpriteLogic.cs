@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FmodAudio;
+using SpriteEditor.Models;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using SpriteEditor.Models;
-using FmodAudio;
 using System.Windows.Forms;
 
 namespace SpriteEditor

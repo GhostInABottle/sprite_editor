@@ -23,6 +23,7 @@ namespace SpriteEditor.Models
             Origin = new Vec2(0.0f, 0.0f);
             Tags = new Dictionary<string, string>();
             Frames = new List<Frame>();
+            EdgeCheckFrameIndex = null;
         }
 
         public Pose(Pose other)
@@ -41,6 +42,7 @@ namespace SpriteEditor.Models
                 Tags[key] = value;
             }
             Frames = other.Frames.Select(x => new Frame(x)).ToList();
+            EdgeCheckFrameIndex = null;
         }
 
         /// <summary>
@@ -94,6 +96,13 @@ namespace SpriteEditor.Models
         /// </summary>
         public List<Frame> Frames { get; set; }
 
+        /// <summary>
+        /// The frame index and edge that failed the check for
+        /// non-transparent pixels around frame edges, if any.
+        /// Only used in the editor and not serialized.
+        /// </summary>
+        public (int, string)? EdgeCheckFrameIndex { get; set; }
+
         public string GetName()
         {
             return Tags.ContainsKey("Name") ? Tags["Name"] : "";
@@ -110,6 +119,12 @@ namespace SpriteEditor.Models
             if (Tags.ContainsKey("State"))
             {
                 name += " [" + Tags["State"] + "]";
+            }
+
+            if (EdgeCheckFrameIndex != null)
+            {
+                var (fi, edge) = EdgeCheckFrameIndex ?? default;
+                name += $" <{fi}:{edge}>!";
             }
 
             return name;

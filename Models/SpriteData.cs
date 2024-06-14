@@ -137,7 +137,7 @@ namespace SpriteEditor.Models
                 TransparentColor = transparentColor,
                 Poses = new List<Pose>()
                 {
-                    new Pose()
+                    new ()
                     {
                         BoundingBox = new Rect(0, 0, bitmapWidth, bitmapHeight),
                         Tags = new Dictionary<string, string>()
@@ -146,7 +146,7 @@ namespace SpriteEditor.Models
                         },
                         Frames = new List<Frame>()
                         {
-                            new Frame()
+                            new()
                             {
                                 Rectangle = new Rect(0, 0, bitmapWidth, bitmapHeight)
                             }

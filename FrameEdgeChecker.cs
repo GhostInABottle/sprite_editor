@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-using System;
+﻿using SpriteEditor.Models;
+using System.Drawing;
 using System.Runtime.Versioning;
-using System.Collections.Generic;
-using SpriteEditor.Models;
 
 namespace SpriteEditor
 {
@@ -13,10 +11,8 @@ namespace SpriteEditor
     [SupportedOSPlatform("windows")]
     public class FrameEdgeChecker
     {
-        public static List<(int poseIndex, int frameIndex, string edge)> Check(SpriteLogic spriteLogic)
+        public static void Check(SpriteLogic spriteLogic)
         {
-            var result = new List<(int poseIndex, int frameIndex, string edge)>();
-
             var oldPose = spriteLogic.CurrentPose?.NameWithTags();
             var spriteData = spriteLogic.SpriteData;
             for (int pi = 0; pi < spriteData.Poses.Count; pi++)
@@ -26,7 +22,9 @@ namespace SpriteEditor
                 {
                     spriteLogic.SetPose(pose.NameWithTags(), 0);
                     spriteLogic.SetFrame(fi);
+
                     using var bitmap = BitmapHelpers.OpenBitmap(spriteLogic, spriteLogic.Image);
+
                     var transparentColorHex = spriteLogic.TransparentColorHex;
                     if (string.IsNullOrEmpty(transparentColorHex)) continue;
 
@@ -35,7 +33,7 @@ namespace SpriteEditor
                     var edge = CheckFrame(frame, bitmap, transparentColor);
                     if (edge == null) continue;
 
-                    result.Add((pi, fi, edge));
+                    pose.EdgeCheckFrameIndex = (fi + 1, edge);
                     break;
                 }
             }
@@ -46,8 +44,12 @@ namespace SpriteEditor
             }
 
             spriteLogic.Reset(0);
+        }
 
-            return result;
+        private static bool IsTransparent(Bitmap bitmap, int x, int y, Color transparentColor)
+        {
+            var pixel = bitmap.GetPixel(x, y);
+            return pixel.A == 0 || pixel == transparentColor;
         }
 
         private static string CheckFrame(Frame frame, Bitmap bitmap, Color transparentColor)
@@ -60,14 +62,14 @@ namespace SpriteEditor
             var height = frame.Rectangle.Height;
             for (int x = sx; x < sx + width; x++)
             {
-                if (bitmap.GetPixel(x, sy) != transparentColor) return "T";
-                if (bitmap.GetPixel(x, sy + height - 1) != transparentColor) return "B";
+                if (!IsTransparent(bitmap, x, sy, transparentColor)) return "T";
+                if (!IsTransparent(bitmap, x, sy + height - 1, transparentColor)) return "B";
             }
 
             for (int y = sy; y < sy + height; y++)
             {
-                if (bitmap.GetPixel(sx, y) != transparentColor) return "L";
-                if (bitmap.GetPixel(sx + width - 1, y) != transparentColor) return "R";
+                if (!IsTransparent(bitmap, sx, y, transparentColor)) return "L";
+                if (!IsTransparent(bitmap, sx + width - 1, y, transparentColor)) return "R";
             }
 
             return null;

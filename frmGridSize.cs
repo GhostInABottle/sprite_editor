@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SpriteEditor.Properties;
+using System;
 using System.Windows.Forms;
-using SpriteEditor.Properties;
 
 namespace SpriteEditor
 {
