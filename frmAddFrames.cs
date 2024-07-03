@@ -200,7 +200,7 @@ namespace SpriteEditor
             int maxRow = vertical ? perRow : maxFrames;
             int maxColumn = vertical ? maxFrames : perRow;
 
-            var newFrames = getFrames(start, frameSize, frameCount, maxRow, maxColumn);
+            var newFrames = getFrames(start, frameSize, frameCount, maxRow, maxColumn, vertical);
 
             if (string.IsNullOrWhiteSpace(pattern))
             {
@@ -233,19 +233,23 @@ namespace SpriteEditor
             return indexedFrames;
         }
 
-        private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn)
+        private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn, bool vertical)
         {
             List<Frame> newFrames = new();
+            var outerMax = vertical ? maxColumn : maxRow;
+            var innerMax = vertical ? maxRow : maxColumn;
             int counter = 1;
-            for (int row = 0; row < maxRow; row++)
+            for (int outer = 0; outer < outerMax; outer++)
             {
-                for (int column = 0; column < maxColumn; column++)
+                for (int inner = 0; inner < innerMax; inner++)
                 {
+                    int column = vertical ? outer : inner;
+                    int row = vertical ? inner : outer;
                     int x = start.X + column * frameSize.X;
                     int y = start.Y + row * frameSize.Y;
                     if (x < 0 || y < 0 || x + frameSize.X > bitmap.Width || y + frameSize.Y > bitmap.Height)
                     {
-                        throw new ArgumentException("Error: Invalid frame positions " + row + ", " + column);
+                        throw new ArgumentException("Error: Invalid frame positions " + outer + ", " + inner);
                     }
 
                     Rect rect = new(x, y, frameSize.X, frameSize.Y);
