@@ -1450,7 +1450,7 @@ namespace SpriteEditor
                     break;
                 case Keys.D0:
                 case Keys.NumPad0:
-                    Zoom(1);
+                    if (e.Modifiers == Keys.Control) Zoom(1);
                     break;
             }
         }
