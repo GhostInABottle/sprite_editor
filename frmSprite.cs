@@ -1438,8 +1438,6 @@ namespace SpriteEditor
 
         private void frmSprite_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
-
             switch (e.KeyCode)
             {
                 case Keys.Add:
@@ -1565,6 +1563,44 @@ namespace SpriteEditor
             if (e.KeyCode == Keys.Delete)
             {
                 miRemove_Click(sender, e);
+            }
+        }
+
+        private void lstPoses_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers != Keys.Control) return;
+
+            if (e.KeyCode == Keys.C)
+            {
+                miCopy_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.KeyCode == Keys.V)
+            {
+                miPaste_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void lstFrames_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers != Keys.Control) return;
+
+            if (e.KeyCode == Keys.C)
+            {
+                miCopyFrame_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.KeyCode == Keys.V)
+            {
+                miPasteFrame_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
