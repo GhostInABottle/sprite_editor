@@ -1438,6 +1438,8 @@ namespace SpriteEditor
 
         private void frmSprite_KeyDown(object sender, KeyEventArgs e)
         {
+            if ((e.Modifiers & Keys.Control) == 0) return;
+
             switch (e.KeyCode)
             {
                 case Keys.Add:
@@ -1450,7 +1452,7 @@ namespace SpriteEditor
                     break;
                 case Keys.D0:
                 case Keys.NumPad0:
-                    if (e.Modifiers == Keys.Control) Zoom(1);
+                    Zoom(1);
                     break;
             }
         }
@@ -1568,7 +1570,7 @@ namespace SpriteEditor
 
         private void lstPoses_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
+            if ((e.Modifiers & Keys.Control) == 0) return;
 
             if (e.KeyCode == Keys.C)
             {
@@ -1587,7 +1589,7 @@ namespace SpriteEditor
 
         private void lstFrames_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
+            if ((e.Modifiers & Keys.Control) == 0) return;
 
             if (e.KeyCode == Keys.C)
             {

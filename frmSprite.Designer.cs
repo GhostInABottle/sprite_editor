@@ -299,13 +299,13 @@
             // 
             mnuPose.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAdd, miCopy, miPaste, miPasteCsv, miRemove, miOffsetFrames });
             mnuPose.Name = "mnuPose";
-            mnuPose.Size = new System.Drawing.Size(181, 158);
+            mnuPose.Size = new System.Drawing.Size(158, 136);
             mnuPose.Opening += mnuPose_Opening;
             // 
             // miAdd
             // 
             miAdd.Name = "miAdd";
-            miAdd.Size = new System.Drawing.Size(156, 22);
+            miAdd.Size = new System.Drawing.Size(157, 22);
             miAdd.Text = "Add";
             miAdd.Click += miAdd_Click;
             // 
@@ -314,7 +314,7 @@
             miCopy.Enabled = false;
             miCopy.Name = "miCopy";
             miCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            miCopy.Size = new System.Drawing.Size(156, 22);
+            miCopy.Size = new System.Drawing.Size(157, 22);
             miCopy.Text = "Copy";
             miCopy.Click += miCopy_Click;
             // 
@@ -323,14 +323,14 @@
             miPaste.Enabled = false;
             miPaste.Name = "miPaste";
             miPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            miPaste.Size = new System.Drawing.Size(156, 22);
+            miPaste.Size = new System.Drawing.Size(157, 22);
             miPaste.Text = "Paste";
             miPaste.Click += miPaste_Click;
             // 
             // miPasteCsv
             // 
             miPasteCsv.Name = "miPasteCsv";
-            miPasteCsv.Size = new System.Drawing.Size(156, 22);
+            miPasteCsv.Size = new System.Drawing.Size(157, 22);
             miPasteCsv.Text = "Paste CSV";
             miPasteCsv.Click += miPasteCsv_Click;
             // 
@@ -338,14 +338,14 @@
             // 
             miRemove.Name = "miRemove";
             miRemove.ShortcutKeyDisplayString = "Delete";
-            miRemove.Size = new System.Drawing.Size(180, 22);
+            miRemove.Size = new System.Drawing.Size(157, 22);
             miRemove.Text = "Remove";
             miRemove.Click += miRemove_Click;
             // 
             // miOffsetFrames
             // 
             miOffsetFrames.Name = "miOffsetFrames";
-            miOffsetFrames.Size = new System.Drawing.Size(156, 22);
+            miOffsetFrames.Size = new System.Drawing.Size(157, 22);
             miOffsetFrames.Text = "Offset Frames...";
             miOffsetFrames.Click += miOffsetFrames_Click;
             // 
@@ -566,7 +566,7 @@
             // miAddFrame
             // 
             miAddFrame.Name = "miAddFrame";
-            miAddFrame.Size = new System.Drawing.Size(180, 22);
+            miAddFrame.Size = new System.Drawing.Size(157, 22);
             miAddFrame.Text = "Add";
             miAddFrame.Click += miAddFrame_Click;
             // 
@@ -599,21 +599,21 @@
             // miClearFrames
             // 
             miClearFrames.Name = "miClearFrames";
-            miClearFrames.Size = new System.Drawing.Size(180, 22);
+            miClearFrames.Size = new System.Drawing.Size(157, 22);
             miClearFrames.Text = "Clear";
             miClearFrames.Click += miClearFrames_Click;
             // 
             // miAddMultiple
             // 
             miAddMultiple.Name = "miAddMultiple";
-            miAddMultiple.Size = new System.Drawing.Size(180, 22);
+            miAddMultiple.Size = new System.Drawing.Size(157, 22);
             miAddMultiple.Text = "Add Multiple...";
             miAddMultiple.Click += miAddMultiple_Click;
             // 
             // miOffsetFrame
             // 
             miOffsetFrame.Name = "miOffsetFrame";
-            miOffsetFrame.Size = new System.Drawing.Size(180, 22);
+            miOffsetFrame.Size = new System.Drawing.Size(157, 22);
             miOffsetFrame.Text = "Offset...";
             miOffsetFrame.Click += miOffsetFrame_Click;
             // 
@@ -1248,7 +1248,7 @@
             // miMagnificationZoomIn
             // 
             miMagnificationZoomIn.Name = "miMagnificationZoomIn";
-            miMagnificationZoomIn.ShortcutKeyDisplayString = "+";
+            miMagnificationZoomIn.ShortcutKeyDisplayString = "Ctrl++";
             miMagnificationZoomIn.Size = new System.Drawing.Size(180, 22);
             miMagnificationZoomIn.Text = "Zoom In";
             miMagnificationZoomIn.Click += miMagnificationZoomIn_Click;
@@ -1256,7 +1256,7 @@
             // miMagnificationZoomOut
             // 
             miMagnificationZoomOut.Name = "miMagnificationZoomOut";
-            miMagnificationZoomOut.ShortcutKeyDisplayString = "-";
+            miMagnificationZoomOut.ShortcutKeyDisplayString = "Ctrl+-";
             miMagnificationZoomOut.Size = new System.Drawing.Size(180, 22);
             miMagnificationZoomOut.Text = "Zoom Out";
             miMagnificationZoomOut.Click += miMagnificationZoomOut_Click;
