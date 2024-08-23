@@ -1575,14 +1575,12 @@ namespace SpriteEditor
             if (e.KeyCode == Keys.C)
             {
                 miCopy_Click(sender, e);
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
 
             if (e.KeyCode == Keys.V)
             {
                 miPaste_Click(sender, e);
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         }
@@ -1594,14 +1592,12 @@ namespace SpriteEditor
             if (e.KeyCode == Keys.C)
             {
                 miCopyFrame_Click(sender, e);
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
 
             if (e.KeyCode == Keys.V)
             {
                 miPasteFrame_Click(sender, e);
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         }

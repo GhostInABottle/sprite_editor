@@ -238,10 +238,10 @@
             // 
             // txtBase
             // 
-            txtBase.Enabled = false;
             txtBase.Location = new System.Drawing.Point(10, 25);
             txtBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtBase.Name = "txtBase";
+            txtBase.ReadOnly = true;
             txtBase.Size = new System.Drawing.Size(199, 23);
             txtBase.TabIndex = 14;
             // 
@@ -371,10 +371,10 @@
             // 
             // txtImage
             // 
-            txtImage.Enabled = false;
             txtImage.Location = new System.Drawing.Point(10, 70);
             txtImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtImage.Name = "txtImage";
+            txtImage.ReadOnly = true;
             txtImage.Size = new System.Drawing.Size(199, 23);
             txtImage.TabIndex = 0;
             // 
@@ -467,10 +467,10 @@
             // 
             // txtPoseImage
             // 
-            txtPoseImage.Enabled = false;
             txtPoseImage.Location = new System.Drawing.Point(12, 343);
             txtPoseImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPoseImage.Name = "txtPoseImage";
+            txtPoseImage.ReadOnly = true;
             txtPoseImage.Size = new System.Drawing.Size(205, 23);
             txtPoseImage.TabIndex = 19;
             // 
@@ -824,10 +824,10 @@
             // 
             // txtSound
             // 
-            txtSound.Enabled = false;
             txtSound.Location = new System.Drawing.Point(10, 276);
             txtSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtSound.Name = "txtSound";
+            txtSound.ReadOnly = true;
             txtSound.Size = new System.Drawing.Size(206, 23);
             txtSound.TabIndex = 24;
             // 
@@ -893,10 +893,10 @@
             // 
             // txtFrameImage
             // 
-            txtFrameImage.Enabled = false;
             txtFrameImage.Location = new System.Drawing.Point(10, 348);
             txtFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtFrameImage.Name = "txtFrameImage";
+            txtFrameImage.ReadOnly = true;
             txtFrameImage.Size = new System.Drawing.Size(206, 23);
             txtFrameImage.TabIndex = 17;
             // 
@@ -1193,7 +1193,7 @@
             // miMagnification50
             // 
             miMagnification50.Name = "miMagnification50";
-            miMagnification50.Size = new System.Drawing.Size(180, 22);
+            miMagnification50.Size = new System.Drawing.Size(168, 22);
             miMagnification50.Text = "50%";
             miMagnification50.Click += miMagnification50_Click;
             // 
@@ -1201,55 +1201,55 @@
             // 
             miMagnification100.Name = "miMagnification100";
             miMagnification100.ShortcutKeyDisplayString = "Ctrl+0";
-            miMagnification100.Size = new System.Drawing.Size(180, 22);
+            miMagnification100.Size = new System.Drawing.Size(168, 22);
             miMagnification100.Text = "100%";
             miMagnification100.Click += miMagnification100_Click;
             // 
             // miMagnification200
             // 
             miMagnification200.Name = "miMagnification200";
-            miMagnification200.Size = new System.Drawing.Size(180, 22);
+            miMagnification200.Size = new System.Drawing.Size(168, 22);
             miMagnification200.Text = "200%";
             miMagnification200.Click += miMagnification200_Click;
             // 
             // miMagnification300
             // 
             miMagnification300.Name = "miMagnification300";
-            miMagnification300.Size = new System.Drawing.Size(180, 22);
+            miMagnification300.Size = new System.Drawing.Size(168, 22);
             miMagnification300.Text = "300%";
             miMagnification300.Click += miMagnification300_Click;
             // 
             // miMagnification400
             // 
             miMagnification400.Name = "miMagnification400";
-            miMagnification400.Size = new System.Drawing.Size(180, 22);
+            miMagnification400.Size = new System.Drawing.Size(168, 22);
             miMagnification400.Text = "400%";
             miMagnification400.Click += miMagnification400_Click;
             // 
             // miMagnification800
             // 
             miMagnification800.Name = "miMagnification800";
-            miMagnification800.Size = new System.Drawing.Size(180, 22);
+            miMagnification800.Size = new System.Drawing.Size(168, 22);
             miMagnification800.Text = "800%";
             miMagnification800.Click += miMagnification800_Click;
             // 
             // miMagnification1600
             // 
             miMagnification1600.Name = "miMagnification1600";
-            miMagnification1600.Size = new System.Drawing.Size(180, 22);
+            miMagnification1600.Size = new System.Drawing.Size(168, 22);
             miMagnification1600.Text = "1600%";
             miMagnification1600.Click += miMagnification1600_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
             // 
             // miMagnificationZoomIn
             // 
             miMagnificationZoomIn.Name = "miMagnificationZoomIn";
             miMagnificationZoomIn.ShortcutKeyDisplayString = "Ctrl++";
-            miMagnificationZoomIn.Size = new System.Drawing.Size(180, 22);
+            miMagnificationZoomIn.Size = new System.Drawing.Size(168, 22);
             miMagnificationZoomIn.Text = "Zoom In";
             miMagnificationZoomIn.Click += miMagnificationZoomIn_Click;
             // 
@@ -1257,7 +1257,7 @@
             // 
             miMagnificationZoomOut.Name = "miMagnificationZoomOut";
             miMagnificationZoomOut.ShortcutKeyDisplayString = "Ctrl+-";
-            miMagnificationZoomOut.Size = new System.Drawing.Size(180, 22);
+            miMagnificationZoomOut.Size = new System.Drawing.Size(168, 22);
             miMagnificationZoomOut.Text = "Zoom Out";
             miMagnificationZoomOut.Click += miMagnificationZoomOut_Click;
             // 
