@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Runtime.Versioning;
 
 namespace SpriteEditor
@@ -14,7 +15,9 @@ namespace SpriteEditor
             filename = spriteLogic.ResolvePath(filename);
             try
             {
-                return new Bitmap(filename);
+                using var stream = File.Open(filename, FileMode.Open,
+                    FileAccess.Read, FileShare.ReadWrite);
+                return new Bitmap(stream);
             }
             catch (Exception)
             {
