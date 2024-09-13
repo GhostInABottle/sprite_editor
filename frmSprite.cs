@@ -678,6 +678,9 @@ namespace SpriteEditor
             txtMagnification.Enabled = !chkTween.Checked;
             txtAngle.Enabled = !chkTween.Checked;
             txtOpacity.Enabled = !chkTween.Checked;
+
+            if (populatingFrame) return;
+
             stlMessage.Text = "";
             if (chkTween.Checked)
             {
