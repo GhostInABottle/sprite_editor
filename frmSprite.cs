@@ -95,8 +95,10 @@ namespace SpriteEditor
             base.Dispose(disposing);
         }
 
+        private bool initializing = false;
         private void frmSprite_Load(object sender, EventArgs e)
         {
+            initializing = true;
             SetViewChecked(Settings.Default.DisplayMode);
             InitializeMenuItems();
             Zoom(Settings.Default.ZoomLevel);
@@ -113,6 +115,7 @@ namespace SpriteEditor
             {
                 miNew_Click(sender, e);
             }
+            initializing = false;
         }
 
         private void InitializeMenuItems()
@@ -1634,7 +1637,7 @@ namespace SpriteEditor
 
         private void miGridSelection_CheckedChanged(object sender, EventArgs e)
         {
-            if (miGridSelection.Checked)
+            if (miGridSelection.Checked && !initializing)
             {
                 SetViewChecked("full");
             }
