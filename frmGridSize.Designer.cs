@@ -45,9 +45,12 @@
             // 
             nudGridWidth.Location = new System.Drawing.Point(88, 14);
             nudGridWidth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            nudGridWidth.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudGridWidth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudGridWidth.Name = "nudGridWidth";
             nudGridWidth.Size = new System.Drawing.Size(117, 23);
             nudGridWidth.TabIndex = 0;
+            nudGridWidth.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // lblGridWidth
             // 
@@ -73,9 +76,12 @@
             // 
             nudGridHeight.Location = new System.Drawing.Point(88, 44);
             nudGridHeight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            nudGridHeight.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudGridHeight.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudGridHeight.Name = "nudGridHeight";
             nudGridHeight.Size = new System.Drawing.Size(117, 23);
             nudGridHeight.TabIndex = 2;
+            nudGridHeight.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // lblGridColor
             // 
