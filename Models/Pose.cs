@@ -134,6 +134,20 @@ namespace SpriteEditor.Models
         {
             var children = new List<object>();
 
+            // New format with name/state/direction as attributes instead of tags
+            if (Tags.TryGetValue("Name", out string name))
+            {
+                children.Add(new XAttribute("Name", name));
+            }
+            if (Tags.TryGetValue("State", out string state))
+            {
+                children.Add(new XAttribute("State", state));
+            }
+            if (Tags.TryGetValue("Direction", out string direction))
+            {
+                children.Add(new XAttribute("Direction", direction));
+            }
+
             if (BoundingCircle != null)
             {
                 children.Add(BoundingCircle.ToXml("Bounding-Circle"));
@@ -174,8 +188,11 @@ namespace SpriteEditor.Models
                 children.Add(new XAttribute("Transparent-Color", TransparentColor));
             }
 
+            var specialKeys = new string[] { "Name", "State", "Direction" };
             foreach (var pair in Tags)
             {
+                if (specialKeys.Contains(pair.Key)) continue;
+
                 var tagElement = new XElement(
                     "Tag",
                     new XAttribute("Key", pair.Key),
@@ -226,6 +243,21 @@ namespace SpriteEditor.Models
             {
                 newPose.BoundingBox = (Rect)newPose.BoundingCircle;
             }
+
+            // New format with name/state/direction as attributes instead of tags
+            if (!newPose.Tags.ContainsKey("Name") && pose.Attribute("Name") != null)
+            {
+                newPose.Tags["Name"] = (string)pose.Attribute("Name");
+            }
+            if (!newPose.Tags.ContainsKey("State") && pose.Attribute("State") != null)
+            {
+                newPose.Tags["State"] = (string)pose.Attribute("State");
+            }
+            if (!newPose.Tags.ContainsKey("Direction") && pose.Attribute("Direction") != null)
+            {
+                newPose.Tags["Direction"] = (string)pose.Attribute("Direction");
+            }
+
             return newPose;
         }
 

@@ -87,7 +87,14 @@ namespace SpriteEditor.Models
 
         public XElement ToXml()
         {
-            var children = new List<object>();
+            var children = new List<object>
+            {
+                new XAttribute("X", Rectangle.X),
+                new XAttribute("Y", Rectangle.Y),
+                new XAttribute("Width", Rectangle.Width),
+                new XAttribute("Height", Rectangle.Height)
+            };
+
             if (Duration != -1)
             {
                 children.Add(new XAttribute("Duration", Duration));
@@ -96,8 +103,6 @@ namespace SpriteEditor.Models
             {
                 children.Add(new XAttribute("Max-Duration", MaxDuration));
             }
-
-            children.Add(Rectangle.ToXml("Rectangle"));
 
             if (!IsTweenFrame && !Utilities.CheckClose(Magnification.X, 1.0f))
             {
@@ -155,8 +160,14 @@ namespace SpriteEditor.Models
                 Opacity = (float?)frame.Attribute("Opacity") ?? 1.0f,
                 IsTweenFrame = (bool?)frame.Attribute("Tween") ?? false,
                 Rectangle =
-                (from rect in frame.Descendants("Rectangle") select Rect.FromXml(rect))
-                    .DefaultIfEmpty(new Rect(0, 0, 0, 0)).Single(),
+                    (from rect in frame.Descendants("Rectangle") select Rect.FromXml(rect))
+                    .DefaultIfEmpty(
+                        // New format using attributes instead of nested rectangle
+                        new Rect((int?)frame.Attribute("X") ?? 0,
+                                 (int?)frame.Attribute("Y") ?? 0,
+                                 (int?)frame.Attribute("Width") ?? 0,
+                                 (int?)frame.Attribute("Height") ?? 0)
+                    ).Single(),
                 Image = (string)frame.Attribute("Image"),
                 TransparentColor = (string)frame.Attribute("Transparent-Color"),
                 Sound = (
