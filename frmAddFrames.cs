@@ -34,6 +34,11 @@ namespace SpriteEditor
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            txtStartX.ForeColor = Color.Black;
+            txtStartY.ForeColor = Color.Black;
+            txtFrameWidth.ForeColor = Color.Black;
+            txtFrameHeight.ForeColor = Color.Black;
+            txtFrameCount.ForeColor = Color.Black;
             txtPattern.ForeColor = Color.Black;
             try
             {
@@ -65,18 +70,39 @@ namespace SpriteEditor
 
             Hide();
         }
+        private void getControlValue(Control control, out int value, int minValue = 0)
+        {
+            if (!int.TryParse(control.Text, out value) || value < minValue)
+            {
+                throw new InputException(control);
+            }
+        }
+
+        private void highlightControlError(Control control)
+        {
+            if (!string.IsNullOrWhiteSpace(control.Text))
+            {
+                control.ForeColor = Color.Red;
+            }
+            control.Focus();
+        }
 
         private List<Pose> getPoses()
         {
-            var poses = new List<Pose>();
-            if (!int.TryParse(txtStartX.Text, out var startX) ||
-                !int.TryParse(txtStartY.Text, out var startY) ||
-                !int.TryParse(txtFrameWidth.Text, out var frameWidth) ||
-                !int.TryParse(txtFrameHeight.Text, out var frameHeight) ||
-                !int.TryParse(txtFrameCount.Text, out var frameCount) ||
-                frameCount < 1)
+
+            int startX, startY, frameWidth, frameHeight, frameCount;
+            try
             {
-                return poses;
+                getControlValue(txtStartX, out startX);
+                getControlValue(txtStartY, out startY);
+                getControlValue(txtFrameWidth, out frameWidth, 1);
+                getControlValue(txtFrameHeight, out frameHeight, 1);
+                getControlValue(txtFrameCount, out frameCount, 1);
+            }
+            catch (InputException ex)
+            {
+                highlightControlError(ex.Control);   
+                return [];
             }
 
             var start = new IntVec2(startX, startY);
@@ -91,6 +117,7 @@ namespace SpriteEditor
                 framePattern = string.Join(",", range.Skip(1).Concat(range.Take(1)));
             }
 
+            var poses = new List<Pose>();
             var comparer = StringComparer.OrdinalIgnoreCase;
             var directionMap = new Dictionary<string, string>(comparer)
             {
@@ -115,15 +142,14 @@ namespace SpriteEditor
             // Handle patterns like Up,Right,Down,Left or U,R,D,L
             string directionPattern = !string.IsNullOrEmpty(txtDirectionPattern.Text)
                 ? txtDirectionPattern.Text : "Up,Right,Down,Left";
-            var parts = directionPattern.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+            var parts = directionPattern.Split([','], StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
-            foreach (var direction in parts)
+            foreach (var inputDirection in parts)
             {
-                if (!directionMap.ContainsKey(direction))
+                if (!directionMap.TryGetValue(inputDirection, out string direction))
                 {
-                    txtPattern.ForeColor = Color.Red;
-                    txtPattern.Focus();
-                    return new List<Pose>();
+                    highlightControlError(txtPattern);
+                    return [];
                 }
 
                 var facePose = new Pose
@@ -132,7 +158,7 @@ namespace SpriteEditor
                     {
                         { "Name", defaultPoseName },
                         { "State", "Face" },
-                        { "Direction", directionMap[direction] }
+                        { "Direction", direction }
                     },
                     Frames = getFrames(start, frameSize, 1)
                 };
@@ -144,7 +170,7 @@ namespace SpriteEditor
                     {
                         { "Name", defaultPoseName },
                         { "State", "Walk" },
-                        { "Direction", directionMap[direction] }
+                        { "Direction", direction }
                     },
                     Frames = getFrames(start, frameSize, frameCount, pattern: framePattern)
                 };
@@ -157,14 +183,21 @@ namespace SpriteEditor
 
         private List<Frame> getFrames()
         {
-            if (!int.TryParse(txtStartX.Text, out var startX) ||
-                !int.TryParse(txtStartY.Text, out var startY) ||
-                !int.TryParse(txtFrameWidth.Text, out var frameWidth) ||
-                !int.TryParse(txtFrameHeight.Text, out var frameHeight) ||
-                !int.TryParse(txtFrameCount.Text, out var frameCount))
+            int startX, startY, frameWidth, frameHeight, frameCount;
+            try
             {
-                return new List<Frame>();
+                getControlValue(txtStartX, out startX);
+                getControlValue(txtStartY, out startY);
+                getControlValue(txtFrameWidth, out frameWidth, 1);
+                getControlValue(txtFrameHeight, out frameHeight, 1);
+                getControlValue(txtFrameCount, out frameCount, 1);
             }
+            catch (InputException ex)
+            {
+                highlightControlError(ex.Control);
+                return [];
+            }
+
             if (!int.TryParse(txtPerRow.Text, out var perRow))
             {
                 perRow = frameCount;
@@ -178,9 +211,8 @@ namespace SpriteEditor
             }
             catch (PatternException)
             {
-                txtPattern.ForeColor = Color.Red;
-                txtPattern.Focus();
-                return new List<Frame>();
+                highlightControlError(txtPattern);
+                return [];
             }
         }
 
@@ -207,13 +239,31 @@ namespace SpriteEditor
                 return newFrames;
             }
 
-            var parts = pattern.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = pattern.Split([','], StringSplitOptions.RemoveEmptyEntries);
             var indexes = new List<int>();
             foreach (var part in parts)
             {
                 if (int.TryParse(part, out int result))
                 {
                     indexes.Add(result);
+                }
+                else if (part.Contains('-'))
+                {
+                    var ranges = part.Split('-');
+                    if (ranges.Length != 2)
+                    {
+                        throw new PatternException();
+                    }
+                    if (!int.TryParse(ranges[0], out int rangeStart)
+                        || !int.TryParse(ranges[1], out int rangeEnd)
+                        || rangeStart > rangeEnd)
+                    {
+                        throw new PatternException();
+                    }
+                    for (var i = rangeStart; i <= rangeEnd; i++)
+                    {
+                        indexes.Add(i);
+                    }
                 }
                 else
                 {
@@ -235,7 +285,7 @@ namespace SpriteEditor
 
         private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn, bool vertical)
         {
-            List<Frame> newFrames = new();
+            List<Frame> newFrames = [];
             var outerMax = vertical ? maxColumn : maxRow;
             var innerMax = vertical ? maxRow : maxColumn;
             int counter = 1;
@@ -279,6 +329,11 @@ namespace SpriteEditor
 
         private class PatternException : ArgumentException
         {
+        }
+
+        private class InputException(Control control) : ArgumentException
+        {
+            public Control Control { get; private set; } = control;
         }
     }
 }
