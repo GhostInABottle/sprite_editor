@@ -36,7 +36,7 @@ namespace SpriteEditor
         private readonly frmAddFrames addFramesForm;
         private string lastImageName;
         private Bitmap lastBitmap;
-        private readonly float[] scales = { 0.5f, 1.0f, 2.0f, 3.0f, 4.0f, 8.0f, 16.0f };
+        private readonly float[] scales = [0.5f, 1.0f, 2.0f, 3.0f, 4.0f, 8.0f, 16.0f];
         private float dpiX, dpiY;
         private int scaleIndex = 1;
 
@@ -49,7 +49,7 @@ namespace SpriteEditor
 
         public void AddPoses(List<Pose> newPoses)
         {
-            if (!newPoses.Any()) return;
+            if (newPoses.Count == 0) return;
             if (selectedPose != null)
             {
                 foreach (var pose in newPoses)
@@ -463,8 +463,7 @@ namespace SpriteEditor
                 return;
             }
 
-            txtPoseName.Text = pose.Tags.ContainsKey("Name") ? pose.Tags["Name"] : "";
-
+            txtPoseName.Text = pose.GetName();
             txtDuration.Text = pose.DefaultDuration.ToString();
             txtRepeats.Text = pose.Repeats.ToString();
             chkRequireCompletion.Enabled = pose.Repeats == -1;
@@ -478,9 +477,9 @@ namespace SpriteEditor
                 txtBoundingBox.Text = pose.BoundingBox.ToString();
             }
             txtOrigin.Text = pose.Origin.ToString();
-            if (pose.Tags.ContainsKey("Direction"))
+            if (pose.Tags.TryGetValue("Direction", out string direction))
             {
-                var index = cbDirection.Items.IndexOf(pose.Tags["Direction"]);
+                var index = cbDirection.Items.IndexOf(direction);
                 cbDirection.SelectedIndex = index;
             }
             else
@@ -488,7 +487,7 @@ namespace SpriteEditor
                 cbDirection.SelectedIndex = 0;
             }
 
-            cbState.Text = pose.Tags.ContainsKey("State") ? pose.Tags["State"] : "";
+            cbState.Text = pose.Tags.TryGetValue("State", out string state) ? state : "";
 
             txtPoseImage.Text = pose.Image;
             var transColor = cdTransparentColor.Color;
@@ -608,7 +607,7 @@ namespace SpriteEditor
             chkTween.Checked = false;
         }
 
-        private void changeSelectedPose(int poseIndex)
+        private void ChangeSelectedPose(int poseIndex)
         {
             if (poseIndex == -1) return;
 
@@ -628,7 +627,7 @@ namespace SpriteEditor
 
         private void lstPoses_SelectedIndexChanged(object sender, EventArgs e)
         {
-            changeSelectedPose(lstPoses.SelectedIndex);
+            ChangeSelectedPose(lstPoses.SelectedIndex);
         }
 
         private void lstPoses_MouseDown(object sender, MouseEventArgs e)
@@ -639,7 +638,7 @@ namespace SpriteEditor
             lstFrames.DoDragDrop(lstPoses.SelectedIndex, DragDropEffects.Move);
             if (lstPoses.SelectedIndex != -1)
             {
-                changeSelectedPose(lstPoses.SelectedIndex);
+                ChangeSelectedPose(lstPoses.SelectedIndex);
             }
         }
 
@@ -726,6 +725,7 @@ namespace SpriteEditor
         {
             var toIndex = ListDragDrop(lstFrames, selectedPose.Frames, e);
             changeSelectedFrame(toIndex);
+            spriteLogic.Reset(Environment.TickCount);
             stlMessage.Text = "";
         }
 
@@ -810,6 +810,7 @@ namespace SpriteEditor
             if (int.TryParse(txtDuration.Text, out int duration))
             {
                 selectedPose.DefaultDuration = duration;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -819,13 +820,9 @@ namespace SpriteEditor
 
             if (int.TryParse(txtRepeats.Text, out var repeats))
             {
-                if (spriteLogic.CurrentPose != null)
-                {
-                    spriteLogic.Reset(Environment.TickCount);
-                }
-
                 selectedPose.Repeats = repeats;
                 chkRequireCompletion.Enabled = repeats == -1;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -838,6 +835,7 @@ namespace SpriteEditor
 
             selectedFrame.Duration = duration.Value;
             selectedFrame.MaxDuration = maxDuration;
+            spriteLogic.Reset(Environment.TickCount);
         }
 
         private void txtMagnification_TextChanged(object sender, EventArgs e)
@@ -848,6 +846,7 @@ namespace SpriteEditor
             if (mag != null)
             {
                 selectedFrame.Magnification = mag;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -858,6 +857,7 @@ namespace SpriteEditor
             if (int.TryParse(txtAngle.Text, out var angle))
             {
                 selectedFrame.Angle = angle;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -868,6 +868,7 @@ namespace SpriteEditor
             if (float.TryParse(txtOpacity.Text, out var opacity))
             {
                 selectedFrame.Opacity = opacity;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -1017,6 +1018,7 @@ namespace SpriteEditor
             if (rect != null)
             {
                 selectedFrame.Rectangle = rect;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -1047,6 +1049,7 @@ namespace SpriteEditor
             if (origin != null)
             {
                 selectedPose.Origin = origin;
+                spriteLogic.Reset(Environment.TickCount);
             }
         }
 
@@ -1146,9 +1149,9 @@ namespace SpriteEditor
             {
                 if (!fileSet.Contains(file))
                 {
-                    fileSet.Add(file);
                     fileList.Add(file);
                 }
+                fileSet.Add(file);
             }
             Settings.Default.RecentFiles.Clear();
             foreach (var file in fileList.Take(8))
@@ -1271,7 +1274,7 @@ namespace SpriteEditor
 
             var poses = spriteLogic.SpriteData.Poses;
             var poseClone = new Pose(copiedPose);
-            if (poseClone.Tags.ContainsKey("Name") && poseClone.Tags["Name"] != "")
+            if (poseClone.GetName() != "")
             {
                 poseClone.Tags["Name"] += " Copy";
             }
@@ -1323,10 +1326,10 @@ namespace SpriteEditor
             cbState.Items.Clear();
             foreach (var pose in spriteLogic.SpriteData.Poses)
             {
-                if (pose.Tags.ContainsKey("State") &&
-                        !cbState.Items.Contains(pose.Tags["State"]))
+                if (pose.Tags.TryGetValue("State", out string state) &&
+                        !cbState.Items.Contains(state))
                 {
-                    cbState.Items.Add(pose.Tags["State"]);
+                    cbState.Items.Add(state);
                 }
             }
         }

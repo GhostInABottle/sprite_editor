@@ -16,7 +16,7 @@ namespace SpriteEditor.Models
         public SpriteData()
         {
             BaseDirectory = ".";
-            Poses = new List<Pose>();
+            Poses = [];
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace SpriteEditor.Models
             {
                 Image = filename,
                 TransparentColor = transparentColor,
-                Poses = new List<Pose>()
-                {
+                Poses =
+                [
                     new ()
                     {
                         BoundingBox = new Rect(0, 0, bitmapWidth, bitmapHeight),
@@ -144,15 +144,15 @@ namespace SpriteEditor.Models
                         {
                             { "Name", "Main" }
                         },
-                        Frames = new List<Frame>()
-                        {
+                        Frames =
+                        [
                             new()
                             {
                                 Rectangle = new Rect(0, 0, bitmapWidth, bitmapHeight)
                             }
-                        }
+                        ]
                     }
-                }
+                ]
             };
             return spriteData;
         }

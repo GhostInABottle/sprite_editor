@@ -144,7 +144,7 @@ namespace SpriteEditor.Models
                 children.Add(Sound.ToXml());
             }
 
-            return new XElement("Frame", children.ToArray());
+            return new XElement("Frame", [.. children]);
         }
 
         public static Frame FromXml(XElement frame)

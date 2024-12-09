@@ -44,7 +44,7 @@ namespace SpriteEditor
             {
                 if (chkDirectional.Checked)
                 {
-                    var poses = getPoses();
+                    var poses = GetPoses();
                     if (poses.Count == 0)
                     {
                         DialogResult = DialogResult.None;
@@ -54,7 +54,7 @@ namespace SpriteEditor
                 }
                 else
                 {
-                    var frames = getFrames();
+                    var frames = GetFrames();
                     if (frames.Count == 0)
                     {
                         DialogResult = DialogResult.None;
@@ -70,7 +70,7 @@ namespace SpriteEditor
 
             Hide();
         }
-        private void getControlValue(Control control, out int value, int minValue = 0)
+        private static void GetControlValue(TextBox control, out int value, int minValue = 0)
         {
             if (!int.TryParse(control.Text, out value) || value < minValue)
             {
@@ -78,7 +78,7 @@ namespace SpriteEditor
             }
         }
 
-        private void highlightControlError(Control control)
+        private static void HighlightControlError(Control control)
         {
             if (!string.IsNullOrWhiteSpace(control.Text))
             {
@@ -87,21 +87,21 @@ namespace SpriteEditor
             control.Focus();
         }
 
-        private List<Pose> getPoses()
+        private List<Pose> GetPoses()
         {
 
             int startX, startY, frameWidth, frameHeight, frameCount;
             try
             {
-                getControlValue(txtStartX, out startX);
-                getControlValue(txtStartY, out startY);
-                getControlValue(txtFrameWidth, out frameWidth, 1);
-                getControlValue(txtFrameHeight, out frameHeight, 1);
-                getControlValue(txtFrameCount, out frameCount, 1);
+                GetControlValue(txtStartX, out startX);
+                GetControlValue(txtStartY, out startY);
+                GetControlValue(txtFrameWidth, out frameWidth, 1);
+                GetControlValue(txtFrameHeight, out frameHeight, 1);
+                GetControlValue(txtFrameCount, out frameCount, 1);
             }
             catch (InputException ex)
             {
-                highlightControlError(ex.Control);   
+                HighlightControlError(ex.Control);   
                 return [];
             }
 
@@ -148,7 +148,7 @@ namespace SpriteEditor
             {
                 if (!directionMap.TryGetValue(inputDirection, out string direction))
                 {
-                    highlightControlError(txtPattern);
+                    HighlightControlError(txtPattern);
                     return [];
                 }
 
@@ -160,7 +160,7 @@ namespace SpriteEditor
                         { "State", "Face" },
                         { "Direction", direction }
                     },
-                    Frames = getFrames(start, frameSize, 1)
+                    Frames = GetFrames(start, frameSize, 1)
                 };
                 poses.Add(facePose);
 
@@ -172,7 +172,7 @@ namespace SpriteEditor
                         { "State", "Walk" },
                         { "Direction", direction }
                     },
-                    Frames = getFrames(start, frameSize, frameCount, pattern: framePattern)
+                    Frames = GetFrames(start, frameSize, frameCount, pattern: framePattern)
                 };
                 poses.Add(walkPose);
                 start.Y += frameSize.Y;
@@ -181,20 +181,20 @@ namespace SpriteEditor
             return poses;
         }
 
-        private List<Frame> getFrames()
+        private List<Frame> GetFrames()
         {
             int startX, startY, frameWidth, frameHeight, frameCount;
             try
             {
-                getControlValue(txtStartX, out startX);
-                getControlValue(txtStartY, out startY);
-                getControlValue(txtFrameWidth, out frameWidth, 1);
-                getControlValue(txtFrameHeight, out frameHeight, 1);
-                getControlValue(txtFrameCount, out frameCount, 1);
+                GetControlValue(txtStartX, out startX);
+                GetControlValue(txtStartY, out startY);
+                GetControlValue(txtFrameWidth, out frameWidth, 1);
+                GetControlValue(txtFrameHeight, out frameHeight, 1);
+                GetControlValue(txtFrameCount, out frameCount, 1);
             }
             catch (InputException ex)
             {
-                highlightControlError(ex.Control);
+                HighlightControlError(ex.Control);
                 return [];
             }
 
@@ -207,16 +207,16 @@ namespace SpriteEditor
             var frameSize = new IntVec2(frameWidth, frameHeight);
             try
             {
-                return getFrames(start, frameSize, frameCount, perRow, chkRectangular.Checked, chkVertical.Checked, txtPattern.Text);
+                return GetFrames(start, frameSize, frameCount, perRow, chkRectangular.Checked, chkVertical.Checked, txtPattern.Text);
             }
             catch (PatternException)
             {
-                highlightControlError(txtPattern);
+                HighlightControlError(txtPattern);
                 return [];
             }
         }
 
-        private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int perRow = 1, bool rectangular = false, bool vertical = false, string pattern = "")
+        private List<Frame> GetFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int perRow = 1, bool rectangular = false, bool vertical = false, string pattern = "")
         {
             if (!rectangular)
             {
@@ -232,7 +232,7 @@ namespace SpriteEditor
             int maxRow = vertical ? perRow : maxFrames;
             int maxColumn = vertical ? maxFrames : perRow;
 
-            var newFrames = getFrames(start, frameSize, frameCount, maxRow, maxColumn, vertical);
+            var newFrames = GetFrames(start, frameSize, frameCount, maxRow, maxColumn, vertical);
 
             if (string.IsNullOrWhiteSpace(pattern))
             {
@@ -283,7 +283,7 @@ namespace SpriteEditor
             return indexedFrames;
         }
 
-        private List<Frame> getFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn, bool vertical)
+        private List<Frame> GetFrames(IntVec2 start, IntVec2 frameSize, int frameCount, int maxRow, int maxColumn, bool vertical)
         {
             List<Frame> newFrames = [];
             var outerMax = vertical ? maxColumn : maxRow;

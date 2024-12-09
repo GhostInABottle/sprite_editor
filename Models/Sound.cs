@@ -82,7 +82,7 @@ namespace SpriteEditor.Models
                 children.Add(new XAttribute("Volume", Volume));
             }
 
-            return new XElement("Sound", children.ToArray());
+            return new XElement("Sound", [.. children]);
         }
 
         protected virtual void Dispose(bool disposing)

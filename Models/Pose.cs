@@ -21,8 +21,8 @@ namespace SpriteEditor.Models
             Repeats = -1;
             RequireCompletion = false;
             Origin = new Vec2(0.0f, 0.0f);
-            Tags = new Dictionary<string, string>();
-            Frames = new List<Frame>();
+            Tags = [];
+            Frames = [];
             EdgeCheckFrameIndex = null;
         }
 
@@ -36,7 +36,7 @@ namespace SpriteEditor.Models
             Origin = new Vec2(other.Origin);
             Image = other.Image;
             TransparentColor = other.TransparentColor;
-            Tags = new Dictionary<string, string>();
+            Tags = [];
             foreach (var (key, value) in other.Tags)
             {
                 Tags[key] = value;
@@ -105,20 +105,20 @@ namespace SpriteEditor.Models
 
         public string GetName()
         {
-            return Tags.ContainsKey("Name") ? Tags["Name"] : "";
+            return Tags.GetValueOrDefault("Name", "");
         }
 
         public string NameWithTags()
         {
             var name = GetName();
-            if (Tags.ContainsKey("Direction"))
+            if (Tags.TryGetValue("Direction", out string dir))
             {
-                name += " [" + Tags["Direction"] + "]";
+                name += " [" + dir + "]";
             }
 
-            if (Tags.ContainsKey("State"))
+            if (Tags.TryGetValue("State", out string state))
             {
-                name += " [" + Tags["State"] + "]";
+                name += " [" + state + "]";
             }
 
             if (EdgeCheckFrameIndex != null)
@@ -205,7 +205,7 @@ namespace SpriteEditor.Models
                 children.Add(frame.ToXml());
             }
 
-            return new XElement("Pose", children.ToArray());
+            return new XElement("Pose", [.. children]);
         }
 
         public static Pose FromXml(XElement pose)

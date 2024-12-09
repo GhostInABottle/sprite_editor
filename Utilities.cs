@@ -21,10 +21,7 @@ namespace SpriteEditor
 
         public static Color FromHex(string colorString)
         {
-            if (colorString == null)
-            {
-                throw new ArgumentNullException(nameof(colorString));
-            }
+            ArgumentNullException.ThrowIfNull(colorString);
 
             var match = hexRegex.Match(colorString);
             if (!match.Success)
@@ -96,12 +93,12 @@ namespace SpriteEditor
                 throw new ArgumentNullException(nameof(toPath));
             }
 
-            if (Directory.Exists(fromPath) && !fromPath.EndsWith("\\"))
+            if (Directory.Exists(fromPath) && !fromPath.EndsWith('\\'))
             {
                 fromPath += "\\";
             }
 
-            if (Directory.Exists(toPath) && !toPath.EndsWith("\\"))
+            if (Directory.Exists(toPath) && !toPath.EndsWith('\\'))
             {
                 toPath += "\\";
             }

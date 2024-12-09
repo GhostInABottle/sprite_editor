@@ -9,20 +9,12 @@ namespace SpriteEditor
     {
         private static readonly StringSplitOptions SplitOptions =
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
-        private class LineFormat
+        private class LineFormat(int nameIndex, int sizeIndex, int coordsIndex, int? frameCountIndex = null)
         {
-            public LineFormat(int nameIndex, int sizeIndex, int coordsIndex, int? frameCountIndex = null)
-            {
-                NameIndex = nameIndex;
-                SizeIndex = sizeIndex;
-                CoordsIndex = coordsIndex;
-                FrameCountIndex = frameCountIndex;
-            }
-
-            public int NameIndex { get; set; }
-            public int SizeIndex { get; set; }
-            public int CoordsIndex { get; set; }
-            public int? FrameCountIndex { get; set; }
+            public int NameIndex { get; set; } = nameIndex;
+            public int SizeIndex { get; set; } = sizeIndex;
+            public int CoordsIndex { get; set; } = coordsIndex;
+            public int? FrameCountIndex { get; set; } = frameCountIndex;
         }
         // Specifies how the CSV can look like. Destination coordinates are
         // irrelevant for the sprite editor but are useful when setting up the CSVs
@@ -89,12 +81,11 @@ namespace SpriteEditor
         private static (Pose pose, string error) ParseLine(string line)
         {
             var parts = line.Split(',', SplitOptions);
-            if (!FormatByPartCount.ContainsKey(parts.Length))
+            if (!FormatByPartCount.TryGetValue(parts.Length, out LineFormat format))
             {
                 return (null, $"Error: Could not parse pose CSV in line: {line}");
             }
 
-            var format = FormatByPartCount[parts.Length];
             var poseName = parts[format.NameIndex];
 
             if (!int.TryParse(parts[format.SizeIndex], out int width) || width < 1)
@@ -144,7 +135,7 @@ namespace SpriteEditor
                 }
 
                 var isVertical = directionGroup.Success
-                    && directionGroup.Value.ToUpper() == "V";
+                    && directionGroup.Value.Equals("V", StringComparison.CurrentCultureIgnoreCase);
 
 
                 if (!int.TryParse(frameCountGroup.Value, out int count) || count < 2)

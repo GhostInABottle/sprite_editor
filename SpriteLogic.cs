@@ -50,7 +50,7 @@ namespace SpriteEditor
         /// <summary>
         /// FMOD system
         /// </summary>
-        private FmodSystem? fmodSystem;
+        private readonly FmodSystem? fmodSystem;
         /// <summary>
         /// Resource disposal status
         /// </summary>
@@ -70,7 +70,10 @@ namespace SpriteEditor
             catch (Exception ex)
             {
                 fmodSystem = null;
-                MessageBox.Show("Failed to load FMOD sound system - make sure the correct DLL is in the executable folder - " + ex.Message);
+                if (OperatingSystem.IsWindowsVersionAtLeast(6, 1))
+                {
+                    MessageBox.Show("Failed to load FMOD sound system - make sure the correct DLL is in the executable folder - " + ex.Message);
+                }
             }
         }
 
@@ -151,7 +154,7 @@ namespace SpriteEditor
             oldTime = currentTime;
             currentFrameTime = null;
             repeatNumber = 0;
-            frameCount = CurrentPose.Frames.Count;
+            frameCount = CurrentPose?.Frames.Count ?? 0;
             IsFinished = false;
             tweening = false;
             lastSoundFrame = -1;
