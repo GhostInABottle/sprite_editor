@@ -468,6 +468,9 @@ namespace SpriteEditor
             txtRepeats.Text = pose.Repeats.ToString();
             chkRequireCompletion.Enabled = pose.Repeats == -1;
             chkRequireCompletion.Checked = pose.RequireCompletion;
+            txtCompletionFrame.Enabled = chkRequireCompletion.Enabled
+                && chkRequireCompletion.Checked;
+            txtCompletionFrame.Text = string.Join(',', pose.CompletionFrames);
             if (pose.BoundingCircle != null)
             {
                 txtBoundingBox.Text = pose.BoundingCircle.ToString();
@@ -510,6 +513,8 @@ namespace SpriteEditor
             txtRepeats.Text = "";
             chkRequireCompletion.Enabled = false;
             chkRequireCompletion.Checked = false;
+            txtCompletionFrame.Enabled = false;
+            txtCompletionFrame.Text = "";
             txtBoundingBox.Text = "";
             txtOrigin.Text = "";
             lstFrames.Items.Clear();
@@ -822,6 +827,8 @@ namespace SpriteEditor
             {
                 selectedPose.Repeats = repeats;
                 chkRequireCompletion.Enabled = repeats == -1;
+                txtCompletionFrame.Enabled = chkRequireCompletion.Enabled
+                    && chkRequireCompletion.Checked;
                 spriteLogic.Reset(Environment.TickCount);
             }
         }
@@ -1616,6 +1623,36 @@ namespace SpriteEditor
             if (selectedPose == null) return;
 
             selectedPose.RequireCompletion = chkRequireCompletion.Checked;
+            txtCompletionFrame.Enabled = chkRequireCompletion.Checked;
+        }
+
+        private void txtCompletionFrame_TextChanged(object sender, EventArgs e)
+        {
+
+            txtCompletionFrame.ForeColor = Color.Black;
+            if (selectedPose == null) return;
+
+            if (string.IsNullOrWhiteSpace(txtCompletionFrame.Text))
+            {
+                selectedPose.CompletionFrames = [];
+                return;
+            }
+
+            var parts = txtCompletionFrame.Text.Split(',', StringSplitOptions.TrimEntries);
+
+            List<int> newIndexes = [];
+            foreach (var part in parts)
+            {
+                var validIndex = int.TryParse(part, out int index)
+                    && index > 0 && index <= selectedPose.Frames.Count;
+                if (!validIndex)
+                {
+                    txtCompletionFrame.ForeColor = Color.Red;
+                    return;
+                }
+                newIndexes.Add(index);
+            }
+            selectedPose.CompletionFrames = newIndexes;
         }
 
         private void cbDefaultPose_SelectedIndexChanged(object sender, EventArgs e)

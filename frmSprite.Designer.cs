@@ -39,6 +39,7 @@
             lblImage = new System.Windows.Forms.Label();
             txtImage = new System.Windows.Forms.TextBox();
             tabPose = new System.Windows.Forms.TabPage();
+            txtCompletionFrame = new System.Windows.Forms.TextBox();
             chkRequireCompletion = new System.Windows.Forms.CheckBox();
             btnPoseTransColor = new System.Windows.Forms.Button();
             lblPoseColor = new System.Windows.Forms.Label();
@@ -282,7 +283,6 @@
             lstPoses.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstPoses.ContextMenuStrip = mnuPose;
             lstPoses.FormattingEnabled = true;
-            lstPoses.ItemHeight = 15;
             lstPoses.Location = new System.Drawing.Point(7, 196);
             lstPoses.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstPoses.Name = "lstPoses";
@@ -381,6 +381,7 @@
             // tabPose
             // 
             tabPose.BackColor = System.Drawing.Color.Transparent;
+            tabPose.Controls.Add(txtCompletionFrame);
             tabPose.Controls.Add(chkRequireCompletion);
             tabPose.Controls.Add(btnPoseTransColor);
             tabPose.Controls.Add(lblPoseColor);
@@ -411,11 +412,21 @@
             tabPose.TabIndex = 1;
             tabPose.Text = "Pose";
             // 
+            // txtCompletionFrame
+            // 
+            txtCompletionFrame.Enabled = false;
+            txtCompletionFrame.Location = new System.Drawing.Point(142, 112);
+            txtCompletionFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtCompletionFrame.Name = "txtCompletionFrame";
+            txtCompletionFrame.Size = new System.Drawing.Size(118, 23);
+            txtCompletionFrame.TabIndex = 25;
+            txtCompletionFrame.TextChanged += txtCompletionFrame_TextChanged;
+            // 
             // chkRequireCompletion
             // 
             chkRequireCompletion.AutoSize = true;
             chkRequireCompletion.Enabled = false;
-            chkRequireCompletion.Location = new System.Drawing.Point(142, 114);
+            chkRequireCompletion.Location = new System.Drawing.Point(142, 93);
             chkRequireCompletion.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chkRequireCompletion.Name = "chkRequireCompletion";
             chkRequireCompletion.Size = new System.Drawing.Size(111, 19);
@@ -543,7 +554,6 @@
             lstFrames.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstFrames.ContextMenuStrip = mnuFrame;
             lstFrames.FormattingEnabled = true;
-            lstFrames.ItemHeight = 15;
             lstFrames.Location = new System.Drawing.Point(12, 412);
             lstFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstFrames.Name = "lstFrames";
@@ -1474,6 +1484,7 @@
         private System.Windows.Forms.ToolStripMenuItem miCheckEdges;
         private System.Windows.Forms.ToolStripMenuItem miOffsetFrames;
         private System.Windows.Forms.ToolStripMenuItem miOffsetFrame;
+        private System.Windows.Forms.TextBox txtCompletionFrame;
     }
 }
 

@@ -20,6 +20,7 @@ namespace SpriteEditor.Models
             DefaultDuration = 100;
             Repeats = -1;
             RequireCompletion = false;
+            CompletionFrames = [];
             Origin = new Vec2(0.0f, 0.0f);
             Tags = [];
             Frames = [];
@@ -33,14 +34,11 @@ namespace SpriteEditor.Models
             DefaultDuration = other.DefaultDuration;
             Repeats = other.Repeats;
             RequireCompletion = other.RequireCompletion;
+            CompletionFrames = new List<int>(other.CompletionFrames);
             Origin = new Vec2(other.Origin);
             Image = other.Image;
             TransparentColor = other.TransparentColor;
-            Tags = [];
-            foreach (var (key, value) in other.Tags)
-            {
-                Tags[key] = value;
-            }
+            Tags = new Dictionary<string, string>(other.Tags);
             Frames = other.Frames.Select(x => new Frame(x)).ToList();
             EdgeCheckFrameIndex = null;
         }
@@ -66,10 +64,16 @@ namespace SpriteEditor.Models
         public int Repeats { get; set; }
 
         /// <summary>
-        /// Should all never-ending pose frames be finished before
+        /// Should all infinite pose frames be finished before
         /// it can be marked as completed?
         /// </summary>
         public bool RequireCompletion { get; set; }
+
+        /// <summary>
+        /// The frames on which an infinite pose is marked as completed.
+        /// Defaults to the last frame.
+        /// </summary>
+        public List<int> CompletionFrames { get; set; }
 
         /// <summary>
         /// Image origin.
@@ -166,6 +170,11 @@ namespace SpriteEditor.Models
             else if (RequireCompletion)
             {
                 children.Add(new XAttribute("Require-Completion", RequireCompletion));
+                foreach (var frameIndex in CompletionFrames)
+                {
+                    children.Add(new XElement("Completion-Frame",
+                        new XAttribute("Index", frameIndex)));
+                }
             }
 
             if (!Utilities.CheckClose(Origin.X, 0.0f))
@@ -215,6 +224,11 @@ namespace SpriteEditor.Models
                 DefaultDuration = (int?)pose.Attribute("Duration") ?? 100,
                 Repeats = (int?)pose.Attribute("Repeats") ?? -1,
                 RequireCompletion = (bool?)pose.Attribute("Require-Completion") ?? false,
+                CompletionFrames =
+                (
+                    from frameIndex in pose.Descendants("Completion-Frame")
+                    select int.Parse((string)frameIndex.Attribute("Index"))
+                ).ToList(),
                 Origin = new Vec2(
                     (float?)pose.Attribute("X-Origin") ?? 0.0f,
                     (float?)pose.Attribute("Y-Origin") ?? 0.0f),
@@ -238,6 +252,11 @@ namespace SpriteEditor.Models
                 Frames = (from frame in pose.Descendants("Frame")
                           select Frame.FromXml(frame)).ToList()
             };
+
+            if (!newPose.RequireCompletion)
+            {
+                newPose.CompletionFrames.Clear();
+            }
 
             if (newPose.BoundingCircle != null)
             {
