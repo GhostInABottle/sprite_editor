@@ -24,6 +24,7 @@ namespace SpriteEditor.Models
         public Frame(Frame other)
         {
             Duration = other.Duration;
+            Marker = other.Marker;
             MaxDuration = other.MaxDuration;
             Rectangle = new Rect(other.Rectangle);
             Magnification = new Vec2(other.Magnification);
@@ -44,6 +45,11 @@ namespace SpriteEditor.Models
         /// Max frame duration in milliseconds.
         /// </summary>
         public int? MaxDuration { get; set; }
+
+        /// <summary>
+        /// An optional name to identify the frame
+        /// </summary>
+        public string Marker { get; set; }
 
         /// <summary>
         /// Source rectangle.
@@ -104,6 +110,11 @@ namespace SpriteEditor.Models
                 children.Add(new XAttribute("Max-Duration", MaxDuration));
             }
 
+            if (!string.IsNullOrWhiteSpace(Marker))
+            {
+                children.Add(new XAttribute("Marker", Marker));
+            }
+
             if (!IsTweenFrame && !Utilities.CheckClose(Magnification.X, 1.0f))
             {
                 children.Add(new XAttribute("X-Mag", Magnification.X));
@@ -153,6 +164,7 @@ namespace SpriteEditor.Models
             {
                 Duration = (int?)frame.Attribute("Duration") ?? -1,
                 MaxDuration = (int?)frame.Attribute("Max-Duration"),
+                Marker = (string)frame.Attribute("Marker"),
                 Magnification = new Vec2(
                     (float?)frame.Attribute("X-Mag") ?? 1.0f,
                     (float?)frame.Attribute("Y-Mag") ?? 1.0f),
@@ -185,6 +197,13 @@ namespace SpriteEditor.Models
         {
             Rectangle.X += x;
             Rectangle.Y += y;
+        }
+
+        public string GetDisplayName(int index)
+        {
+            if (string.IsNullOrWhiteSpace(Marker)) return index.ToString();
+
+            return $"{index} [{Marker}]";
         }
 
         protected virtual void Dispose(bool disposing)

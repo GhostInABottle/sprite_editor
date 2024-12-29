@@ -71,6 +71,8 @@
             txtPoseName = new System.Windows.Forms.TextBox();
             lblPoseName = new System.Windows.Forms.Label();
             tabFrame = new System.Windows.Forms.TabPage();
+            txtFrameMarker = new System.Windows.Forms.TextBox();
+            lblFrameMarker = new System.Windows.Forms.Label();
             txtRemoveSound = new System.Windows.Forms.Button();
             txtVolume = new System.Windows.Forms.TextBox();
             lblVolume = new System.Windows.Forms.Label();
@@ -716,6 +718,8 @@
             // tabFrame
             // 
             tabFrame.BackColor = System.Drawing.Color.Transparent;
+            tabFrame.Controls.Add(txtFrameMarker);
+            tabFrame.Controls.Add(lblFrameMarker);
             tabFrame.Controls.Add(txtRemoveSound);
             tabFrame.Controls.Add(txtVolume);
             tabFrame.Controls.Add(lblVolume);
@@ -750,9 +754,28 @@
             tabFrame.TabIndex = 2;
             tabFrame.Text = "Frame";
             // 
+            // txtFrameMarker
+            // 
+            txtFrameMarker.Location = new System.Drawing.Point(10, 93);
+            txtFrameMarker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtFrameMarker.Name = "txtFrameMarker";
+            txtFrameMarker.Size = new System.Drawing.Size(249, 23);
+            txtFrameMarker.TabIndex = 34;
+            txtFrameMarker.TextChanged += txtFrameMarker_TextChanged;
+            // 
+            // lblFrameMarker
+            // 
+            lblFrameMarker.AutoSize = true;
+            lblFrameMarker.Location = new System.Drawing.Point(8, 74);
+            lblFrameMarker.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblFrameMarker.Name = "lblFrameMarker";
+            lblFrameMarker.Size = new System.Drawing.Size(44, 15);
+            lblFrameMarker.TabIndex = 33;
+            lblFrameMarker.Text = "Marker";
+            // 
             // txtRemoveSound
             // 
-            txtRemoveSound.Location = new System.Drawing.Point(223, 305);
+            txtRemoveSound.Location = new System.Drawing.Point(223, 349);
             txtRemoveSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtRemoveSound.Name = "txtRemoveSound";
             txtRemoveSound.Size = new System.Drawing.Size(36, 23);
@@ -764,7 +787,7 @@
             // txtVolume
             // 
             txtVolume.Enabled = false;
-            txtVolume.Location = new System.Drawing.Point(163, 305);
+            txtVolume.Location = new System.Drawing.Point(163, 349);
             txtVolume.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtVolume.Name = "txtVolume";
             txtVolume.Size = new System.Drawing.Size(51, 23);
@@ -774,7 +797,7 @@
             // lblVolume
             // 
             lblVolume.AutoSize = true;
-            lblVolume.Location = new System.Drawing.Point(108, 308);
+            lblVolume.Location = new System.Drawing.Point(108, 352);
             lblVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblVolume.Name = "lblVolume";
             lblVolume.Size = new System.Drawing.Size(47, 15);
@@ -784,7 +807,7 @@
             // txtPitch
             // 
             txtPitch.Enabled = false;
-            txtPitch.Location = new System.Drawing.Point(49, 305);
+            txtPitch.Location = new System.Drawing.Point(49, 349);
             txtPitch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPitch.Name = "txtPitch";
             txtPitch.Size = new System.Drawing.Size(51, 23);
@@ -794,7 +817,7 @@
             // lblPitch
             // 
             lblPitch.AutoSize = true;
-            lblPitch.Location = new System.Drawing.Point(7, 308);
+            lblPitch.Location = new System.Drawing.Point(7, 352);
             lblPitch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPitch.Name = "lblPitch";
             lblPitch.Size = new System.Drawing.Size(34, 15);
@@ -804,7 +827,7 @@
             // lblFrameNumber
             // 
             lblFrameNumber.AutoSize = true;
-            lblFrameNumber.Location = new System.Drawing.Point(126, 421);
+            lblFrameNumber.Location = new System.Drawing.Point(126, 465);
             lblFrameNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameNumber.Name = "lblFrameNumber";
             lblFrameNumber.Size = new System.Drawing.Size(14, 15);
@@ -813,7 +836,7 @@
             // 
             // btnBrowseSound
             // 
-            btnBrowseSound.Location = new System.Drawing.Point(224, 276);
+            btnBrowseSound.Location = new System.Drawing.Point(224, 320);
             btnBrowseSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseSound.Name = "btnBrowseSound";
             btnBrowseSound.Size = new System.Drawing.Size(36, 23);
@@ -825,7 +848,7 @@
             // lblSound
             // 
             lblSound.AutoSize = true;
-            lblSound.Location = new System.Drawing.Point(7, 255);
+            lblSound.Location = new System.Drawing.Point(7, 299);
             lblSound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblSound.Name = "lblSound";
             lblSound.Size = new System.Drawing.Size(41, 15);
@@ -834,7 +857,7 @@
             // 
             // txtSound
             // 
-            txtSound.Location = new System.Drawing.Point(10, 276);
+            txtSound.Location = new System.Drawing.Point(10, 320);
             txtSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtSound.Name = "txtSound";
             txtSound.ReadOnly = true;
@@ -843,7 +866,7 @@
             // 
             // txtOpacity
             // 
-            txtOpacity.Location = new System.Drawing.Point(10, 183);
+            txtOpacity.Location = new System.Drawing.Point(10, 227);
             txtOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtOpacity.Name = "txtOpacity";
             txtOpacity.Size = new System.Drawing.Size(249, 23);
@@ -853,7 +876,7 @@
             // lblOpacity
             // 
             lblOpacity.AutoSize = true;
-            lblOpacity.Location = new System.Drawing.Point(7, 165);
+            lblOpacity.Location = new System.Drawing.Point(7, 209);
             lblOpacity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOpacity.Name = "lblOpacity";
             lblOpacity.Size = new System.Drawing.Size(48, 15);
@@ -862,7 +885,7 @@
             // 
             // btnFrameTransColor
             // 
-            btnFrameTransColor.Location = new System.Drawing.Point(118, 377);
+            btnFrameTransColor.Location = new System.Drawing.Point(118, 421);
             btnFrameTransColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnFrameTransColor.Name = "btnFrameTransColor";
             btnFrameTransColor.Size = new System.Drawing.Size(22, 21);
@@ -873,7 +896,7 @@
             // lblFrameColor
             // 
             lblFrameColor.AutoSize = true;
-            lblFrameColor.Location = new System.Drawing.Point(10, 380);
+            lblFrameColor.Location = new System.Drawing.Point(10, 424);
             lblFrameColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameColor.Name = "lblFrameColor";
             lblFrameColor.Size = new System.Drawing.Size(100, 15);
@@ -882,7 +905,7 @@
             // 
             // btnBrowseFrameImage
             // 
-            btnBrowseFrameImage.Location = new System.Drawing.Point(224, 347);
+            btnBrowseFrameImage.Location = new System.Drawing.Point(224, 391);
             btnBrowseFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseFrameImage.Name = "btnBrowseFrameImage";
             btnBrowseFrameImage.Size = new System.Drawing.Size(36, 23);
@@ -894,7 +917,7 @@
             // lblFrameImage
             // 
             lblFrameImage.AutoSize = true;
-            lblFrameImage.Location = new System.Drawing.Point(8, 330);
+            lblFrameImage.Location = new System.Drawing.Point(8, 374);
             lblFrameImage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameImage.Name = "lblFrameImage";
             lblFrameImage.Size = new System.Drawing.Size(40, 15);
@@ -903,7 +926,7 @@
             // 
             // txtFrameImage
             // 
-            txtFrameImage.Location = new System.Drawing.Point(10, 348);
+            txtFrameImage.Location = new System.Drawing.Point(10, 392);
             txtFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtFrameImage.Name = "txtFrameImage";
             txtFrameImage.ReadOnly = true;
@@ -912,7 +935,7 @@
             // 
             // btnNextFrame
             // 
-            btnNextFrame.Location = new System.Drawing.Point(153, 415);
+            btnNextFrame.Location = new System.Drawing.Point(153, 459);
             btnNextFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNextFrame.Name = "btnNextFrame";
             btnNextFrame.Size = new System.Drawing.Size(103, 27);
@@ -923,7 +946,7 @@
             // 
             // btnPrevFrame
             // 
-            btnPrevFrame.Location = new System.Drawing.Point(7, 415);
+            btnPrevFrame.Location = new System.Drawing.Point(7, 459);
             btnPrevFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnPrevFrame.Name = "btnPrevFrame";
             btnPrevFrame.Size = new System.Drawing.Size(103, 27);
@@ -946,7 +969,7 @@
             // 
             // txtRectangle
             // 
-            txtRectangle.Location = new System.Drawing.Point(10, 228);
+            txtRectangle.Location = new System.Drawing.Point(10, 272);
             txtRectangle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtRectangle.Name = "txtRectangle";
             txtRectangle.Size = new System.Drawing.Size(249, 23);
@@ -956,7 +979,7 @@
             // lblRectangle
             // 
             lblRectangle.AutoSize = true;
-            lblRectangle.Location = new System.Drawing.Point(7, 210);
+            lblRectangle.Location = new System.Drawing.Point(7, 254);
             lblRectangle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblRectangle.Name = "lblRectangle";
             lblRectangle.Size = new System.Drawing.Size(98, 15);
@@ -965,7 +988,7 @@
             // 
             // txtAngle
             // 
-            txtAngle.Location = new System.Drawing.Point(10, 138);
+            txtAngle.Location = new System.Drawing.Point(10, 182);
             txtAngle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtAngle.Name = "txtAngle";
             txtAngle.Size = new System.Drawing.Size(249, 23);
@@ -975,7 +998,7 @@
             // lblAngle
             // 
             lblAngle.AutoSize = true;
-            lblAngle.Location = new System.Drawing.Point(7, 120);
+            lblAngle.Location = new System.Drawing.Point(7, 164);
             lblAngle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblAngle.Name = "lblAngle";
             lblAngle.Size = new System.Drawing.Size(38, 15);
@@ -984,7 +1007,7 @@
             // 
             // txtMagnification
             // 
-            txtMagnification.Location = new System.Drawing.Point(10, 93);
+            txtMagnification.Location = new System.Drawing.Point(10, 137);
             txtMagnification.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtMagnification.Name = "txtMagnification";
             txtMagnification.Size = new System.Drawing.Size(249, 23);
@@ -994,7 +1017,7 @@
             // lblMagnification
             // 
             lblMagnification.AutoSize = true;
-            lblMagnification.Location = new System.Drawing.Point(7, 75);
+            lblMagnification.Location = new System.Drawing.Point(7, 119);
             lblMagnification.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblMagnification.Name = "lblMagnification";
             lblMagnification.Size = new System.Drawing.Size(81, 15);
@@ -1485,6 +1508,8 @@
         private System.Windows.Forms.ToolStripMenuItem miOffsetFrames;
         private System.Windows.Forms.ToolStripMenuItem miOffsetFrame;
         private System.Windows.Forms.TextBox txtCompletionFrame;
+        private System.Windows.Forms.TextBox txtFrameMarker;
+        private System.Windows.Forms.Label lblFrameMarker;
     }
 }
 

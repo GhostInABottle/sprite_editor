@@ -501,7 +501,8 @@ namespace SpriteEditor
 
             cdTransparentColor.Color = transColor;
             btnPoseTransColor.BackColor = transColor;
-            var frameIndices = pose.Frames.Select((x, i) => (i + 1).ToString());
+            var frameIndices = pose.Frames
+                .Select((x, i) => x.GetDisplayName(i + 1));
             lstFrames.Items.Clear();
             lstFrames.Items.AddRange(frameIndices.ToArray());
         }
@@ -562,6 +563,7 @@ namespace SpriteEditor
             populatingFrame = true;
 
             txtFrameDuration.Text = DurationToString(frame);
+            txtFrameMarker.Text = frame.Marker ?? "";
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
             txtSound.Text = frame.Sound.Filename;
@@ -599,6 +601,7 @@ namespace SpriteEditor
         private void ClearFrame()
         {
             txtFrameDuration.Text = "";
+            txtFrameMarker.Text = "";
             txtMagnification.Text = "";
             txtAngle.Text = "";
             txtOpacity.Text = "";
@@ -843,6 +846,17 @@ namespace SpriteEditor
             selectedFrame.Duration = duration.Value;
             selectedFrame.MaxDuration = maxDuration;
             spriteLogic.Reset(Environment.TickCount);
+        }
+
+        private void txtFrameMarker_TextChanged(object sender, EventArgs e)
+        {
+            if (selectedFrame == null || selectedFrame.Marker == txtFrameMarker.Text) return;
+
+            selectedFrame.Marker = txtFrameMarker.Text;
+            if (tbcSprite.SelectedTab == tabFrame)
+            {
+                PopulatePose(selectedPose);
+            }
         }
 
         private void txtMagnification_TextChanged(object sender, EventArgs e)
