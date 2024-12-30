@@ -855,7 +855,9 @@ namespace SpriteEditor
             selectedFrame.Marker = txtFrameMarker.Text;
             if (tbcSprite.SelectedTab == tabFrame)
             {
+                var selectedIndex = lstFrames.SelectedIndex;
                 PopulatePose(selectedPose);
+                lstFrames.SelectedIndex = selectedIndex;
             }
         }
 
