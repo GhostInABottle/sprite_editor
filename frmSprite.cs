@@ -102,6 +102,7 @@ namespace SpriteEditor
             SetViewChecked(Settings.Default.DisplayMode);
             InitializeMenuItems();
             Zoom(Settings.Default.ZoomLevel);
+            SelectGridSize();
             PopulateRecentFiles();
             cbDirection.SelectedIndex = 0;
             var args = Environment.GetCommandLineArgs();
@@ -1237,9 +1238,76 @@ namespace SpriteEditor
             Settings.Default.ShowGrid = miShowGrid.Checked;
         }
 
-        private void miGridSettings_Click(object sender, EventArgs e)
+        private void SelectGridSize()
+        {
+            var controlSizes = new Dictionary<ToolStripMenuItem, int>()
+            {
+                [miGridSize1] = 1,
+                [miGridSize2] = 2,
+                [miGridSize4] = 4,
+                [miGridSize8] = 8,
+                [miGridSize16] = 16,
+                [miGridSize32] = 32,
+            };
+            var width = Settings.Default.GridWidth;
+            var height = Settings.Default.GridHeight;
+            var square = width == height;
+            var anyChecked = false;
+            foreach (var (control, size) in controlSizes)
+            {
+                control.Checked = square && size == width;
+                anyChecked = anyChecked || control.Checked;
+            }
+
+            miGridSizeCustom.Checked = !anyChecked;
+        }
+
+        private void miGridSize1_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 1;
+            Settings.Default.GridHeight = 1;
+            SelectGridSize();
+        }
+
+        private void miGridSize2_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 2;
+            Settings.Default.GridHeight = 2;
+            SelectGridSize();
+        }
+
+        private void miGridSize4_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 4;
+            Settings.Default.GridHeight = 4;
+            SelectGridSize();
+        }
+
+        private void miGridSize8_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 8;
+            Settings.Default.GridHeight = 8;
+            SelectGridSize();
+        }
+
+        private void miGridSize16_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 16;
+            Settings.Default.GridHeight = 16;
+            SelectGridSize();
+        }
+
+        private void miGridSize32_Click(object sender, EventArgs e)
+        {
+            Settings.Default.GridWidth = 32;
+            Settings.Default.GridHeight = 32;
+            SelectGridSize();
+        }
+
+        private void miGridSizeCustom_Click(object sender, EventArgs e)
         {
             gridSizeForm.ShowDialog(this);
+            SelectGridSize();
         }
 
         private void frmSprite_FormClosed(object sender, FormClosedEventArgs e)

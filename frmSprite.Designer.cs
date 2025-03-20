@@ -121,7 +121,14 @@
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             miShowGrid = new System.Windows.Forms.ToolStripMenuItem();
             miGridSelection = new System.Windows.Forms.ToolStripMenuItem();
-            miGridSettings = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize1 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize2 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize4 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize8 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize16 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSize32 = new System.Windows.Forms.ToolStripMenuItem();
+            miGridSizeCustom = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             miMagnification = new System.Windows.Forms.ToolStripMenuItem();
             miMagnification50 = new System.Windows.Forms.ToolStripMenuItem();
@@ -1120,7 +1127,7 @@
             // 
             // miView
             // 
-            miView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miFull, miPreview, miAnimated, toolStripSeparator1, miShowSrcRect, miShowBoundingBox, miTransparent, toolStripSeparator2, miShowGrid, miGridSelection, miGridSettings, toolStripSeparator4, miMagnification });
+            miView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miFull, miPreview, miAnimated, toolStripSeparator1, miShowSrcRect, miShowBoundingBox, miTransparent, toolStripSeparator2, miShowGrid, miGridSelection, miGridSize, toolStripSeparator4, miMagnification });
             miView.Name = "miView";
             miView.Size = new System.Drawing.Size(44, 20);
             miView.Text = "&View";
@@ -1204,12 +1211,61 @@
             miGridSelection.Text = "Grid Selection";
             miGridSelection.CheckedChanged += miGridSelection_CheckedChanged;
             // 
-            // miGridSettings
+            // miGridSize
             // 
-            miGridSettings.Name = "miGridSettings";
-            miGridSettings.Size = new System.Drawing.Size(223, 22);
-            miGridSettings.Text = "Grid Settings...";
-            miGridSettings.Click += miGridSettings_Click;
+            miGridSize.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miGridSize1, miGridSize2, miGridSize4, miGridSize8, miGridSize16, miGridSize32, miGridSizeCustom });
+            miGridSize.Name = "miGridSize";
+            miGridSize.Size = new System.Drawing.Size(223, 22);
+            miGridSize.Text = "Grid Size";
+            // 
+            // miGridSize1
+            // 
+            miGridSize1.Name = "miGridSize1";
+            miGridSize1.Size = new System.Drawing.Size(180, 22);
+            miGridSize1.Text = "1x1";
+            miGridSize1.Click += miGridSize1_Click;
+            // 
+            // miGridSize2
+            // 
+            miGridSize2.Name = "miGridSize2";
+            miGridSize2.Size = new System.Drawing.Size(180, 22);
+            miGridSize2.Text = "2x2";
+            miGridSize2.Click += miGridSize2_Click;
+            // 
+            // miGridSize4
+            // 
+            miGridSize4.Name = "miGridSize4";
+            miGridSize4.Size = new System.Drawing.Size(180, 22);
+            miGridSize4.Text = "4x4";
+            miGridSize4.Click += miGridSize4_Click;
+            // 
+            // miGridSize8
+            // 
+            miGridSize8.Name = "miGridSize8";
+            miGridSize8.Size = new System.Drawing.Size(180, 22);
+            miGridSize8.Text = "8x8";
+            miGridSize8.Click += miGridSize8_Click;
+            // 
+            // miGridSize16
+            // 
+            miGridSize16.Name = "miGridSize16";
+            miGridSize16.Size = new System.Drawing.Size(180, 22);
+            miGridSize16.Text = "16x16";
+            miGridSize16.Click += miGridSize16_Click;
+            // 
+            // miGridSize32
+            // 
+            miGridSize32.Name = "miGridSize32";
+            miGridSize32.Size = new System.Drawing.Size(180, 22);
+            miGridSize32.Text = "32x32";
+            miGridSize32.Click += miGridSize32_Click;
+            // 
+            // miGridSizeCustom
+            // 
+            miGridSizeCustom.Name = "miGridSizeCustom";
+            miGridSizeCustom.Size = new System.Drawing.Size(180, 22);
+            miGridSizeCustom.Text = "Custom...";
+            miGridSizeCustom.Click += miGridSizeCustom_Click;
             // 
             // toolStripSeparator4
             // 
@@ -1439,7 +1495,6 @@
         private System.Windows.Forms.OpenFileDialog ofdSprite;
         private System.Windows.Forms.SaveFileDialog sfdSprite;
         private System.Windows.Forms.ToolStripMenuItem miShowGrid;
-        private System.Windows.Forms.ToolStripMenuItem miGridSettings;
         private System.Windows.Forms.ToolStripMenuItem miCopy;
         private System.Windows.Forms.ToolStripMenuItem miPaste;
         private System.Windows.Forms.ToolStripMenuItem miCopyFrame;
@@ -1510,6 +1565,14 @@
         private System.Windows.Forms.TextBox txtCompletionFrame;
         private System.Windows.Forms.TextBox txtFrameMarker;
         private System.Windows.Forms.Label lblFrameMarker;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize1;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize2;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize4;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize8;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize16;
+        private System.Windows.Forms.ToolStripMenuItem miGridSize32;
+        private System.Windows.Forms.ToolStripMenuItem miGridSizeCustom;
     }
 }
 
