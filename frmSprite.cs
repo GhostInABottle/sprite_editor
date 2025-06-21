@@ -366,12 +366,11 @@ namespace SpriteEditor
             var pen = new Pen(Settings.Default.GridColor);
             for (int y = dest.Y; y <= dest.Y + dest.Height; y += gridHeight)
             {
-                for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
-                {
-                    e.Graphics.DrawLine(pen, x, dest.Y, x, dest.Y + dest.Height);
-                }
-
                 e.Graphics.DrawLine(pen, dest.X, y, dest.X + dest.Width, y);
+            }
+            for (int x = dest.X; x <= dest.X + dest.Width; x += gridWidth)
+            {
+                e.Graphics.DrawLine(pen, x, dest.Y, x, dest.Y + dest.Height);
             }
         }
 
