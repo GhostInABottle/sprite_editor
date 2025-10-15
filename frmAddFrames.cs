@@ -90,14 +90,14 @@ namespace SpriteEditor
         private List<Pose> GetPoses()
         {
 
-            int startX, startY, frameWidth, frameHeight, frameCount;
+            int startX, startY, frameWidth, frameHeight, perRow;
             try
             {
                 GetControlValue(txtStartX, out startX);
                 GetControlValue(txtStartY, out startY);
                 GetControlValue(txtFrameWidth, out frameWidth, 1);
                 GetControlValue(txtFrameHeight, out frameHeight, 1);
-                GetControlValue(txtFrameCount, out frameCount, 1);
+                GetControlValue(txtPerRow, out perRow, 1);
             }
             catch (InputException ex)
             {
@@ -110,10 +110,10 @@ namespace SpriteEditor
 
             string framePattern = txtPattern.Text;
 
-            if (string.IsNullOrEmpty(framePattern) && frameCount > 1)
+            if (string.IsNullOrEmpty(framePattern) && perRow > 1)
             {
                 // Generates a frame pattern like 2,3,4,1
-                var range = Enumerable.Range(1, frameCount);
+                var range = Enumerable.Range(1, perRow);
                 framePattern = string.Join(",", range.Skip(1).Concat(range.Take(1)));
             }
 
@@ -172,7 +172,7 @@ namespace SpriteEditor
                         { "State", "Walk" },
                         { "Direction", direction }
                     },
-                    Frames = GetFrames(start, frameSize, frameCount, pattern: framePattern)
+                    Frames = GetFrames(start, frameSize, perRow, pattern: framePattern)
                 };
                 poses.Add(walkPose);
                 start.Y += frameSize.Y;
@@ -316,14 +316,21 @@ namespace SpriteEditor
 
         private void chkRectangular_CheckedChanged(object sender, EventArgs e)
         {
-            txtPerRow.Enabled = chkRectangular.Checked;
+            txtPerRow.Enabled = chkDirectional.Checked || chkRectangular.Checked;
         }
 
         private void chkDirectional_CheckedChanged(object sender, EventArgs e)
         {
             chkRectangular.Enabled = !chkDirectional.Checked;
             chkVertical.Enabled = !chkDirectional.Checked;
-            txtPerRow.Enabled = !chkDirectional.Checked && chkRectangular.Checked;
+            if (chkDirectional.Checked)
+            {
+                chkRectangular.Checked = false;
+                chkVertical.Checked = false;
+            }
+
+            txtPerRow.Enabled = chkDirectional.Checked || chkRectangular.Checked;
+            txtFrameCount.Enabled = !chkDirectional.Checked;
             txtDirectionPattern.Enabled = chkDirectional.Checked;
         }
 
