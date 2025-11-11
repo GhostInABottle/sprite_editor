@@ -1061,6 +1061,7 @@ namespace SpriteEditor
             var rect = Rect.FromString(txtBoundingBox.Text);
             if (rect == null) return;
 
+            selectedPose.BoundingCircle = null;
             selectedPose.BoundingBox = rect;
         }
 
