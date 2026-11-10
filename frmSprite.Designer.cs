@@ -179,7 +179,7 @@
             tbcSprite.Multiline = true;
             tbcSprite.Name = "tbcSprite";
             tbcSprite.SelectedIndex = 0;
-            tbcSprite.Size = new System.Drawing.Size(280, 869);
+            tbcSprite.Size = new System.Drawing.Size(280, 884);
             tbcSprite.TabIndex = 1;
             // 
             // tabSprite
@@ -201,7 +201,7 @@
             tabSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabSprite.Name = "tabSprite";
             tabSprite.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabSprite.Size = new System.Drawing.Size(272, 839);
+            tabSprite.Size = new System.Drawing.Size(272, 854);
             tabSprite.TabIndex = 0;
             tabSprite.Text = "Sprite";
             // 
@@ -293,10 +293,10 @@
             lstPoses.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstPoses.ContextMenuStrip = mnuPose;
             lstPoses.FormattingEnabled = true;
-            lstPoses.Location = new System.Drawing.Point(7, 222);
+            lstPoses.Location = new System.Drawing.Point(10, 222);
             lstPoses.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstPoses.Name = "lstPoses";
-            lstPoses.Size = new System.Drawing.Size(249, 599);
+            lstPoses.Size = new System.Drawing.Size(246, 616);
             lstPoses.TabIndex = 5;
             lstPoses.SelectedIndexChanged += lstPoses_SelectedIndexChanged;
             lstPoses.DragDrop += lstPoses_DragDrop;
@@ -418,7 +418,7 @@
             tabPose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPose.Name = "tabPose";
             tabPose.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPose.Size = new System.Drawing.Size(272, 839);
+            tabPose.Size = new System.Drawing.Size(272, 854);
             tabPose.TabIndex = 1;
             tabPose.Text = "Pose";
             // 
@@ -564,10 +564,10 @@
             lstFrames.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstFrames.ContextMenuStrip = mnuFrame;
             lstFrames.FormattingEnabled = true;
-            lstFrames.Location = new System.Drawing.Point(12, 467);
+            lstFrames.Location = new System.Drawing.Point(10, 467);
             lstFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstFrames.Name = "lstFrames";
-            lstFrames.Size = new System.Drawing.Size(248, 344);
+            lstFrames.Size = new System.Drawing.Size(246, 378);
             lstFrames.TabIndex = 24;
             lstFrames.SelectedIndexChanged += lstFrames_SelectedIndexChanged;
             lstFrames.DragDrop += lstFrames_DragDrop;
@@ -758,7 +758,7 @@
             tabFrame.Location = new System.Drawing.Point(4, 26);
             tabFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabFrame.Name = "tabFrame";
-            tabFrame.Size = new System.Drawing.Size(272, 839);
+            tabFrame.Size = new System.Drawing.Size(272, 854);
             tabFrame.TabIndex = 2;
             tabFrame.Text = "Frame";
             // 
@@ -1394,10 +1394,10 @@
             // 
             pnlSprite.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            pnlSprite.Location = new System.Drawing.Point(0, 35);
+            pnlSprite.Location = new System.Drawing.Point(13, 35);
             pnlSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             pnlSprite.Name = "pnlSprite";
-            pnlSprite.Size = new System.Drawing.Size(874, 869);
+            pnlSprite.Size = new System.Drawing.Size(861, 884);
             pnlSprite.TabIndex = 0;
             pnlSprite.Paint += pnlSprite_Paint;
             pnlSprite.MouseClick += pnlSprite_MouseClick;
@@ -1422,6 +1422,7 @@
             KeyPreview = true;
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "FrmSprite";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Sprite Editor";
             FormClosing += FrmSprite_FormClosing;
             FormClosed += frmSprite_FormClosed;
