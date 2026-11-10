@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpriteEditor
@@ -207,14 +208,14 @@ namespace SpriteEditor
             e.Graphics.FillRectangle(BackgroundBrush, dest);
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(
-                                    lastBitmap,
-                                    dest,
-                                    source.X,
-                                    source.Y,
-                                    source.Width,
-                                    source.Height,
-                                    GraphicsUnit.Pixel,
-                                    attributes);
+                lastBitmap,
+                dest,
+                source.X,
+                source.Y,
+                source.Width,
+                source.Height,
+                GraphicsUnit.Pixel,
+                attributes);
 
             // Draw the grid
             var gridWidth = (int)(Settings.Default.GridWidth * ScalingX);
@@ -1106,12 +1107,12 @@ namespace SpriteEditor
             selectedFrame = null;
             lastImageName = null;
             lastBitmap = null;
-            var poses = new List<Pose>();
-            var spriteData = new SpriteData() { Image = "", Poses = poses };
+            var spriteData = new SpriteData();
             spriteLogic = new SpriteLogic(spriteData, null, Settings.Default.SoundPlayback);
             PopulateSprite(spriteData);
             miAdd_Click(sender, e);
             miAddFrame_Click(sender, e);
+            spriteLogic.SpriteData.ClearModificationState();
             pnlSprite.Invalidate();
         }
 
@@ -1125,11 +1126,21 @@ namespace SpriteEditor
 
         private bool OpenSprite(string path)
         {
-            stlMessage.Text = "";
+            if (spriteLogic.SpriteData.IsModified)
+            {
+                var discardChanges = MessageBox.Show(
+                    "The sprite was modified but the changes were not saved yet. Are you sure you want to load a new file?",
+                    "Load file without saving changes",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (discardChanges == DialogResult.No) return false;
+            }
+
             try
             {
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path));
-                Text = "Sprite Editor - " + Path.GetFileName(path);
 
                 lastImageName = null;
                 lastBitmap = null;
@@ -1160,6 +1171,8 @@ namespace SpriteEditor
                 return false;
             }
 
+            stlMessage.Text = "";
+            Text = "Sprite Editor - " + Path.GetFileName(path);
             return true;
         }
 
@@ -1208,6 +1221,7 @@ namespace SpriteEditor
                 return false;
             }
 
+            Text = Text.TrimEnd('*');
             return true;
         }
 
@@ -1313,6 +1327,20 @@ namespace SpriteEditor
         private void frmSprite_FormClosed(object sender, FormClosedEventArgs e)
         {
             Settings.Default.Save();
+        }
+
+        private void FrmSprite_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!spriteLogic.SpriteData.IsModified) return;
+
+            var result = MessageBox.Show(
+                "The sprite was modified but the changes were not saved yet. Are you sure you want to exit?",
+                "Exit without saving changes",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            e.Cancel = result == DialogResult.No;
         }
 
         private void lstFrames_SelectedIndexChanged(object sender, EventArgs e)
@@ -1861,12 +1889,16 @@ namespace SpriteEditor
             AddExistingFrame(newFrame);
         }
 
-        private void miCheckEdges_Click(object sender, EventArgs e)
+        private async void miCheckEdges_Click(object sender, EventArgs e)
         {
+            miCheckEdges.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+            await Task.Run(() => FrameEdgeChecker.Check(spriteLogic));
             var oldSelected = lstPoses.SelectedIndex;
-            FrameEdgeChecker.Check(spriteLogic);
             PopulateSprite(spriteLogic.SpriteData);
             lstPoses.SelectedIndex = oldSelected;
+            miCheckEdges.Enabled = true;
+            Cursor = Cursors.Default;
         }
 
         private void miOffsetFrame_Click(object sender, EventArgs e)
@@ -1893,6 +1925,20 @@ namespace SpriteEditor
             }
 
             PopulateFrame(selectedFrame);
+        }
+
+        private void tmrFileModifiedSate_Tick(object sender, EventArgs e)
+        {
+            if (!spriteLogic.SpriteData.IsModified)
+            {
+                Text = Text.TrimEnd('*');
+                return;
+            }
+
+            if (!Text.EndsWith('*'))
+            {
+                Text = Text + "*";
+            }
         }
     }
 }

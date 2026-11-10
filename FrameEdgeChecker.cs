@@ -13,19 +13,19 @@ namespace SpriteEditor
     {
         public static void Check(SpriteLogic spriteLogic)
         {
-            var oldPose = spriteLogic.CurrentPose?.NameWithTags();
-            var spriteData = spriteLogic.SpriteData;
+            using var spriteCopy = new SpriteLogic(spriteLogic.SpriteData, spriteLogic.OpenedFileName, false);
+            var spriteData = spriteCopy.SpriteData;
             for (int pi = 0; pi < spriteData.Poses.Count; pi++)
             {
-                var pose = spriteData.Poses[pi];
+                var pose = spriteCopy.SpriteData.Poses[pi];
                 for (int fi = 0; fi < pose.Frames.Count; fi++)
                 {
-                    spriteLogic.SetPose(pose.NameWithTags(), 0);
-                    spriteLogic.SetFrame(fi);
+                    spriteCopy.SetPose(pose.NameWithTags(), 0);
+                    spriteCopy.SetFrame(fi);
 
-                    using var bitmap = BitmapHelpers.OpenBitmap(spriteLogic, spriteLogic.Image);
+                    using var bitmap = BitmapHelpers.OpenBitmap(spriteCopy, spriteCopy.Image);
 
-                    var transparentColorHex = spriteLogic.TransparentColorHex;
+                    var transparentColorHex = spriteCopy.TransparentColorHex;
                     if (string.IsNullOrEmpty(transparentColorHex)) continue;
 
                     var transparentColor = Utilities.FromHex(transparentColorHex);
@@ -37,13 +37,6 @@ namespace SpriteEditor
                     break;
                 }
             }
-
-            if (oldPose != null)
-            {
-                spriteLogic.SetPose(oldPose, 0);
-            }
-
-            spriteLogic.Reset(0);
         }
 
         private static bool IsTransparent(Bitmap bitmap, int x, int y, Color transparentColor)

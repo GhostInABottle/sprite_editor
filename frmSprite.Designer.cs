@@ -150,6 +150,7 @@
             ofdSound = new System.Windows.Forms.OpenFileDialog();
             fswUpdatedImageWatcher = new System.IO.FileSystemWatcher();
             pnlSprite = new FlickerFreePanel();
+            tmrFileModifiedSate = new System.Windows.Forms.Timer(components);
             tbcSprite.SuspendLayout();
             tabSprite.SuspendLayout();
             mnuPose.SuspendLayout();
@@ -173,12 +174,12 @@
             tbcSprite.Controls.Add(tabSprite);
             tbcSprite.Controls.Add(tabPose);
             tbcSprite.Controls.Add(tabFrame);
-            tbcSprite.Location = new System.Drawing.Point(883, 31);
+            tbcSprite.Location = new System.Drawing.Point(883, 35);
             tbcSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tbcSprite.Multiline = true;
             tbcSprite.Name = "tbcSprite";
             tbcSprite.SelectedIndex = 0;
-            tbcSprite.Size = new System.Drawing.Size(280, 767);
+            tbcSprite.Size = new System.Drawing.Size(280, 869);
             tbcSprite.TabIndex = 1;
             // 
             // tabSprite
@@ -196,11 +197,11 @@
             tabSprite.Controls.Add(lblPoses);
             tabSprite.Controls.Add(lblImage);
             tabSprite.Controls.Add(txtImage);
-            tabSprite.Location = new System.Drawing.Point(4, 24);
+            tabSprite.Location = new System.Drawing.Point(4, 26);
             tabSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabSprite.Name = "tabSprite";
             tabSprite.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabSprite.Size = new System.Drawing.Size(272, 739);
+            tabSprite.Size = new System.Drawing.Size(272, 839);
             tabSprite.TabIndex = 0;
             tabSprite.Text = "Sprite";
             // 
@@ -208,39 +209,39 @@
             // 
             cbDefaultPose.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbDefaultPose.FormattingEnabled = true;
-            cbDefaultPose.Location = new System.Drawing.Point(10, 152);
+            cbDefaultPose.Location = new System.Drawing.Point(10, 172);
             cbDefaultPose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cbDefaultPose.Name = "cbDefaultPose";
-            cbDefaultPose.Size = new System.Drawing.Size(245, 23);
+            cbDefaultPose.Size = new System.Drawing.Size(245, 25);
             cbDefaultPose.TabIndex = 18;
             cbDefaultPose.SelectedIndexChanged += cbDefaultPose_SelectedIndexChanged;
             // 
             // lblDefaultPose
             // 
             lblDefaultPose.AutoSize = true;
-            lblDefaultPose.Location = new System.Drawing.Point(7, 134);
+            lblDefaultPose.Location = new System.Drawing.Point(7, 152);
             lblDefaultPose.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblDefaultPose.Name = "lblDefaultPose";
-            lblDefaultPose.Size = new System.Drawing.Size(73, 15);
+            lblDefaultPose.Size = new System.Drawing.Size(81, 17);
             lblDefaultPose.TabIndex = 17;
             lblDefaultPose.Text = "Default Pose";
             // 
             // lblBaseFolder
             // 
             lblBaseFolder.AutoSize = true;
-            lblBaseFolder.Location = new System.Drawing.Point(7, 7);
+            lblBaseFolder.Location = new System.Drawing.Point(7, 8);
             lblBaseFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblBaseFolder.Name = "lblBaseFolder";
-            lblBaseFolder.Size = new System.Drawing.Size(67, 15);
+            lblBaseFolder.Size = new System.Drawing.Size(76, 17);
             lblBaseFolder.TabIndex = 16;
             lblBaseFolder.Text = "Base Folder";
             // 
             // btnBrowseFolder
             // 
-            btnBrowseFolder.Location = new System.Drawing.Point(220, 25);
+            btnBrowseFolder.Location = new System.Drawing.Point(220, 28);
             btnBrowseFolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseFolder.Name = "btnBrowseFolder";
-            btnBrowseFolder.Size = new System.Drawing.Size(36, 23);
+            btnBrowseFolder.Size = new System.Drawing.Size(36, 26);
             btnBrowseFolder.TabIndex = 15;
             btnBrowseFolder.Text = "...";
             btnBrowseFolder.UseVisualStyleBackColor = true;
@@ -248,19 +249,19 @@
             // 
             // txtBase
             // 
-            txtBase.Location = new System.Drawing.Point(10, 25);
+            txtBase.Location = new System.Drawing.Point(10, 28);
             txtBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtBase.Name = "txtBase";
             txtBase.ReadOnly = true;
-            txtBase.Size = new System.Drawing.Size(199, 23);
+            txtBase.Size = new System.Drawing.Size(199, 25);
             txtBase.TabIndex = 14;
             // 
             // btnTransColor
             // 
-            btnTransColor.Location = new System.Drawing.Point(120, 100);
+            btnTransColor.Location = new System.Drawing.Point(120, 113);
             btnTransColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTransColor.Name = "btnTransColor";
-            btnTransColor.Size = new System.Drawing.Size(22, 21);
+            btnTransColor.Size = new System.Drawing.Size(22, 24);
             btnTransColor.TabIndex = 13;
             btnTransColor.UseVisualStyleBackColor = false;
             btnTransColor.Click += btnTransColor_Click;
@@ -268,19 +269,19 @@
             // lblColor
             // 
             lblColor.AutoSize = true;
-            lblColor.Location = new System.Drawing.Point(7, 106);
+            lblColor.Location = new System.Drawing.Point(7, 120);
             lblColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblColor.Name = "lblColor";
-            lblColor.Size = new System.Drawing.Size(100, 15);
+            lblColor.Size = new System.Drawing.Size(113, 17);
             lblColor.TabIndex = 12;
             lblColor.Text = "Transparent Color";
             // 
             // btnBrowseImage
             // 
-            btnBrowseImage.Location = new System.Drawing.Point(220, 70);
+            btnBrowseImage.Location = new System.Drawing.Point(220, 79);
             btnBrowseImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseImage.Name = "btnBrowseImage";
-            btnBrowseImage.Size = new System.Drawing.Size(36, 23);
+            btnBrowseImage.Size = new System.Drawing.Size(36, 26);
             btnBrowseImage.TabIndex = 11;
             btnBrowseImage.Text = "...";
             btnBrowseImage.UseVisualStyleBackColor = true;
@@ -292,10 +293,10 @@
             lstPoses.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstPoses.ContextMenuStrip = mnuPose;
             lstPoses.FormattingEnabled = true;
-            lstPoses.Location = new System.Drawing.Point(7, 196);
+            lstPoses.Location = new System.Drawing.Point(7, 222);
             lstPoses.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstPoses.Name = "lstPoses";
-            lstPoses.Size = new System.Drawing.Size(249, 529);
+            lstPoses.Size = new System.Drawing.Size(249, 599);
             lstPoses.TabIndex = 5;
             lstPoses.SelectedIndexChanged += lstPoses_SelectedIndexChanged;
             lstPoses.DragDrop += lstPoses_DragDrop;
@@ -308,13 +309,13 @@
             // 
             mnuPose.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAdd, miCopy, miPaste, miPasteCsv, miRemove, miOffsetFrames });
             mnuPose.Name = "mnuPose";
-            mnuPose.Size = new System.Drawing.Size(158, 136);
+            mnuPose.Size = new System.Drawing.Size(169, 136);
             mnuPose.Opening += mnuPose_Opening;
             // 
             // miAdd
             // 
             miAdd.Name = "miAdd";
-            miAdd.Size = new System.Drawing.Size(157, 22);
+            miAdd.Size = new System.Drawing.Size(168, 22);
             miAdd.Text = "Add";
             miAdd.Click += miAdd_Click;
             // 
@@ -323,7 +324,7 @@
             miCopy.Enabled = false;
             miCopy.Name = "miCopy";
             miCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            miCopy.Size = new System.Drawing.Size(157, 22);
+            miCopy.Size = new System.Drawing.Size(168, 22);
             miCopy.Text = "Copy";
             miCopy.Click += miCopy_Click;
             // 
@@ -332,14 +333,14 @@
             miPaste.Enabled = false;
             miPaste.Name = "miPaste";
             miPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            miPaste.Size = new System.Drawing.Size(157, 22);
+            miPaste.Size = new System.Drawing.Size(168, 22);
             miPaste.Text = "Paste";
             miPaste.Click += miPaste_Click;
             // 
             // miPasteCsv
             // 
             miPasteCsv.Name = "miPasteCsv";
-            miPasteCsv.Size = new System.Drawing.Size(157, 22);
+            miPasteCsv.Size = new System.Drawing.Size(168, 22);
             miPasteCsv.Text = "Paste CSV";
             miPasteCsv.Click += miPasteCsv_Click;
             // 
@@ -347,44 +348,44 @@
             // 
             miRemove.Name = "miRemove";
             miRemove.ShortcutKeyDisplayString = "Delete";
-            miRemove.Size = new System.Drawing.Size(157, 22);
+            miRemove.Size = new System.Drawing.Size(168, 22);
             miRemove.Text = "Remove";
             miRemove.Click += miRemove_Click;
             // 
             // miOffsetFrames
             // 
             miOffsetFrames.Name = "miOffsetFrames";
-            miOffsetFrames.Size = new System.Drawing.Size(157, 22);
+            miOffsetFrames.Size = new System.Drawing.Size(168, 22);
             miOffsetFrames.Text = "Offset Frames...";
             miOffsetFrames.Click += miOffsetFrames_Click;
             // 
             // lblPoses
             // 
             lblPoses.AutoSize = true;
-            lblPoses.Location = new System.Drawing.Point(7, 180);
+            lblPoses.Location = new System.Drawing.Point(7, 204);
             lblPoses.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPoses.Name = "lblPoses";
-            lblPoses.Size = new System.Drawing.Size(37, 15);
+            lblPoses.Size = new System.Drawing.Size(42, 17);
             lblPoses.TabIndex = 4;
             lblPoses.Text = "Poses";
             // 
             // lblImage
             // 
             lblImage.AutoSize = true;
-            lblImage.Location = new System.Drawing.Point(7, 52);
+            lblImage.Location = new System.Drawing.Point(7, 59);
             lblImage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblImage.Name = "lblImage";
-            lblImage.Size = new System.Drawing.Size(40, 15);
+            lblImage.Size = new System.Drawing.Size(44, 17);
             lblImage.TabIndex = 1;
             lblImage.Text = "Image";
             // 
             // txtImage
             // 
-            txtImage.Location = new System.Drawing.Point(10, 70);
+            txtImage.Location = new System.Drawing.Point(10, 79);
             txtImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtImage.Name = "txtImage";
             txtImage.ReadOnly = true;
-            txtImage.Size = new System.Drawing.Size(199, 23);
+            txtImage.Size = new System.Drawing.Size(199, 25);
             txtImage.TabIndex = 0;
             // 
             // tabPose
@@ -413,21 +414,21 @@
             tabPose.Controls.Add(lblDuration);
             tabPose.Controls.Add(txtPoseName);
             tabPose.Controls.Add(lblPoseName);
-            tabPose.Location = new System.Drawing.Point(4, 24);
+            tabPose.Location = new System.Drawing.Point(4, 26);
             tabPose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPose.Name = "tabPose";
             tabPose.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPose.Size = new System.Drawing.Size(272, 739);
+            tabPose.Size = new System.Drawing.Size(272, 839);
             tabPose.TabIndex = 1;
             tabPose.Text = "Pose";
             // 
             // txtCompletionFrame
             // 
             txtCompletionFrame.Enabled = false;
-            txtCompletionFrame.Location = new System.Drawing.Point(142, 112);
+            txtCompletionFrame.Location = new System.Drawing.Point(142, 127);
             txtCompletionFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtCompletionFrame.Name = "txtCompletionFrame";
-            txtCompletionFrame.Size = new System.Drawing.Size(118, 23);
+            txtCompletionFrame.Size = new System.Drawing.Size(118, 25);
             txtCompletionFrame.TabIndex = 25;
             txtCompletionFrame.TextChanged += txtCompletionFrame_TextChanged;
             // 
@@ -435,10 +436,10 @@
             // 
             chkRequireCompletion.AutoSize = true;
             chkRequireCompletion.Enabled = false;
-            chkRequireCompletion.Location = new System.Drawing.Point(142, 93);
+            chkRequireCompletion.Location = new System.Drawing.Point(142, 105);
             chkRequireCompletion.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chkRequireCompletion.Name = "chkRequireCompletion";
-            chkRequireCompletion.Size = new System.Drawing.Size(111, 19);
+            chkRequireCompletion.Size = new System.Drawing.Size(120, 21);
             chkRequireCompletion.TabIndex = 8;
             chkRequireCompletion.Text = "Must complete?";
             chkRequireCompletion.UseVisualStyleBackColor = true;
@@ -446,10 +447,10 @@
             // 
             // btnPoseTransColor
             // 
-            btnPoseTransColor.Location = new System.Drawing.Point(120, 367);
+            btnPoseTransColor.Location = new System.Drawing.Point(120, 416);
             btnPoseTransColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnPoseTransColor.Name = "btnPoseTransColor";
-            btnPoseTransColor.Size = new System.Drawing.Size(22, 21);
+            btnPoseTransColor.Size = new System.Drawing.Size(22, 24);
             btnPoseTransColor.TabIndex = 22;
             btnPoseTransColor.UseVisualStyleBackColor = false;
             btnPoseTransColor.Click += btnPoseTransColor_Click;
@@ -457,19 +458,19 @@
             // lblPoseColor
             // 
             lblPoseColor.AutoSize = true;
-            lblPoseColor.Location = new System.Drawing.Point(7, 373);
+            lblPoseColor.Location = new System.Drawing.Point(7, 423);
             lblPoseColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPoseColor.Name = "lblPoseColor";
-            lblPoseColor.Size = new System.Drawing.Size(100, 15);
+            lblPoseColor.Size = new System.Drawing.Size(113, 17);
             lblPoseColor.TabIndex = 21;
             lblPoseColor.Text = "Transparent Color";
             // 
             // btnBrowsePoseImage
             // 
-            btnBrowsePoseImage.Location = new System.Drawing.Point(224, 342);
+            btnBrowsePoseImage.Location = new System.Drawing.Point(224, 388);
             btnBrowsePoseImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowsePoseImage.Name = "btnBrowsePoseImage";
-            btnBrowsePoseImage.Size = new System.Drawing.Size(36, 23);
+            btnBrowsePoseImage.Size = new System.Drawing.Size(36, 26);
             btnBrowsePoseImage.TabIndex = 20;
             btnBrowsePoseImage.Text = "...";
             btnBrowsePoseImage.UseVisualStyleBackColor = true;
@@ -478,48 +479,48 @@
             // lblPoseImage
             // 
             lblPoseImage.AutoSize = true;
-            lblPoseImage.Location = new System.Drawing.Point(8, 322);
+            lblPoseImage.Location = new System.Drawing.Point(8, 365);
             lblPoseImage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPoseImage.Name = "lblPoseImage";
-            lblPoseImage.Size = new System.Drawing.Size(40, 15);
+            lblPoseImage.Size = new System.Drawing.Size(44, 17);
             lblPoseImage.TabIndex = 18;
             lblPoseImage.Text = "Image";
             // 
             // txtPoseImage
             // 
-            txtPoseImage.Location = new System.Drawing.Point(12, 343);
+            txtPoseImage.Location = new System.Drawing.Point(12, 389);
             txtPoseImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPoseImage.Name = "txtPoseImage";
             txtPoseImage.ReadOnly = true;
-            txtPoseImage.Size = new System.Drawing.Size(205, 23);
+            txtPoseImage.Size = new System.Drawing.Size(205, 25);
             txtPoseImage.TabIndex = 19;
             // 
             // txtOrigin
             // 
-            txtOrigin.Location = new System.Drawing.Point(10, 202);
+            txtOrigin.Location = new System.Drawing.Point(10, 229);
             txtOrigin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtOrigin.Name = "txtOrigin";
-            txtOrigin.Size = new System.Drawing.Size(249, 23);
+            txtOrigin.Size = new System.Drawing.Size(249, 25);
             txtOrigin.TabIndex = 13;
             txtOrigin.TextChanged += txtOrigin_TextChanged;
             // 
             // lblOrigin
             // 
             lblOrigin.AutoSize = true;
-            lblOrigin.Location = new System.Drawing.Point(7, 183);
+            lblOrigin.Location = new System.Drawing.Point(7, 207);
             lblOrigin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOrigin.Name = "lblOrigin";
-            lblOrigin.Size = new System.Drawing.Size(40, 15);
+            lblOrigin.Size = new System.Drawing.Size(44, 17);
             lblOrigin.TabIndex = 12;
             lblOrigin.Text = "Origin";
             // 
             // cbState
             // 
             cbState.FormattingEnabled = true;
-            cbState.Location = new System.Drawing.Point(10, 294);
+            cbState.Location = new System.Drawing.Point(10, 333);
             cbState.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cbState.Name = "cbState";
-            cbState.Size = new System.Drawing.Size(249, 23);
+            cbState.Size = new System.Drawing.Size(249, 25);
             cbState.TabIndex = 17;
             cbState.DropDown += cbState_DropDown;
             cbState.SelectedIndexChanged += cbState_SelectedIndexChanged;
@@ -528,10 +529,10 @@
             // lblState
             // 
             lblState.AutoSize = true;
-            lblState.Location = new System.Drawing.Point(7, 275);
+            lblState.Location = new System.Drawing.Point(7, 312);
             lblState.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblState.Name = "lblState";
-            lblState.Size = new System.Drawing.Size(33, 15);
+            lblState.Size = new System.Drawing.Size(37, 17);
             lblState.TabIndex = 16;
             lblState.Text = "State";
             // 
@@ -540,20 +541,20 @@
             cbDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbDirection.FormattingEnabled = true;
             cbDirection.Items.AddRange(new object[] { "None", "Up", "Right", "Down", "Left", "Up|Right", "Up|Left", "Down|Right", "Down|Left" });
-            cbDirection.Location = new System.Drawing.Point(10, 247);
+            cbDirection.Location = new System.Drawing.Point(10, 280);
             cbDirection.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cbDirection.Name = "cbDirection";
-            cbDirection.Size = new System.Drawing.Size(249, 23);
+            cbDirection.Size = new System.Drawing.Size(249, 25);
             cbDirection.TabIndex = 15;
             cbDirection.SelectedIndexChanged += cbDirection_SelectedIndexChanged;
             // 
             // lblDirection
             // 
             lblDirection.AutoSize = true;
-            lblDirection.Location = new System.Drawing.Point(7, 227);
+            lblDirection.Location = new System.Drawing.Point(7, 257);
             lblDirection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblDirection.Name = "lblDirection";
-            lblDirection.Size = new System.Drawing.Size(55, 15);
+            lblDirection.Size = new System.Drawing.Size(60, 17);
             lblDirection.TabIndex = 14;
             lblDirection.Text = "Direction";
             // 
@@ -563,10 +564,10 @@
             lstFrames.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             lstFrames.ContextMenuStrip = mnuFrame;
             lstFrames.FormattingEnabled = true;
-            lstFrames.Location = new System.Drawing.Point(12, 412);
+            lstFrames.Location = new System.Drawing.Point(12, 467);
             lstFrames.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             lstFrames.Name = "lstFrames";
-            lstFrames.Size = new System.Drawing.Size(248, 304);
+            lstFrames.Size = new System.Drawing.Size(248, 344);
             lstFrames.TabIndex = 24;
             lstFrames.SelectedIndexChanged += lstFrames_SelectedIndexChanged;
             lstFrames.DragDrop += lstFrames_DragDrop;
@@ -579,13 +580,13 @@
             // 
             mnuFrame.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { miAddFrame, miCopyFrame, miPasteFrame, miRemoveFrame, miClearFrames, miAddMultiple, miOffsetFrame });
             mnuFrame.Name = "mnuPose";
-            mnuFrame.Size = new System.Drawing.Size(158, 158);
+            mnuFrame.Size = new System.Drawing.Size(169, 158);
             mnuFrame.Opening += mnuFrame_Opening;
             // 
             // miAddFrame
             // 
             miAddFrame.Name = "miAddFrame";
-            miAddFrame.Size = new System.Drawing.Size(157, 22);
+            miAddFrame.Size = new System.Drawing.Size(168, 22);
             miAddFrame.Text = "Add";
             miAddFrame.Click += miAddFrame_Click;
             // 
@@ -594,7 +595,7 @@
             miCopyFrame.Enabled = false;
             miCopyFrame.Name = "miCopyFrame";
             miCopyFrame.ShortcutKeyDisplayString = "Ctrl+C";
-            miCopyFrame.Size = new System.Drawing.Size(157, 22);
+            miCopyFrame.Size = new System.Drawing.Size(168, 22);
             miCopyFrame.Text = "Copy";
             miCopyFrame.Click += miCopyFrame_Click;
             // 
@@ -603,7 +604,7 @@
             miPasteFrame.Enabled = false;
             miPasteFrame.Name = "miPasteFrame";
             miPasteFrame.ShortcutKeyDisplayString = "Ctrl+V";
-            miPasteFrame.Size = new System.Drawing.Size(157, 22);
+            miPasteFrame.Size = new System.Drawing.Size(168, 22);
             miPasteFrame.Text = "Paste";
             miPasteFrame.Click += miPasteFrame_Click;
             // 
@@ -611,104 +612,104 @@
             // 
             miRemoveFrame.Name = "miRemoveFrame";
             miRemoveFrame.ShortcutKeyDisplayString = "Delete";
-            miRemoveFrame.Size = new System.Drawing.Size(157, 22);
+            miRemoveFrame.Size = new System.Drawing.Size(168, 22);
             miRemoveFrame.Text = "Remove";
             miRemoveFrame.Click += miRemoveFrame_Click;
             // 
             // miClearFrames
             // 
             miClearFrames.Name = "miClearFrames";
-            miClearFrames.Size = new System.Drawing.Size(157, 22);
+            miClearFrames.Size = new System.Drawing.Size(168, 22);
             miClearFrames.Text = "Clear";
             miClearFrames.Click += miClearFrames_Click;
             // 
             // miAddMultiple
             // 
             miAddMultiple.Name = "miAddMultiple";
-            miAddMultiple.Size = new System.Drawing.Size(157, 22);
+            miAddMultiple.Size = new System.Drawing.Size(168, 22);
             miAddMultiple.Text = "Add Multiple...";
             miAddMultiple.Click += miAddMultiple_Click;
             // 
             // miOffsetFrame
             // 
             miOffsetFrame.Name = "miOffsetFrame";
-            miOffsetFrame.Size = new System.Drawing.Size(157, 22);
+            miOffsetFrame.Size = new System.Drawing.Size(168, 22);
             miOffsetFrame.Text = "Offset...";
             miOffsetFrame.Click += miOffsetFrame_Click;
             // 
             // lblFrames
             // 
             lblFrames.AutoSize = true;
-            lblFrames.Location = new System.Drawing.Point(8, 393);
+            lblFrames.Location = new System.Drawing.Point(8, 445);
             lblFrames.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrames.Name = "lblFrames";
-            lblFrames.Size = new System.Drawing.Size(45, 15);
+            lblFrames.Size = new System.Drawing.Size(50, 17);
             lblFrames.TabIndex = 23;
             lblFrames.Text = "Frames";
             // 
             // txtBoundingBox
             // 
-            txtBoundingBox.Location = new System.Drawing.Point(10, 157);
+            txtBoundingBox.Location = new System.Drawing.Point(10, 178);
             txtBoundingBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtBoundingBox.Name = "txtBoundingBox";
-            txtBoundingBox.Size = new System.Drawing.Size(249, 23);
+            txtBoundingBox.Size = new System.Drawing.Size(249, 25);
             txtBoundingBox.TabIndex = 11;
             txtBoundingBox.TextChanged += txtBoundingBox_TextChanged;
             // 
             // lblBoundingBox
             // 
             lblBoundingBox.AutoSize = true;
-            lblBoundingBox.Location = new System.Drawing.Point(7, 138);
+            lblBoundingBox.Location = new System.Drawing.Point(7, 156);
             lblBoundingBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblBoundingBox.Name = "lblBoundingBox";
-            lblBoundingBox.Size = new System.Drawing.Size(94, 15);
+            lblBoundingBox.Size = new System.Drawing.Size(103, 17);
             lblBoundingBox.TabIndex = 10;
             lblBoundingBox.Text = "Bounding Shape";
             // 
             // txtRepeats
             // 
-            txtRepeats.Location = new System.Drawing.Point(10, 112);
+            txtRepeats.Location = new System.Drawing.Point(10, 127);
             txtRepeats.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtRepeats.Name = "txtRepeats";
-            txtRepeats.Size = new System.Drawing.Size(124, 23);
+            txtRepeats.Size = new System.Drawing.Size(124, 25);
             txtRepeats.TabIndex = 7;
             txtRepeats.TextChanged += txtRepeats_TextChanged;
             // 
             // lblRepeats
             // 
             lblRepeats.AutoSize = true;
-            lblRepeats.Location = new System.Drawing.Point(7, 93);
+            lblRepeats.Location = new System.Drawing.Point(7, 105);
             lblRepeats.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblRepeats.Name = "lblRepeats";
-            lblRepeats.Size = new System.Drawing.Size(48, 15);
+            lblRepeats.Size = new System.Drawing.Size(55, 17);
             lblRepeats.TabIndex = 6;
             lblRepeats.Text = "Repeats";
             // 
             // txtDuration
             // 
-            txtDuration.Location = new System.Drawing.Point(10, 67);
+            txtDuration.Location = new System.Drawing.Point(10, 76);
             txtDuration.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtDuration.Name = "txtDuration";
-            txtDuration.Size = new System.Drawing.Size(249, 23);
+            txtDuration.Size = new System.Drawing.Size(249, 25);
             txtDuration.TabIndex = 5;
             txtDuration.TextChanged += txtDuration_TextChanged;
             // 
             // lblDuration
             // 
             lblDuration.AutoSize = true;
-            lblDuration.Location = new System.Drawing.Point(7, 48);
+            lblDuration.Location = new System.Drawing.Point(7, 54);
             lblDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblDuration.Name = "lblDuration";
-            lblDuration.Size = new System.Drawing.Size(53, 15);
+            lblDuration.Size = new System.Drawing.Size(58, 17);
             lblDuration.TabIndex = 4;
             lblDuration.Text = "Duration";
             // 
             // txtPoseName
             // 
-            txtPoseName.Location = new System.Drawing.Point(10, 22);
+            txtPoseName.Location = new System.Drawing.Point(10, 25);
             txtPoseName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPoseName.Name = "txtPoseName";
-            txtPoseName.Size = new System.Drawing.Size(249, 23);
+            txtPoseName.Size = new System.Drawing.Size(249, 25);
             txtPoseName.TabIndex = 3;
             txtPoseName.TextChanged += txtPoseName_TextChanged;
             // 
@@ -718,7 +719,7 @@
             lblPoseName.Location = new System.Drawing.Point(7, 3);
             lblPoseName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPoseName.Name = "lblPoseName";
-            lblPoseName.Size = new System.Drawing.Size(39, 15);
+            lblPoseName.Size = new System.Drawing.Size(43, 17);
             lblPoseName.TabIndex = 2;
             lblPoseName.Text = "Name";
             // 
@@ -754,38 +755,38 @@
             tabFrame.Controls.Add(lblMagnification);
             tabFrame.Controls.Add(txtFrameDuration);
             tabFrame.Controls.Add(lblFrameDuration);
-            tabFrame.Location = new System.Drawing.Point(4, 24);
+            tabFrame.Location = new System.Drawing.Point(4, 26);
             tabFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabFrame.Name = "tabFrame";
-            tabFrame.Size = new System.Drawing.Size(272, 739);
+            tabFrame.Size = new System.Drawing.Size(272, 839);
             tabFrame.TabIndex = 2;
             tabFrame.Text = "Frame";
             // 
             // txtFrameMarker
             // 
-            txtFrameMarker.Location = new System.Drawing.Point(10, 93);
+            txtFrameMarker.Location = new System.Drawing.Point(10, 105);
             txtFrameMarker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtFrameMarker.Name = "txtFrameMarker";
-            txtFrameMarker.Size = new System.Drawing.Size(249, 23);
+            txtFrameMarker.Size = new System.Drawing.Size(249, 25);
             txtFrameMarker.TabIndex = 34;
             txtFrameMarker.TextChanged += txtFrameMarker_TextChanged;
             // 
             // lblFrameMarker
             // 
             lblFrameMarker.AutoSize = true;
-            lblFrameMarker.Location = new System.Drawing.Point(8, 74);
+            lblFrameMarker.Location = new System.Drawing.Point(8, 84);
             lblFrameMarker.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameMarker.Name = "lblFrameMarker";
-            lblFrameMarker.Size = new System.Drawing.Size(44, 15);
+            lblFrameMarker.Size = new System.Drawing.Size(50, 17);
             lblFrameMarker.TabIndex = 33;
             lblFrameMarker.Text = "Marker";
             // 
             // txtRemoveSound
             // 
-            txtRemoveSound.Location = new System.Drawing.Point(223, 349);
+            txtRemoveSound.Location = new System.Drawing.Point(223, 396);
             txtRemoveSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtRemoveSound.Name = "txtRemoveSound";
-            txtRemoveSound.Size = new System.Drawing.Size(36, 23);
+            txtRemoveSound.Size = new System.Drawing.Size(36, 26);
             txtRemoveSound.TabIndex = 32;
             txtRemoveSound.Text = "X";
             txtRemoveSound.UseVisualStyleBackColor = true;
@@ -794,59 +795,59 @@
             // txtVolume
             // 
             txtVolume.Enabled = false;
-            txtVolume.Location = new System.Drawing.Point(163, 349);
+            txtVolume.Location = new System.Drawing.Point(163, 396);
             txtVolume.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtVolume.Name = "txtVolume";
-            txtVolume.Size = new System.Drawing.Size(51, 23);
+            txtVolume.Size = new System.Drawing.Size(51, 25);
             txtVolume.TabIndex = 31;
             txtVolume.TextChanged += txtVolume_TextChanged;
             // 
             // lblVolume
             // 
             lblVolume.AutoSize = true;
-            lblVolume.Location = new System.Drawing.Point(108, 352);
+            lblVolume.Location = new System.Drawing.Point(108, 399);
             lblVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblVolume.Name = "lblVolume";
-            lblVolume.Size = new System.Drawing.Size(47, 15);
+            lblVolume.Size = new System.Drawing.Size(51, 17);
             lblVolume.TabIndex = 30;
             lblVolume.Text = "Volume";
             // 
             // txtPitch
             // 
             txtPitch.Enabled = false;
-            txtPitch.Location = new System.Drawing.Point(49, 349);
+            txtPitch.Location = new System.Drawing.Point(49, 396);
             txtPitch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPitch.Name = "txtPitch";
-            txtPitch.Size = new System.Drawing.Size(51, 23);
+            txtPitch.Size = new System.Drawing.Size(51, 25);
             txtPitch.TabIndex = 29;
             txtPitch.TextChanged += txtPitch_TextChanged;
             // 
             // lblPitch
             // 
             lblPitch.AutoSize = true;
-            lblPitch.Location = new System.Drawing.Point(7, 352);
+            lblPitch.Location = new System.Drawing.Point(7, 399);
             lblPitch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblPitch.Name = "lblPitch";
-            lblPitch.Size = new System.Drawing.Size(34, 15);
+            lblPitch.Size = new System.Drawing.Size(35, 17);
             lblPitch.TabIndex = 28;
             lblPitch.Text = "Pitch";
             // 
             // lblFrameNumber
             // 
             lblFrameNumber.AutoSize = true;
-            lblFrameNumber.Location = new System.Drawing.Point(126, 465);
+            lblFrameNumber.Location = new System.Drawing.Point(126, 527);
             lblFrameNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameNumber.Name = "lblFrameNumber";
-            lblFrameNumber.Size = new System.Drawing.Size(14, 15);
+            lblFrameNumber.Size = new System.Drawing.Size(16, 17);
             lblFrameNumber.TabIndex = 27;
             lblFrameNumber.Text = "#";
             // 
             // btnBrowseSound
             // 
-            btnBrowseSound.Location = new System.Drawing.Point(224, 320);
+            btnBrowseSound.Location = new System.Drawing.Point(224, 363);
             btnBrowseSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseSound.Name = "btnBrowseSound";
-            btnBrowseSound.Size = new System.Drawing.Size(36, 23);
+            btnBrowseSound.Size = new System.Drawing.Size(36, 26);
             btnBrowseSound.TabIndex = 26;
             btnBrowseSound.Text = "...";
             btnBrowseSound.UseVisualStyleBackColor = true;
@@ -855,47 +856,47 @@
             // lblSound
             // 
             lblSound.AutoSize = true;
-            lblSound.Location = new System.Drawing.Point(7, 299);
+            lblSound.Location = new System.Drawing.Point(7, 339);
             lblSound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblSound.Name = "lblSound";
-            lblSound.Size = new System.Drawing.Size(41, 15);
+            lblSound.Size = new System.Drawing.Size(45, 17);
             lblSound.TabIndex = 25;
             lblSound.Text = "Sound";
             // 
             // txtSound
             // 
-            txtSound.Location = new System.Drawing.Point(10, 320);
+            txtSound.Location = new System.Drawing.Point(10, 363);
             txtSound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtSound.Name = "txtSound";
             txtSound.ReadOnly = true;
-            txtSound.Size = new System.Drawing.Size(206, 23);
+            txtSound.Size = new System.Drawing.Size(206, 25);
             txtSound.TabIndex = 24;
             // 
             // txtOpacity
             // 
-            txtOpacity.Location = new System.Drawing.Point(10, 227);
+            txtOpacity.Location = new System.Drawing.Point(10, 257);
             txtOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtOpacity.Name = "txtOpacity";
-            txtOpacity.Size = new System.Drawing.Size(249, 23);
+            txtOpacity.Size = new System.Drawing.Size(249, 25);
             txtOpacity.TabIndex = 23;
             txtOpacity.TextChanged += txtOpacity_TextChanged;
             // 
             // lblOpacity
             // 
             lblOpacity.AutoSize = true;
-            lblOpacity.Location = new System.Drawing.Point(7, 209);
+            lblOpacity.Location = new System.Drawing.Point(7, 237);
             lblOpacity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOpacity.Name = "lblOpacity";
-            lblOpacity.Size = new System.Drawing.Size(48, 15);
+            lblOpacity.Size = new System.Drawing.Size(52, 17);
             lblOpacity.TabIndex = 22;
             lblOpacity.Text = "Opacity";
             // 
             // btnFrameTransColor
             // 
-            btnFrameTransColor.Location = new System.Drawing.Point(118, 421);
+            btnFrameTransColor.Location = new System.Drawing.Point(118, 477);
             btnFrameTransColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnFrameTransColor.Name = "btnFrameTransColor";
-            btnFrameTransColor.Size = new System.Drawing.Size(22, 21);
+            btnFrameTransColor.Size = new System.Drawing.Size(22, 24);
             btnFrameTransColor.TabIndex = 21;
             btnFrameTransColor.UseVisualStyleBackColor = false;
             btnFrameTransColor.Click += btnFrameTransColor_Click;
@@ -903,19 +904,19 @@
             // lblFrameColor
             // 
             lblFrameColor.AutoSize = true;
-            lblFrameColor.Location = new System.Drawing.Point(10, 424);
+            lblFrameColor.Location = new System.Drawing.Point(10, 481);
             lblFrameColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameColor.Name = "lblFrameColor";
-            lblFrameColor.Size = new System.Drawing.Size(100, 15);
+            lblFrameColor.Size = new System.Drawing.Size(113, 17);
             lblFrameColor.TabIndex = 20;
             lblFrameColor.Text = "Transparent Color";
             // 
             // btnBrowseFrameImage
             // 
-            btnBrowseFrameImage.Location = new System.Drawing.Point(224, 391);
+            btnBrowseFrameImage.Location = new System.Drawing.Point(224, 443);
             btnBrowseFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnBrowseFrameImage.Name = "btnBrowseFrameImage";
-            btnBrowseFrameImage.Size = new System.Drawing.Size(36, 23);
+            btnBrowseFrameImage.Size = new System.Drawing.Size(36, 26);
             btnBrowseFrameImage.TabIndex = 19;
             btnBrowseFrameImage.Text = "...";
             btnBrowseFrameImage.UseVisualStyleBackColor = true;
@@ -924,28 +925,28 @@
             // lblFrameImage
             // 
             lblFrameImage.AutoSize = true;
-            lblFrameImage.Location = new System.Drawing.Point(8, 374);
+            lblFrameImage.Location = new System.Drawing.Point(8, 424);
             lblFrameImage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameImage.Name = "lblFrameImage";
-            lblFrameImage.Size = new System.Drawing.Size(40, 15);
+            lblFrameImage.Size = new System.Drawing.Size(44, 17);
             lblFrameImage.TabIndex = 18;
             lblFrameImage.Text = "Image";
             // 
             // txtFrameImage
             // 
-            txtFrameImage.Location = new System.Drawing.Point(10, 392);
+            txtFrameImage.Location = new System.Drawing.Point(10, 444);
             txtFrameImage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtFrameImage.Name = "txtFrameImage";
             txtFrameImage.ReadOnly = true;
-            txtFrameImage.Size = new System.Drawing.Size(206, 23);
+            txtFrameImage.Size = new System.Drawing.Size(206, 25);
             txtFrameImage.TabIndex = 17;
             // 
             // btnNextFrame
             // 
-            btnNextFrame.Location = new System.Drawing.Point(153, 459);
+            btnNextFrame.Location = new System.Drawing.Point(153, 520);
             btnNextFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnNextFrame.Name = "btnNextFrame";
-            btnNextFrame.Size = new System.Drawing.Size(103, 27);
+            btnNextFrame.Size = new System.Drawing.Size(103, 31);
             btnNextFrame.TabIndex = 16;
             btnNextFrame.Text = "Next Frame";
             btnNextFrame.UseVisualStyleBackColor = true;
@@ -953,10 +954,10 @@
             // 
             // btnPrevFrame
             // 
-            btnPrevFrame.Location = new System.Drawing.Point(7, 459);
+            btnPrevFrame.Location = new System.Drawing.Point(7, 520);
             btnPrevFrame.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnPrevFrame.Name = "btnPrevFrame";
-            btnPrevFrame.Size = new System.Drawing.Size(103, 27);
+            btnPrevFrame.Size = new System.Drawing.Size(103, 31);
             btnPrevFrame.TabIndex = 15;
             btnPrevFrame.Text = "Prev. Frame";
             btnPrevFrame.UseVisualStyleBackColor = true;
@@ -965,10 +966,10 @@
             // chkTween
             // 
             chkTween.AutoSize = true;
-            chkTween.Location = new System.Drawing.Point(10, 7);
+            chkTween.Location = new System.Drawing.Point(10, 8);
             chkTween.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chkTween.Name = "chkTween";
-            chkTween.Size = new System.Drawing.Size(92, 19);
+            chkTween.Size = new System.Drawing.Size(99, 21);
             chkTween.TabIndex = 14;
             chkTween.Text = "TweenFrame";
             chkTween.UseVisualStyleBackColor = true;
@@ -976,77 +977,77 @@
             // 
             // txtRectangle
             // 
-            txtRectangle.Location = new System.Drawing.Point(10, 272);
+            txtRectangle.Location = new System.Drawing.Point(10, 308);
             txtRectangle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtRectangle.Name = "txtRectangle";
-            txtRectangle.Size = new System.Drawing.Size(249, 23);
+            txtRectangle.Size = new System.Drawing.Size(249, 25);
             txtRectangle.TabIndex = 12;
             txtRectangle.TextChanged += txtRectangle_TextChanged;
             // 
             // lblRectangle
             // 
             lblRectangle.AutoSize = true;
-            lblRectangle.Location = new System.Drawing.Point(7, 254);
+            lblRectangle.Location = new System.Drawing.Point(7, 288);
             lblRectangle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblRectangle.Name = "lblRectangle";
-            lblRectangle.Size = new System.Drawing.Size(98, 15);
+            lblRectangle.Size = new System.Drawing.Size(109, 17);
             lblRectangle.TabIndex = 11;
             lblRectangle.Text = "Source Rectangle";
             // 
             // txtAngle
             // 
-            txtAngle.Location = new System.Drawing.Point(10, 182);
+            txtAngle.Location = new System.Drawing.Point(10, 206);
             txtAngle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtAngle.Name = "txtAngle";
-            txtAngle.Size = new System.Drawing.Size(249, 23);
+            txtAngle.Size = new System.Drawing.Size(249, 25);
             txtAngle.TabIndex = 10;
             txtAngle.TextChanged += txtAngle_TextChanged;
             // 
             // lblAngle
             // 
             lblAngle.AutoSize = true;
-            lblAngle.Location = new System.Drawing.Point(7, 164);
+            lblAngle.Location = new System.Drawing.Point(7, 186);
             lblAngle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblAngle.Name = "lblAngle";
-            lblAngle.Size = new System.Drawing.Size(38, 15);
+            lblAngle.Size = new System.Drawing.Size(41, 17);
             lblAngle.TabIndex = 9;
             lblAngle.Text = "Angle";
             // 
             // txtMagnification
             // 
-            txtMagnification.Location = new System.Drawing.Point(10, 137);
+            txtMagnification.Location = new System.Drawing.Point(10, 155);
             txtMagnification.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtMagnification.Name = "txtMagnification";
-            txtMagnification.Size = new System.Drawing.Size(249, 23);
+            txtMagnification.Size = new System.Drawing.Size(249, 25);
             txtMagnification.TabIndex = 6;
             txtMagnification.TextChanged += txtMagnification_TextChanged;
             // 
             // lblMagnification
             // 
             lblMagnification.AutoSize = true;
-            lblMagnification.Location = new System.Drawing.Point(7, 119);
+            lblMagnification.Location = new System.Drawing.Point(7, 135);
             lblMagnification.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblMagnification.Name = "lblMagnification";
-            lblMagnification.Size = new System.Drawing.Size(81, 15);
+            lblMagnification.Size = new System.Drawing.Size(87, 17);
             lblMagnification.TabIndex = 5;
             lblMagnification.Text = "Magnification";
             // 
             // txtFrameDuration
             // 
-            txtFrameDuration.Location = new System.Drawing.Point(10, 48);
+            txtFrameDuration.Location = new System.Drawing.Point(10, 54);
             txtFrameDuration.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtFrameDuration.Name = "txtFrameDuration";
-            txtFrameDuration.Size = new System.Drawing.Size(249, 23);
+            txtFrameDuration.Size = new System.Drawing.Size(249, 25);
             txtFrameDuration.TabIndex = 4;
             txtFrameDuration.TextChanged += txtFrameDuration_TextChanged;
             // 
             // lblFrameDuration
             // 
             lblFrameDuration.AutoSize = true;
-            lblFrameDuration.Location = new System.Drawing.Point(7, 30);
+            lblFrameDuration.Location = new System.Drawing.Point(7, 34);
             lblFrameDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblFrameDuration.Name = "lblFrameDuration";
-            lblFrameDuration.Size = new System.Drawing.Size(53, 15);
+            lblFrameDuration.Size = new System.Drawing.Size(58, 17);
             lblFrameDuration.TabIndex = 3;
             lblFrameDuration.Text = "Duration";
             // 
@@ -1061,7 +1062,7 @@
             mnuMain.Location = new System.Drawing.Point(0, 0);
             mnuMain.Name = "mnuMain";
             mnuMain.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            mnuMain.Size = new System.Drawing.Size(1176, 24);
+            mnuMain.Size = new System.Drawing.Size(1176, 25);
             mnuMain.TabIndex = 7;
             mnuMain.Text = "menuStrip1";
             // 
@@ -1069,14 +1070,14 @@
             // 
             miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miNew, miOpen, miSave, miSaveAs, miAutoReload, miCheckEdges, miRecentFiles });
             miFile.Name = "miFile";
-            miFile.Size = new System.Drawing.Size(37, 20);
+            miFile.Size = new System.Drawing.Size(39, 21);
             miFile.Text = "&File";
             // 
             // miNew
             // 
             miNew.Name = "miNew";
             miNew.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N;
-            miNew.Size = new System.Drawing.Size(217, 22);
+            miNew.Size = new System.Drawing.Size(234, 22);
             miNew.Text = "&New";
             miNew.Click += miNew_Click;
             // 
@@ -1084,7 +1085,7 @@
             // 
             miOpen.Name = "miOpen";
             miOpen.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O;
-            miOpen.Size = new System.Drawing.Size(217, 22);
+            miOpen.Size = new System.Drawing.Size(234, 22);
             miOpen.Text = "&Open...";
             miOpen.Click += miOpen_Click;
             // 
@@ -1092,14 +1093,14 @@
             // 
             miSave.Name = "miSave";
             miSave.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S;
-            miSave.Size = new System.Drawing.Size(217, 22);
+            miSave.Size = new System.Drawing.Size(234, 22);
             miSave.Text = "&Save";
             miSave.Click += miSave_Click;
             // 
             // miSaveAs
             // 
             miSaveAs.Name = "miSaveAs";
-            miSaveAs.Size = new System.Drawing.Size(217, 22);
+            miSaveAs.Size = new System.Drawing.Size(234, 22);
             miSaveAs.Text = "Save &As...";
             miSaveAs.Click += miSaveAs_Click;
             // 
@@ -1107,7 +1108,7 @@
             // 
             miAutoReload.CheckOnClick = true;
             miAutoReload.Name = "miAutoReload";
-            miAutoReload.Size = new System.Drawing.Size(217, 22);
+            miAutoReload.Size = new System.Drawing.Size(234, 22);
             miAutoReload.Text = "Auto-Reload Images";
             miAutoReload.CheckedChanged += miAutoReload_CheckedChanged;
             // 
@@ -1115,21 +1116,21 @@
             // 
             miCheckEdges.Name = "miCheckEdges";
             miCheckEdges.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E;
-            miCheckEdges.Size = new System.Drawing.Size(217, 22);
+            miCheckEdges.Size = new System.Drawing.Size(234, 22);
             miCheckEdges.Text = "Check Frame &Edges";
             miCheckEdges.Click += miCheckEdges_Click;
             // 
             // miRecentFiles
             // 
             miRecentFiles.Name = "miRecentFiles";
-            miRecentFiles.Size = new System.Drawing.Size(217, 22);
+            miRecentFiles.Size = new System.Drawing.Size(234, 22);
             miRecentFiles.Text = "Recent Files";
             // 
             // miView
             // 
             miView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miFull, miPreview, miAnimated, toolStripSeparator1, miShowSrcRect, miShowBoundingBox, miTransparent, toolStripSeparator2, miShowGrid, miGridSelection, miGridSize, toolStripSeparator4, miMagnification });
             miView.Name = "miView";
-            miView.Size = new System.Drawing.Size(44, 20);
+            miView.Size = new System.Drawing.Size(47, 21);
             miView.Text = "&View";
             // 
             // miFull
@@ -1139,7 +1140,7 @@
             miFull.CheckState = System.Windows.Forms.CheckState.Checked;
             miFull.Name = "miFull";
             miFull.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            miFull.Size = new System.Drawing.Size(223, 22);
+            miFull.Size = new System.Drawing.Size(237, 22);
             miFull.Text = "&Full Sprite View";
             miFull.Click += miFull_Click;
             // 
@@ -1148,7 +1149,7 @@
             miPreview.CheckOnClick = true;
             miPreview.Name = "miPreview";
             miPreview.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            miPreview.Size = new System.Drawing.Size(223, 22);
+            miPreview.Size = new System.Drawing.Size(237, 22);
             miPreview.Text = "&Non-Animated Preview";
             miPreview.Click += miPreview_Click;
             // 
@@ -1157,20 +1158,20 @@
             miAnimated.CheckOnClick = true;
             miAnimated.Name = "miAnimated";
             miAnimated.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            miAnimated.Size = new System.Drawing.Size(223, 22);
+            miAnimated.Size = new System.Drawing.Size(237, 22);
             miAnimated.Text = "&Animated Preview";
             miAnimated.Click += miAnimated_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
+            toolStripSeparator1.Size = new System.Drawing.Size(234, 6);
             // 
             // miShowSrcRect
             // 
             miShowSrcRect.CheckOnClick = true;
             miShowSrcRect.Name = "miShowSrcRect";
-            miShowSrcRect.Size = new System.Drawing.Size(223, 22);
+            miShowSrcRect.Size = new System.Drawing.Size(237, 22);
             miShowSrcRect.Text = "Show &Source Rect";
             miShowSrcRect.CheckedChanged += miShowSrcRect_CheckedChanged;
             // 
@@ -1178,7 +1179,7 @@
             // 
             miShowBoundingBox.CheckOnClick = true;
             miShowBoundingBox.Name = "miShowBoundingBox";
-            miShowBoundingBox.Size = new System.Drawing.Size(223, 22);
+            miShowBoundingBox.Size = new System.Drawing.Size(237, 22);
             miShowBoundingBox.Text = "Show &Bounding Box";
             miShowBoundingBox.CheckedChanged += miShowBoundingBox_CheckChanged;
             // 
@@ -1186,20 +1187,20 @@
             // 
             miTransparent.CheckOnClick = true;
             miTransparent.Name = "miTransparent";
-            miTransparent.Size = new System.Drawing.Size(223, 22);
+            miTransparent.Size = new System.Drawing.Size(237, 22);
             miTransparent.Text = "Use Transparent Color";
             miTransparent.CheckedChanged += miTransparent_CheckedChanged;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            toolStripSeparator2.Size = new System.Drawing.Size(234, 6);
             // 
             // miShowGrid
             // 
             miShowGrid.CheckOnClick = true;
             miShowGrid.Name = "miShowGrid";
-            miShowGrid.Size = new System.Drawing.Size(223, 22);
+            miShowGrid.Size = new System.Drawing.Size(237, 22);
             miShowGrid.Text = "Show Grid";
             miShowGrid.CheckedChanged += miShowGrid_CheckChanged;
             // 
@@ -1207,7 +1208,7 @@
             // 
             miGridSelection.CheckOnClick = true;
             miGridSelection.Name = "miGridSelection";
-            miGridSelection.Size = new System.Drawing.Size(223, 22);
+            miGridSelection.Size = new System.Drawing.Size(237, 22);
             miGridSelection.Text = "Grid Selection";
             miGridSelection.CheckedChanged += miGridSelection_CheckedChanged;
             // 
@@ -1215,74 +1216,74 @@
             // 
             miGridSize.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miGridSize1, miGridSize2, miGridSize4, miGridSize8, miGridSize16, miGridSize32, miGridSizeCustom });
             miGridSize.Name = "miGridSize";
-            miGridSize.Size = new System.Drawing.Size(223, 22);
+            miGridSize.Size = new System.Drawing.Size(237, 22);
             miGridSize.Text = "Grid Size";
             // 
             // miGridSize1
             // 
             miGridSize1.Name = "miGridSize1";
-            miGridSize1.Size = new System.Drawing.Size(180, 22);
+            miGridSize1.Size = new System.Drawing.Size(129, 22);
             miGridSize1.Text = "1x1";
             miGridSize1.Click += miGridSize1_Click;
             // 
             // miGridSize2
             // 
             miGridSize2.Name = "miGridSize2";
-            miGridSize2.Size = new System.Drawing.Size(180, 22);
+            miGridSize2.Size = new System.Drawing.Size(129, 22);
             miGridSize2.Text = "2x2";
             miGridSize2.Click += miGridSize2_Click;
             // 
             // miGridSize4
             // 
             miGridSize4.Name = "miGridSize4";
-            miGridSize4.Size = new System.Drawing.Size(180, 22);
+            miGridSize4.Size = new System.Drawing.Size(129, 22);
             miGridSize4.Text = "4x4";
             miGridSize4.Click += miGridSize4_Click;
             // 
             // miGridSize8
             // 
             miGridSize8.Name = "miGridSize8";
-            miGridSize8.Size = new System.Drawing.Size(180, 22);
+            miGridSize8.Size = new System.Drawing.Size(129, 22);
             miGridSize8.Text = "8x8";
             miGridSize8.Click += miGridSize8_Click;
             // 
             // miGridSize16
             // 
             miGridSize16.Name = "miGridSize16";
-            miGridSize16.Size = new System.Drawing.Size(180, 22);
+            miGridSize16.Size = new System.Drawing.Size(129, 22);
             miGridSize16.Text = "16x16";
             miGridSize16.Click += miGridSize16_Click;
             // 
             // miGridSize32
             // 
             miGridSize32.Name = "miGridSize32";
-            miGridSize32.Size = new System.Drawing.Size(180, 22);
+            miGridSize32.Size = new System.Drawing.Size(129, 22);
             miGridSize32.Text = "32x32";
             miGridSize32.Click += miGridSize32_Click;
             // 
             // miGridSizeCustom
             // 
             miGridSizeCustom.Name = "miGridSizeCustom";
-            miGridSizeCustom.Size = new System.Drawing.Size(180, 22);
+            miGridSizeCustom.Size = new System.Drawing.Size(129, 22);
             miGridSizeCustom.Text = "Custom...";
             miGridSizeCustom.Click += miGridSizeCustom_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new System.Drawing.Size(220, 6);
+            toolStripSeparator4.Size = new System.Drawing.Size(234, 6);
             // 
             // miMagnification
             // 
             miMagnification.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miMagnification50, miMagnification100, miMagnification200, miMagnification300, miMagnification400, miMagnification800, miMagnification1600, toolStripSeparator3, miMagnificationZoomIn, miMagnificationZoomOut });
             miMagnification.Name = "miMagnification";
-            miMagnification.Size = new System.Drawing.Size(223, 22);
+            miMagnification.Size = new System.Drawing.Size(237, 22);
             miMagnification.Text = "Magnification";
             // 
             // miMagnification50
             // 
             miMagnification50.Name = "miMagnification50";
-            miMagnification50.Size = new System.Drawing.Size(168, 22);
+            miMagnification50.Size = new System.Drawing.Size(177, 22);
             miMagnification50.Text = "50%";
             miMagnification50.Click += miMagnification50_Click;
             // 
@@ -1290,55 +1291,55 @@
             // 
             miMagnification100.Name = "miMagnification100";
             miMagnification100.ShortcutKeyDisplayString = "Ctrl+0";
-            miMagnification100.Size = new System.Drawing.Size(168, 22);
+            miMagnification100.Size = new System.Drawing.Size(177, 22);
             miMagnification100.Text = "100%";
             miMagnification100.Click += miMagnification100_Click;
             // 
             // miMagnification200
             // 
             miMagnification200.Name = "miMagnification200";
-            miMagnification200.Size = new System.Drawing.Size(168, 22);
+            miMagnification200.Size = new System.Drawing.Size(177, 22);
             miMagnification200.Text = "200%";
             miMagnification200.Click += miMagnification200_Click;
             // 
             // miMagnification300
             // 
             miMagnification300.Name = "miMagnification300";
-            miMagnification300.Size = new System.Drawing.Size(168, 22);
+            miMagnification300.Size = new System.Drawing.Size(177, 22);
             miMagnification300.Text = "300%";
             miMagnification300.Click += miMagnification300_Click;
             // 
             // miMagnification400
             // 
             miMagnification400.Name = "miMagnification400";
-            miMagnification400.Size = new System.Drawing.Size(168, 22);
+            miMagnification400.Size = new System.Drawing.Size(177, 22);
             miMagnification400.Text = "400%";
             miMagnification400.Click += miMagnification400_Click;
             // 
             // miMagnification800
             // 
             miMagnification800.Name = "miMagnification800";
-            miMagnification800.Size = new System.Drawing.Size(168, 22);
+            miMagnification800.Size = new System.Drawing.Size(177, 22);
             miMagnification800.Text = "800%";
             miMagnification800.Click += miMagnification800_Click;
             // 
             // miMagnification1600
             // 
             miMagnification1600.Name = "miMagnification1600";
-            miMagnification1600.Size = new System.Drawing.Size(168, 22);
+            miMagnification1600.Size = new System.Drawing.Size(177, 22);
             miMagnification1600.Text = "1600%";
             miMagnification1600.Click += miMagnification1600_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(174, 6);
             // 
             // miMagnificationZoomIn
             // 
             miMagnificationZoomIn.Name = "miMagnificationZoomIn";
             miMagnificationZoomIn.ShortcutKeyDisplayString = "Ctrl++";
-            miMagnificationZoomIn.Size = new System.Drawing.Size(168, 22);
+            miMagnificationZoomIn.Size = new System.Drawing.Size(177, 22);
             miMagnificationZoomIn.Text = "Zoom In";
             miMagnificationZoomIn.Click += miMagnificationZoomIn_Click;
             // 
@@ -1346,14 +1347,14 @@
             // 
             miMagnificationZoomOut.Name = "miMagnificationZoomOut";
             miMagnificationZoomOut.ShortcutKeyDisplayString = "Ctrl+-";
-            miMagnificationZoomOut.Size = new System.Drawing.Size(168, 22);
+            miMagnificationZoomOut.Size = new System.Drawing.Size(177, 22);
             miMagnificationZoomOut.Text = "Zoom Out";
             miMagnificationZoomOut.Click += miMagnificationZoomOut_Click;
             // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { stlMessage });
-            statusStrip1.Location = new System.Drawing.Point(0, 819);
+            statusStrip1.Location = new System.Drawing.Point(0, 931);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             statusStrip1.Size = new System.Drawing.Size(1176, 22);
@@ -1393,20 +1394,26 @@
             // 
             pnlSprite.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             pnlSprite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            pnlSprite.Location = new System.Drawing.Point(0, 31);
+            pnlSprite.Location = new System.Drawing.Point(0, 35);
             pnlSprite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             pnlSprite.Name = "pnlSprite";
-            pnlSprite.Size = new System.Drawing.Size(874, 767);
+            pnlSprite.Size = new System.Drawing.Size(874, 869);
             pnlSprite.TabIndex = 0;
             pnlSprite.Paint += pnlSprite_Paint;
             pnlSprite.MouseClick += pnlSprite_MouseClick;
             pnlSprite.MouseHover += pnlSprite_MouseHover;
             // 
+            // tmrFileModifiedSate
+            // 
+            tmrFileModifiedSate.Enabled = true;
+            tmrFileModifiedSate.Interval = 1000;
+            tmrFileModifiedSate.Tick += tmrFileModifiedSate_Tick;
+            // 
             // FrmSprite
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1176, 841);
+            ClientSize = new System.Drawing.Size(1176, 953);
             Controls.Add(statusStrip1);
             Controls.Add(mnuMain);
             Controls.Add(pnlSprite);
@@ -1416,6 +1423,7 @@
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "FrmSprite";
             Text = "Sprite Editor";
+            FormClosing += FrmSprite_FormClosing;
             FormClosed += frmSprite_FormClosed;
             Load += frmSprite_Load;
             KeyDown += frmSprite_KeyDown;
@@ -1573,6 +1581,7 @@
         private System.Windows.Forms.ToolStripMenuItem miGridSize16;
         private System.Windows.Forms.ToolStripMenuItem miGridSize32;
         private System.Windows.Forms.ToolStripMenuItem miGridSizeCustom;
+        private System.Windows.Forms.Timer tmrFileModifiedSate;
     }
 }
 

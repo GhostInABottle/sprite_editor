@@ -15,8 +15,10 @@ namespace SpriteEditor.Models
     {
         public SpriteData()
         {
+            Image = "";
             BaseDirectory = ".";
             Poses = [];
+            ClearModificationState();
         }
 
         /// <summary>
@@ -44,12 +46,23 @@ namespace SpriteEditor.Models
         /// </summary>
         public List<Pose> Poses { get; set; }
 
+        private string loadedXml;
+
+        /// <summary>
+        /// Was the file modified since it was loaded?
+        /// </summary>
+        public bool IsModified {
+            get => loadedXml != ToXml().ToString();
+        }
+
         public static void Save(SpriteData sprite, string filename)
         {
+            var xml = sprite.ToXml();
             var doc = new XDocument(
                 new XDeclaration("1.0", "us-ascii", null),
-                sprite.ToXml());
+                xml);
             doc.Save(filename);
+            sprite.loadedXml = xml.ToString();
         }
 
         public static SpriteData Load(string filename)
@@ -113,9 +126,11 @@ namespace SpriteEditor.Models
                      BaseDirectory = (string)sprite.Attribute("Base-Dir") ?? ".",
                      DefaultPose = (string)sprite.Attribute("Default-Pose"),
                      Poses =
-                         (from pose in sprite.Descendants("Pose")
-                          select Pose.FromXml(pose)).ToList()
+                         [.. (from pose in sprite.Descendants("Pose")
+                          select Pose.FromXml(pose))]
                  }).FirstOrDefault();
+
+            spriteData.ClearModificationState();
             return spriteData;
         }
 
@@ -154,6 +169,8 @@ namespace SpriteEditor.Models
                     }
                 ]
             };
+
+            spriteData.ClearModificationState();
             return spriteData;
         }
 
@@ -167,6 +184,11 @@ namespace SpriteEditor.Models
                 poses.Add(pose.GetName());
             }
             return poses;
+        }
+
+        public void ClearModificationState()
+        {
+            loadedXml = ToXml().ToString();
         }
 
         protected virtual void Dispose(bool disposing)
