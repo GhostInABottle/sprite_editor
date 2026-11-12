@@ -1126,7 +1126,7 @@ namespace SpriteEditor
 
         private bool OpenSprite(string path)
         {
-            if (spriteLogic.SpriteData.IsModified)
+            if (spriteLogic?.SpriteData is { IsModified: true })
             {
                 var discardChanges = MessageBox.Show(
                     "The sprite was modified but the changes were not saved yet. Are you sure you want to load a new file?",
