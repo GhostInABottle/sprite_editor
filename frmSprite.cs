@@ -35,6 +35,7 @@ namespace SpriteEditor
         private readonly frmGridSize gridSizeForm = new();
         private readonly frmOffset offsetForm = new();
         private readonly frmAddFrames addFramesForm;
+        private FrmSound soundPlayerForm;
         private string lastImageName;
         private Bitmap lastBitmap;
         private readonly float[] scales = [0.5f, 1.0f, 2.0f, 3.0f, 4.0f, 8.0f, 16.0f];
@@ -46,6 +47,10 @@ namespace SpriteEditor
             addFramesForm = new frmAddFrames(this);
             InitializeComponent();
             pnlSprite.MouseWheel += pnlSprite_MouseWheel;
+            if (!Settings.Default.SoundPlayback)
+            {
+                miSoundPlayer.Visible = false;
+            }
         }
 
         public void AddPoses(List<Pose> newPoses)
@@ -525,8 +530,7 @@ namespace SpriteEditor
         private static (int?, int?) StringToDuration(string durationString)
         {
             // Matches patterns like 30-50
-            const string pattern = @"^\s*(-?\d+)(\s*-\s*(\d+))?\s*$";
-            var match = Regex.Match(durationString, pattern);
+            var match = DurationPattern().Match(durationString);
             if (!match.Success) return (null, null);
 
             var duration = int.Parse(match.Groups[1].Value);
@@ -1937,8 +1941,18 @@ namespace SpriteEditor
 
             if (!Text.EndsWith('*'))
             {
-                Text = Text + "*";
+                Text += "*";
             }
         }
+
+        private void miSoundPlayer_Click(object sender, EventArgs e)
+        {
+            soundPlayerForm ??= new FrmSound();
+
+            soundPlayerForm.ShowDialog();
+        }
+
+        [GeneratedRegex(@"^\s*(-?\d+)(\s*-\s*(\d+))?\s*$")]
+        private static partial Regex DurationPattern();
     }
 }

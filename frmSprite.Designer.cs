@@ -151,6 +151,7 @@
             fswUpdatedImageWatcher = new System.IO.FileSystemWatcher();
             pnlSprite = new FlickerFreePanel();
             tmrFileModifiedSate = new System.Windows.Forms.Timer(components);
+            miSoundPlayer = new System.Windows.Forms.ToolStripMenuItem();
             tbcSprite.SuspendLayout();
             tabSprite.SuspendLayout();
             mnuPose.SuspendLayout();
@@ -1068,7 +1069,7 @@
             // 
             // miFile
             // 
-            miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miNew, miOpen, miSave, miSaveAs, miAutoReload, miCheckEdges, miRecentFiles });
+            miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { miNew, miOpen, miSave, miSaveAs, miAutoReload, miCheckEdges, miSoundPlayer, miRecentFiles });
             miFile.Name = "miFile";
             miFile.Size = new System.Drawing.Size(39, 21);
             miFile.Text = "&File";
@@ -1409,6 +1410,13 @@
             tmrFileModifiedSate.Interval = 1000;
             tmrFileModifiedSate.Tick += tmrFileModifiedSate_Tick;
             // 
+            // miSoundPlayer
+            // 
+            miSoundPlayer.Name = "miSoundPlayer";
+            miSoundPlayer.Size = new System.Drawing.Size(234, 22);
+            miSoundPlayer.Text = "Sound Player";
+            miSoundPlayer.Click += miSoundPlayer_Click;
+            // 
             // FrmSprite
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1583,6 +1591,7 @@
         private System.Windows.Forms.ToolStripMenuItem miGridSize32;
         private System.Windows.Forms.ToolStripMenuItem miGridSizeCustom;
         private System.Windows.Forms.Timer tmrFileModifiedSate;
+        private System.Windows.Forms.ToolStripMenuItem miSoundPlayer;
     }
 }
 
