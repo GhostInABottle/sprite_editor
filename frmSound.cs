@@ -10,7 +10,8 @@ namespace SpriteEditor
 {
     public partial class FrmSound : Form
     {
-        private readonly FmodSystem fmodSystem;
+        private readonly Audio audio;
+        private Models.Sound currentSound;
         private Channel currentChannel;
         private int lastItemIndex;
         private Stopwatch playStopwatch;
@@ -21,19 +22,11 @@ namespace SpriteEditor
             "mp3"
         ];
 
-        public FrmSound()
+        public FrmSound(Audio audioSystem)
         {
             InitializeComponent();
-            try
-            {
-                fmodSystem = Fmod.CreateSystem();
-                fmodSystem.Init(10);
-                trmUpdate.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to load FMOD sound system - make sure the correct DLL is in the executable folder - " + ex.Message);
-            }
+            audio = audioSystem;
+            trmUpdate.Enabled = true;
 
             var dir = Settings.Default.LastSoundDirectory;
             if (!string.IsNullOrWhiteSpace(dir))
@@ -45,6 +38,17 @@ namespace SpriteEditor
             hsbVolume_Scroll(this, null);
             hsbPitch_Scroll(this, null);
             lstSoundFiles.Focus();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                components.Dispose();
+                currentSound?.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         private void hsbVolume_Scroll(object sender, ScrollEventArgs e)
@@ -92,11 +96,12 @@ namespace SpriteEditor
         private void FrmSound_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
+            StopSound();
         }
 
         private void trmUpdate_Tick(object sender, EventArgs e)
         {
-            fmodSystem.Update();
+            audio?.Update();
             var stopwatchActive = playStopwatch != null && playStopwatch.IsRunning;
             if (!stopwatchActive) return;
 
@@ -112,6 +117,8 @@ namespace SpriteEditor
 
         private void PlaySound()
         {
+            if (audio == null) return;
+
             StopSound();
 
             if (lstSoundFiles.SelectedItem is not string selectedItem)
@@ -122,12 +129,9 @@ namespace SpriteEditor
             lastItemIndex = lstSoundFiles.SelectedIndex;
 
             var fullPath = Path.Combine(txtDirectory.Text, selectedItem);
-            var sound = LoadFmodSound(fullPath);
-
-            currentChannel = fmodSystem.PlaySound(sound.Value, paused: true);
-            currentChannel.Pitch = hsbPitch.Value / 100.0f;
-            currentChannel.Volume = hsbVolume.Value / 100.0f;
-            currentChannel.Paused = false;
+            currentSound?.Dispose();
+            currentSound = new Models.Sound(fullPath, hsbPitch.Value / 100.0f, hsbVolume.Value / 100.0f);
+            currentChannel = audio.PlaySound(currentSound);
             playStopwatch = new Stopwatch();
             playStopwatch.Start();
         }
@@ -142,11 +146,8 @@ namespace SpriteEditor
 
             currentChannel.Stop();
             currentChannel = null;
-        }
-
-        private Sound? LoadFmodSound(string fullPath)
-        {
-            return fmodSystem.CreateSound(fullPath, Mode._2D | Mode.Loop_Off);
+            currentSound.Dispose();
+            currentSound = null;
         }
 
         private void btnPlay_Click(object sender, EventArgs e)

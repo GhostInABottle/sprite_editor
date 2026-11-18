@@ -13,7 +13,7 @@ namespace SpriteEditor
     {
         public static void Check(SpriteLogic spriteLogic)
         {
-            using var spriteCopy = new SpriteLogic(spriteLogic.SpriteData, spriteLogic.OpenedFileName, false);
+            using var spriteCopy = new SpriteLogic(spriteLogic.SpriteData, spriteLogic.OpenedFileName, null);
             var spriteData = spriteCopy.SpriteData;
             for (int pi = 0; pi < spriteData.Poses.Count; pi++)
             {

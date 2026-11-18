@@ -4,14 +4,13 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace SpriteEditor
 {
     /// <summary>
     /// A class that encapsulates sprite updating logic.
     /// </summary>
-    public class SpriteLogic : IDisposable
+    public class SpriteLogic(SpriteData spriteData, string path, Audio audioSystem) : IDisposable
     {
         /// <summary>
         /// Current frame index.
@@ -46,42 +45,15 @@ namespace SpriteEditor
         /// <summary>
         /// Last frame where sound was played
         /// </summary>
-        private int lastSoundFrame;
+        private int lastSoundFrame = -1;
         /// <summary>
         /// FMOD system
         /// </summary>
-        private readonly FmodSystem? fmodSystem;
+        private readonly Audio audio = audioSystem;
         /// <summary>
         /// Resource disposal status
         /// </summary>
         private bool isDisposed;
-
-        public SpriteLogic(bool soundPlayback)
-        {
-            SrcRect = new Rectangle(-1, -1, -1, -1);
-            lastSoundFrame = -1;
-            if (!soundPlayback) return;
-
-            try
-            {
-                fmodSystem = Fmod.CreateSystem();
-                fmodSystem.Value.Init(10);
-            }
-            catch (Exception ex)
-            {
-                fmodSystem = null;
-                if (OperatingSystem.IsWindowsVersionAtLeast(6, 1))
-                {
-                    MessageBox.Show("Failed to load FMOD sound system - make sure the correct DLL is in the executable folder - " + ex.Message);
-                }
-            }
-        }
-
-        public SpriteLogic(SpriteData spriteData, string path, bool soundPlayback) : this(soundPlayback)
-        {
-            SpriteData = spriteData;
-            OpenedFileName = path;
-        }
 
         ~SpriteLogic()
         {
@@ -96,12 +68,12 @@ namespace SpriteEditor
         /// <summary>
         /// Data to act on.
         /// </summary>
-        public SpriteData SpriteData { get; set; }
+        public SpriteData SpriteData { get; set; } = spriteData;
 
         /// <summary>
         /// Name of currently opened sprite file
         /// </summary>
-        public string OpenedFileName { get; set; }
+        public string OpenedFileName { get; set; } = path;
 
         /// <summary>
         /// Currently active pose.
@@ -111,7 +83,7 @@ namespace SpriteEditor
         /// <summary>
         /// Source rectangle of the current frame.
         /// </summary>
-        public Rectangle SrcRect { get; set; }
+        public Rectangle SrcRect { get; set; } = new Rectangle(-1, -1, -1, -1);
 
         /// <summary>
         /// Get currently active image.
@@ -206,7 +178,7 @@ namespace SpriteEditor
         /// </summary>
         public void Update(int currentTime)
         {
-            fmodSystem?.Update();
+            audio?.Update();
 
             if (CurrentPose == null || frameCount == 0)
             {
@@ -226,7 +198,7 @@ namespace SpriteEditor
 
             // If animation is still not finished...
             var soundData = CurrentFrame.Sound;
-            if (fmodSystem != null && !string.IsNullOrEmpty(soundData?.Filename) && lastSoundFrame != frameIndex)
+            if (audio != null && !string.IsNullOrEmpty(soundData?.Filename) && lastSoundFrame != frameIndex)
             {
                 try
                 {
@@ -292,17 +264,7 @@ namespace SpriteEditor
         {
             if (string.IsNullOrEmpty(soundData.Filename)) return;
 
-            var sound = soundData.LoadFmodSound(fmodSystem.Value, ResolvePath(soundData.Filename));
-            Channel channel = fmodSystem.Value.PlaySound(sound.Value, paused: true);
-            if (soundData.Pitch.HasValue)
-            {
-                channel.Pitch = soundData.Pitch.Value;
-            }
-            if (soundData.Volume.HasValue)
-            {
-                channel.Volume = soundData.Volume.Value;
-            }
-            channel.Paused = false;
+            audio?.PlaySound(soundData, ResolvePath(soundData.Filename));
         }
 
         /// <summary>
@@ -372,14 +334,12 @@ namespace SpriteEditor
             {
                 SpriteData?.Dispose();
             }
-
-            fmodSystem?.Dispose();
+            
             isDisposed = true;
         }
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }

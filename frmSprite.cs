@@ -27,6 +27,7 @@ namespace SpriteEditor
         private static readonly Brush SelectedRectBrush =
             new SolidBrush(Color.FromArgb(150, Color.YellowGreen));
 
+        private readonly Audio audio;
         private SpriteLogic spriteLogic;
         private Pose selectedPose;
         private Frame selectedFrame;
@@ -47,8 +48,10 @@ namespace SpriteEditor
             addFramesForm = new frmAddFrames(this);
             InitializeComponent();
             pnlSprite.MouseWheel += pnlSprite_MouseWheel;
-            if (!Settings.Default.SoundPlayback)
+            if (Settings.Default.SoundPlayback)
             {
+                audio = new Audio();
+            } else {
                 miSoundPlayer.Visible = false;
             }
         }
@@ -96,6 +99,7 @@ namespace SpriteEditor
             {
                 components?.Dispose();
                 spriteLogic.Dispose();
+                audio?.Dispose();
             }
 
             base.Dispose(disposing);
@@ -1112,7 +1116,7 @@ namespace SpriteEditor
             lastImageName = null;
             lastBitmap = null;
             var spriteData = new SpriteData();
-            spriteLogic = new SpriteLogic(spriteData, null, Settings.Default.SoundPlayback);
+            spriteLogic = new SpriteLogic(spriteData, null, audio);
             PopulateSprite(spriteData);
             miAdd_Click(sender, e);
             miAddFrame_Click(sender, e);
@@ -1151,7 +1155,7 @@ namespace SpriteEditor
 
                 var spriteData = SpriteData.Load(path)
                     ?? throw new IOException("Error loading sprite data.");
-                spriteLogic = new SpriteLogic(spriteData, path, Settings.Default.SoundPlayback);
+                spriteLogic = new SpriteLogic(spriteData, path, audio);
                 PopulateSprite(spriteData);
 
                 if (spriteData.Poses.Count > 0)
@@ -1947,7 +1951,7 @@ namespace SpriteEditor
 
         private void miSoundPlayer_Click(object sender, EventArgs e)
         {
-            soundPlayerForm ??= new FrmSound();
+            soundPlayerForm ??= new FrmSound(audio);
 
             soundPlayerForm.ShowDialog();
         }
