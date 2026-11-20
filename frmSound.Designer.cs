@@ -69,6 +69,7 @@ namespace SpriteEditor
             lstSoundFiles.Size = new System.Drawing.Size(460, 378);
             lstSoundFiles.TabIndex = 3;
             lstSoundFiles.SelectedIndexChanged += lstSoundFiles_SelectedIndexChanged;
+            lstSoundFiles.DoubleClick += lstSoundFiles_DoubleClick;
             lstSoundFiles.KeyDown += lstSoundFiles_KeyDown;
             // 
             // lblVolume

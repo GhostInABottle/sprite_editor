@@ -21,6 +21,7 @@ namespace SpriteEditor
             "ogg",
             "mp3"
         ];
+        private bool inSelectionMode { get; set; } = false;
 
         public FrmSound(Audio audioSystem)
         {
@@ -51,6 +52,27 @@ namespace SpriteEditor
             base.Dispose(disposing);
         }
 
+        public (string filename, float pitch, float volume) OpenAsDialog(string basePath, string selected, float pitch, float volume)
+        {
+            setDirectory(basePath);
+            hsbPitch.Value = (int)(pitch * 100);
+            hsbVolume.Value = (int)(volume * 100);
+            hsbVolume_Scroll(this, null);
+            hsbPitch_Scroll(this, null);
+            if (!string.IsNullOrWhiteSpace(selected) && lstSoundFiles.Items.Contains(selected))
+            {
+                lstSoundFiles.SelectedItem = selected;
+            }
+
+            inSelectionMode = true;
+            var result = ShowDialog();
+            inSelectionMode = false;
+            if (result != DialogResult.OK) return (null, pitch, volume);
+
+            var filename = Path.Combine(basePath, lstSoundFiles.SelectedItem.ToString());
+            return (filename, hsbPitch.Value / 100.0f, hsbVolume.Value / 100.0f);
+        }
+
         private void hsbVolume_Scroll(object sender, ScrollEventArgs e)
         {
             lblVolume.Text = $"Volume: {hsbVolume.Value}";
@@ -62,6 +84,16 @@ namespace SpriteEditor
             lblPitch.Text = $"Pitch: {hsbPitch.Value}";
         }
 
+        private void setDirectory(string path)
+        {
+            if (path == null) return;
+            txtDirectory.Text = path;
+            Settings.Default.LastSoundDirectory = path;
+            PopulatelstSoundFiles(path);
+            lstSoundFiles.Focus();
+            lastItemIndex = -2;
+        }
+
         private void btnDirectory_Click(object sender, EventArgs e)
         {
             var result = fbdDirectory.ShowDialog();
@@ -71,11 +103,7 @@ namespace SpriteEditor
                 return;
             }
 
-            txtDirectory.Text = path;
-            Settings.Default.LastSoundDirectory = path;
-            PopulatelstSoundFiles(path);
-            lstSoundFiles.Focus();
-            lastItemIndex = -2;
+            setDirectory(path);
         }
 
         private void PopulatelstSoundFiles(string path)
@@ -176,6 +204,14 @@ namespace SpriteEditor
             Clipboard.SetText(lstSoundFiles.SelectedItem.ToString());
             e.SuppressKeyPress = true;
             e.Handled = true;
+        }
+
+        private void lstSoundFiles_DoubleClick(object sender, EventArgs e)
+        {
+            if (!inSelectionMode || lstSoundFiles.SelectedIndex == -1) return;
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

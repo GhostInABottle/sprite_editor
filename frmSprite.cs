@@ -575,7 +575,7 @@ namespace SpriteEditor
             txtFrameMarker.Text = frame.Marker ?? "";
             txtRectangle.Text = frame.Rectangle.ToString();
             chkTween.Checked = frame.IsTweenFrame;
-            txtSound.Text = frame.Sound.Filename;
+            txtSound.Text = Path.GetFileName(frame.Sound.Filename);
             txtPitch.Text = frame.Sound.Pitch.ToString();
             txtPitch.Enabled = frame.Sound.Filename != null;
             txtVolume.Text = frame.Sound.Volume.ToString();
@@ -1546,19 +1546,65 @@ namespace SpriteEditor
             btnPoseTransColor.BackColor = cdTransparentColor.Color;
         }
 
+        private string SelectFromSoundPlayer(string baseDir)
+        {
+            var audioPath = Path.Combine(baseDir, "audio", "s");
+            if (!Directory.Exists(audioPath))
+            {
+                audioPath = null;
+            }
+            var pitch = 1.0f;
+            var volume = 1.0f;
+            if (float.TryParse(txtPitch.Text, out float parsedPitch))
+            {
+                pitch = parsedPitch;
+            }
+            if (float.TryParse(txtVolume.Text, out float parsedVolume))
+            {
+                volume = parsedVolume;
+            }
+            spriteLogic.SoundPlaybackEnabled = false;
+
+            soundPlayerForm ??= new FrmSound(audio);
+            (var path, pitch, volume) = soundPlayerForm.OpenAsDialog(audioPath, txtSound.Text, pitch, volume);
+            if (path == null) return null;
+
+            if (Math.Abs(pitch - 1.0f) > 0.001f)
+            {
+                txtPitch.Text = pitch.ToString();
+            }
+            if (Math.Abs(volume - 1.0f) > 0.001f)
+            {
+                txtVolume.Text = volume.ToString();
+            }
+
+            return path;
+        }
+
         private void btnBrowseSound_Click(object sender, EventArgs e)
         {
             if (selectedFrame == null) return;
 
-            var result = ofdSound.ShowDialog(this);
-            if (result != DialogResult.OK)
+            var baseDir = spriteLogic.ResolveBaseDir();
+            string path;
+            var oldSoundPlayback = spriteLogic.SoundPlaybackEnabled;
+            if (Settings.Default.SoundPlayback)
             {
-                return;
+                path = SelectFromSoundPlayer(baseDir);
+                if (path == null)
+                {
+                    spriteLogic.SoundPlaybackEnabled = oldSoundPlayback;
+                    return;
+                }
+            }
+            else
+            {
+                var result = ofdSound.ShowDialog(this);
+                if (result != DialogResult.OK) return;
+                path = ofdSound.FileName;
             }
 
-            var path = ofdSound.FileName;
             var filename = Path.GetFileName(path);
-            var baseDir = spriteLogic.ResolveBaseDir();
             if (baseDir != "." && Path.IsPathRooted(path))
             {
                 path = Utilities.MakeRelativePath(baseDir, path);
@@ -1569,6 +1615,7 @@ namespace SpriteEditor
             txtPitch.Enabled = true;
             txtVolume.Enabled = true;
 
+            spriteLogic.SoundPlaybackEnabled = oldSoundPlayback;
             spriteLogic.PlaySound(selectedFrame.Sound);
         }
 

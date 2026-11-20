@@ -85,6 +85,8 @@ namespace SpriteEditor
         /// </summary>
         public Rectangle SrcRect { get; set; } = new Rectangle(-1, -1, -1, -1);
 
+        public bool SoundPlaybackEnabled { get; set; } = audioSystem != null;
+
         /// <summary>
         /// Get currently active image.
         /// </summary>
@@ -198,7 +200,7 @@ namespace SpriteEditor
 
             // If animation is still not finished...
             var soundData = CurrentFrame.Sound;
-            if (audio != null && !string.IsNullOrEmpty(soundData?.Filename) && lastSoundFrame != frameIndex)
+            if (SoundPlaybackEnabled && !string.IsNullOrEmpty(soundData?.Filename) && lastSoundFrame != frameIndex)
             {
                 try
                 {
@@ -262,7 +264,7 @@ namespace SpriteEditor
 
         public void PlaySound(Models.Sound soundData)
         {
-            if (string.IsNullOrEmpty(soundData.Filename)) return;
+            if (!SoundPlaybackEnabled || string.IsNullOrEmpty(soundData.Filename)) return;
 
             audio?.PlaySound(soundData, ResolvePath(soundData.Filename));
         }
